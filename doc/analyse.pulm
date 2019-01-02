@@ -1,0 +1,24 @@
+@startuml
+class Play{
+id
+name
+}
+
+class Film{
+id
+name
+ranks
+imagepath
+}
+
+class Personne{
+id
+name
+}
+
+Play " * " -- " 1 " Personne
+Play " * " -- " 1 " Film
+
+Film " * " - " 1 director " Personne  : "                "
+hide circle
+@enduml

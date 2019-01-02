@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <th:block th:replace="basictemplate :: header_css">
+    </th:block>
+</head>
+<body>
+<header th:replace="basictemplate :: header"></header>
+<div class="row">
+    <div class="col-sm-2">
+        <nav th:replace="navtemplate :: barrenav"></nav>
+    </div>
+    <div class="col-sm-10">
+
+    <div class="row table-bordered table-primary" id="mainContent">
+        <h1>Detail utilisateur:</h1>
+            <div class="col-sm-1"><span th:text="${user.id}"></span></div>
+            <div class="col-sm-9" th:text="${user.toString()}"></div>
+            <div class="col-sm-1"><a class="btn btn-danger"  th:if="${session.admin!=null}" th:href="@{/user/delete/{Id} (Id=${user.id})}">Effacer</a></div>
+            <div class="col-sm-1"><a class="btn btn-warning" th:if="${session.admin!=null}" th:href="@{/user/update/{Id} (Id=${user.id})}">Editer</a></div>
+        <a class=centered th:href="@{/review/listeParUtilisateur/{Id} (Id=${user.id})}">Liste des commentaires</a>
+    </div>
+    </div>
+</div>
+<footer th:replace="basictemplate :: footer"></footer>
+</body>
+</html>

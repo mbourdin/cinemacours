@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <html lang="en" xmlns:th="http://www.thymeleaf.org">
+        <th:block th:replace="basictemplate :: header_css">
+        </th:block>
+    </head>
+
+    <header  class="block" th:replace="basictemplate :: header"></header>
+
+
+        <div class="row">
+            <div class="col-sm-2">
+                <nav th:replace="navtemplate :: barrenav"></nav>
+            </div>
+            <div class="col-sm-10" id="mainContent"><h2>Créez vos Identifiants</h2>
+                <section>
+                    <table>
+                        <form action="/login/subscribe" method="post" >
+                            <input type="hidden" th:field="${user.id}"/>
+                            <input type="hidden" th:field="${user.hpw}"/>
+                            <input type="hidden" th:field="${user.link}"/>
+                            <tr>
+                                <td><label>Identifiant *</label></td><td><input name="login" type="text" th:field="${user.login}"/></td>
+                            </tr><tr>
+                            <td><label>Mot de passe *</label></td><td><input name="password" type="password"/></td>
+                        </tr><tr>
+                            <td><label>email *</label></td><td><input name="email" type="text" th:field="${user.email}"/><td>
+                        </tr><tr>
+                            <td><input type="submit" value="Envoyer" /></td>
+                        </tr><td><label>nom *</label></td><td><input name="nom" type="text" th:field="${user.nom}"/><td>
+                            </tr><tr>
+                        </tr><tr>
+                            <td><label>prenom *</label></td><td><input name="prenom" type="text" th:field="${user.prenom}"/><td>
+                        </tr>
+                        </form>
+                    </table>
+                </section>
+            </div>
+        </div>
+
+
+    <footer th:replace="basictemplate :: footer"></footer>
+</body></html>

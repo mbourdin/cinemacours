@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <th:block th:replace="basictemplate :: header_css">
+    </th:block>
+    <title>Bienvenue sur le site des Nanars sauvages</title>
+</head>
+<body>
+
+<header class="block" th:replace="basictemplate :: header"></header>
+
+
+<br>
+<div class="row">
+    <div class="col-sm-2">
+        <nav th:replace="navtemplate :: barrenav"></nav>
+    </div>
+    <div class="col-sm-10" id="mainContent"><h1>Liste des films</h1>
+        <ul class="sanspuce">
+            <li>resultats par  film</li>
+            <li th:each="film : ${films}"><a th:href="@{/film/{Id} (Id=${film.id})}"
+                                                          th:text="${film.titre}+' '+${film.note}"></a></li>
+            <li>resultats par role</li>
+            <li th:each="role : ${roles}"><a th:href="@{/film/{Id} (Id=${role.getFilm().getId()})}" th:text="${role.getFilm().getTitre()}+':'+${role.getNom()}"></a></li>
+            <li>resultats par personne</li>
+            <li th:each="personne : ${personnes}"><a th:href="@{/personne/{Id} (Id=${personne.id})}" th:text="${personne.getNom()}+':'+${personne.getPrenom()}"></a></li>
+        </ul>
+        </ul>
+    </div>
+</div>
+<footer th:replace="basictemplate :: footer"></footer>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"><head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<nav class="nav flex-column nav-pills" th:fragment="barrenav">
+    <a class="navbar-brand show" href="#">Navbar</a>
+    <button aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-target="#navbarsExampleDefault" data-toggle="collapse" type="button">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="navbar-collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="/">Home</a>
+            </li>
+            <li class="nav-item active">
+                <a href="/planDAcces">plan d'acces</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="/film/liste">Liste des Films</a>
+            </li>
+            <li class="nav-item active">
+                <!-- type 1 =admin -->
+                <!-- type 2 =vendeur -->
+                <!-- type 3 =normal -->
+                <a class="nav-link" th:if="${session.admin!=null}"  th:href="@{/film/create}" >creer un film</a>
+            </li>
+
+            <li class="nav-item active">
+                <a class="nav-link" href="/seance/semaine">planning</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="/personne/liste">liste des personnes</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link"  th:if="${session.admin!=null}" th:href="@{/personne/create}">creer une personne</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link"  th:if="${session.admin!=null}" th:href="@{/user/create}">creer un utilisateur</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link"  th:if="${session.admin!=null}" th:href="@{/user/liste}">liste des utilisateurs</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link"  th:if="${session.user!=null}" th:href="@{/review/liste}">liste des commentaires</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link"  th:if="${session.user!=null}" th:href="@{/user/selfupdate}">mon compte</a>
+            </li>
+            <li class="nav-item active">
+            <a class="nav-link"  th:if="${session.admin!=null}" th:href="@{/seance/combien}">cree seance</a>
+        </li>
+            <li class="nav-item active">
+                <a class="nav-link" th:href="@{/play/liste}">liste des roles</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link"  th:if="${session.admin!=null}" th:href="@{/play/create}">cree role</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link"  th:if="${session.admin!=null}" th:href="@{/genre/create}">cree genre</a>
+            </li><li class="nav-item active">
+            <a class="nav-link"   th:href="@{/genre/liste}">liste des genres</a>
+        </li>
+            <li class="nav-item active">
+                <a class="nav-link"  th:if="${session.admin!=null}" th:href="@{/genre/creerAssociation}">associer film_genre</a>
+            </li>
+            <li class="nav-item active">
+            <a class="nav-link"  th:if="${session.admin!=null}" th:href="@{/genre/dissoudreAssociation}">dissocier film_genre</a>
+        </li>
+            <li class="nav-item active">
+            <a class="nav-link"  th:if="${session.admin!=null}" th:href="@{/news/liste}">liste des newsletters</a>
+        </li>
+            <li class="nav-item active">
+                <a class="nav-link"  th:if="${session.admin!=null}" th:href="@{/news/create}">creer une newsletter</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link"  th:if="${session.admin!=null}" th:href="@{/msgliste/nonlus}">nouveaux messages</a>
+            </li>
+            <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                Dropdown
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="#">Action</a>
+                <a class="dropdown-item" href="#">Another action</a>
+                <a class="dropdown-item" href="#">Something else here</a>
+            </div>
+            </li>
+        </ul>
+
+        <!--<form class="form-inline my-2 my-lg-0" action="/search" method="post">
+            <input aria-label="Search" class="form-control mr-sm-2" placeholder="Search" type="text" name="str">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>-->
+    </div>
+    <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Dropdown button
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" href="#">Action</a>
+            <a class="dropdown-item" href="#">Another action</a>
+            <a class="dropdown-item" href="#">Something else here</a>
+        </div>
+    </div>
+</nav>
+</body>
+</html>

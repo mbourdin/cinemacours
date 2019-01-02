@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <th:block th:replace="basictemplate :: header_css">
+    </th:block>
+    </head>
+
+    <header  class="block" th:replace="basictemplate :: header"></header>
+    <div class="row">
+        <div class="col-sm-2">
+            <nav th:replace="navtemplate :: barrenav"></nav>
+        </div>
+        <div class="col-sm-10" id="mainContent"><h2>Créez vos Identifiants</h2>
+            <section>
+                Notre complexe se situe rue Berlioz à Saint-Michel-sur-Orge.<br>
+                <a href="https://www.google.fr/maps/place/Espace+Marcel+Carn%C3%A9/@48.6366192,2.3210281,18z/data=!4m13!1m7!3m6!1s0x47e5d914bad63619:0x9dc433a42a193f39!2sRue+Berlioz!3b1!8m2!3d48.6364402!4d2.321219!3m4!1s0x47e5d92e766df6a9:0xc91083ebd7f9b73d!8m2!3d48.6374042!4d2.3218375">Plan d'accès sur google maps</a><br>
+
+                Vous pouvez vous garer sur le parking du supermarché Géant Juste au dessus.<br>
+            </section>
+        </div>
+    </div>
+
+
+
+    <footer th:replace="basictemplate :: footer"></footer>
+    </body></html>

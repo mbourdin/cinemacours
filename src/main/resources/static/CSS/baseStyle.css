@@ -1,0 +1,76 @@
+body
+{	background-color: rgb(150,150,150);
+    font-size:100%;
+    font-family:  Arial, Helvetica, sans-serif;
+}
+header
+{	text-align:center;
+    background-color:rgb(40,80,80);
+}
+nav{
+    background-color: cyan;
+   }
+
+
+section{	position:center;
+    padding: 0px;
+    margin: 0px;
+}
+h1{
+    text-align: center;
+    font-size:250%;
+}
+
+h2
+{   text-align: center;
+    font-size:200%;
+    font-style: italic;
+}
+h3
+{	text-align: center;
+    font-size:150%;
+
+}
+p
+{
+    background-color: yellow;
+}
+
+img {
+    max-width: 100%;
+    max-height: 100vh;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+textarea
+{   width: 100%;
+
+
+}
+
+
+.saisie{
+    text-align: center
+}
+.login{	float: right;
+    background-color: cyan;
+}
+.sanspuce{
+    list-style-type:none;
+}
+.centered{
+    text-align: center;
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+}
+.fullwidth {
+    width: 90%;
+}
+
+#mainContent{
+    text-align: center;
+}

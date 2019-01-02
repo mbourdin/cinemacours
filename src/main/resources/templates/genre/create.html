@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <html lang="en" xmlns:th="http://www.thymeleaf.org">
+        <th:block th:replace="basictemplate :: header_css">
+        </th:block>
+    </head>
+
+    <header  class="block" th:replace="basictemplate :: header"></header>
+
+
+        <div class="row">
+            <div class="col-sm-2">
+                <nav th:replace="navtemplate :: barrenav"></nav>
+            </div>
+            <div class="col-sm-10" id="mainContent"><h2>Créer un genre</h2>
+
+                    <table>
+                        <form action="/genre/create" method="post" th:object="${genre}" autocomplete="off">
+                            <input type="hidden" name="id" th:field="*{id}"/>
+                           <tr>
+                            <td><label>nom du genre</label></td><td><input name="genre" type="text" th:field="*{name}"/></td>
+                           </tr>
+                            <tr>
+                            <td><input type="submit" value="Envoyer" /></td>
+                        </tr>
+                        </form>
+                    </table>
+
+            </div>
+        </div>
+
+
+    <footer th:replace="basictemplate :: footer"></footer>
+</body></html>

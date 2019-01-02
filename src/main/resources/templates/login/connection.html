@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <html lang="en" xmlns:th="http://www.thymeleaf.org">
+        <th:block th:replace="basictemplate :: header_css">
+        </th:block>
+    </head>
+
+    <header  class="block" th:replace="basictemplate :: header"></header>
+        <div class="row">
+            <div class="col-sm-2"><nav th:replace="navtemplate :: barrenav"></nav></div>
+            <div class="col-sm-10" id="mainContent">
+            <p th:if="${message != null}" th:text="${message}"></p>
+                <h2>Entrez vos Identifiants</h2>
+                <section>
+                    <form action="/login/connect" method="post">
+                        <table>
+                            <tr>
+                                <td><label>Identifiant *</label></td><td> <input name="login" type="text"/></td>
+                            </tr><tr>
+                            <td><label>Mot de passe *</label></td><td> <input name="password" type="password"/></td>
+                        </tr><tr>
+                            <td><input type="submit" value="Envoyer" /></td>
+                            <td><a href="/login/recoverPW" >mot de passe oublié?</a> </td>
+                        </tr>
+                        </table>
+                    </form>
+                    <form action="/login/useLink" method="post">
+
+                        <label>Entrez votre lien de récupération</label>
+                        <input type="text" name="link" class="fullwidth"/>
+                        <input type="submit" value="recupération"/>
+                        </table>
+                    </form>
+                </section>
+            </div>
+        </div>
+
+    <footer th:replace="basictemplate :: footer"></footer>
+</body></html>

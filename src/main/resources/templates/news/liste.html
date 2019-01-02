@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <th:block th:replace="basictemplate :: header_css">
+    </th:block>
+</head>
+<body>
+<header th:replace="basictemplate :: header"></header>
+<div class="row">
+    <div class="col-sm-2">
+        <nav th:replace="navtemplate :: barrenav"></nav>
+    </div>
+    <div class="col-sm-10">
+    <h1>liste des newsletters</h1>
+    <div class="row table-bordered table-primary" id="mainContent" th:each="news : ${newslist}">
+            <div class="col-sm-1"><span th:text="${news.id}"></span></div>
+            <div class="col-sm-8"><span th:text="${news.date.toString()}"></span></div>
+            <div class="col-sm-1"><a class="btn btn-primary"  th:if="${session.admin!=null}" th:href="@{/news/send/{Id} (Id=${news.id})}">Envoyer</a></div>
+            <div class="col-sm-1"><a class="btn btn-danger"  th:if="${session.admin!=null}" th:href="@{/news/delete/{Id} (Id=${news.id})}">Effacer</a></div>
+            <div class="col-sm-1"><a class="btn btn-warning" th:if="${session.admin!=null}" th:href="@{/news/update/{Id} (Id=${news.id})}">Editer</a></div>
+    </div>
+    </div>
+</div>
+<footer th:replace="basictemplate :: footer"></footer>
+</body>
+</html>

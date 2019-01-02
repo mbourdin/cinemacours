@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <th:block th:replace="basictemplate :: header_css">
+    </th:block>
+</head>
+<body>
+
+<header class="block" th:replace="basictemplate :: header"></header>
+
+
+<br>
+<div class="row">
+    <div class="col-sm-2">
+        <nav th:replace="navtemplate :: barrenav"></nav>
+    </div>
+    <div class="col-sm-10" id="mainContent">
+
+        <form action="/seance/create" method="post" th:object="${seanceList}">
+            <fieldset>
+            <table>
+                <tr>
+                    <td>
+                        <label>salle</label>
+                    </td>
+                    <td>
+                        <label>debut YYYY-MM-DDTHH:mm</label>
+                    </td>
+                    <td>
+                        <label>film</label>
+                    </td>
+
+
+                </tr>
+
+                <tr th:each="champ ,itemStat : *{champs}">
+                    <input type="hidden" th:field="*{champs[__${itemStat.index}__].seanceId}">
+                    <td><input type=text th:field="*{champs[__${itemStat.index}__].salleId}"  /></td>
+                    <td><input type=datetime-local th:field="*{champs[__${itemStat.index}__].debut}" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}" required/></td>
+                    <td><input type="text" list="films" th:field="*{champs[__${itemStat.index}__].filmId}" /><datalist id="films">
+                        <option th:each="film : ${films}" th:value="${film.id}" th:label="${film.titre}"></option>
+                    </datalist></td>
+                </tr>
+                <tr><td><input type="submit" value="Envoyer"/></td></tr>
+
+            </table>
+            </fieldset>
+        </form>
+
+    </div>
+</div>
+
+<footer th:replace="basictemplate :: footer"></footer>
+</body>
+</html>

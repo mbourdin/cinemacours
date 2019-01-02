@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <th:block th:replace="basictemplate :: header_css">
+    </th:block>
+</head>
+<body>
+
+<header class="block" th:replace="basictemplate :: header"></header>
+
+
+<br>
+<div class="row">
+    <div class="col-sm-2">
+        <nav th:replace="navtemplate :: barrenav"></nav>
+    </div>
+    <div class="col-sm-10" id="mainContent">
+
+        <form action="/play/create" method="post">
+            <table>
+                <tr>
+                    <td>
+                        <label>film</label>
+                    </td>
+
+                    <td>
+                        <label>acteur</label>
+                    </td>
+                    <td><label>personnage</label></td>
+                    <td><label>rang</label></td>
+                </tr>
+                <tr>
+                    <td><input list="films" id="film" name="film" th:field="${play.film.id}" th:readonly="${readonly}">
+                        <datalist id="films">
+                            <option th:each="film : ${films}" th:value="${film.id}" th:label="${film.titre}"></option>
+                        </datalist>
+                        </input>
+                    </td>
+
+                    <td><input list="acteurs" id="acteur" name="acteur" th:field="${play.personne.id}" th:readonly="${readonly}">
+                        <datalist id="acteurs">
+                            <option th:each="acteur : ${acteurs}" th:value="${acteur.id}" th:label="${acteur.prenom}+' '+${acteur.nom}"></option>
+                        </datalist>
+                        </input>
+                    </td>
+                    <td><input type="text" name="name" th:field="${play.nom}"></input></td>
+                    <td><input type="text" name="rang" th:field="${play.numero}"></input></td>
+                </tr>
+                <tr><td><input type="submit" value="Envoyer"/></td></tr>
+
+            </table>
+        </form>
+
+    </div>
+</div>
+
+<footer th:replace="basictemplate :: footer"></footer>
+</body>
+</html>
