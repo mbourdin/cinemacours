@@ -6,8 +6,9 @@ import mbourdin.cinema_cours.dao.PersonneDao;
 import mbourdin.cinema_cours.dao.PlayDao;
 import mbourdin.cinema_cours.model.Film;
 import mbourdin.cinema_cours.model.Genre;
-import mbourdin.cinema_cours.model.Personne;
+import mbourdin.cinema_cours.model.Play;
 import mbourdin.cinema_cours.service.ImageManager;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -16,16 +17,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URISyntaxException;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.HashSet;
 
 @Controller
 @RequestMapping("/film")
@@ -73,12 +71,14 @@ public class FilmController {
     @GetMapping("/create")
     public String createFilm(Model m){
         m.addAttribute("title","creation film");
-        m.addAttribute("film", new Film());
         m.addAttribute("personnes",daoPersonne.findAll());
+        m.addAttribute("readonly",Boolean.TRUE);
+        m.addAttribute("newrole",new Play());
+        m.addAttribute("film",new Film());
         return "film/create";
     }
     @PostMapping("/create")
-    public String createFilm(@ModelAttribute Film film, @RequestParam("image") MultipartFile file)
+    public String createFilm(@ModelAttribute Film film, @RequestParam("image") MultipartFile file,@RequestParam String titre,@RequestParam String resume,@RequestParam Long realisateur,@RequestParam double note)
     {
 
         if(file.getContentType().equalsIgnoreCase("image/jpeg")){
@@ -88,16 +88,25 @@ public class FilmController {
                 System.out.println("Erreur lecture : "+ioe.getMessage());
             }
         }
-        daoFilm.save(film);
+        if(film.getId()!=0)
+        {   film=daoFilm.findById(film.getId()).get();
+            film.setRealisateur(daoPersonne.findById(realisateur).get());
+            film.setResume(resume);
+            film.setTitre(titre);
+            film.setNote(note);
 
+
+        }
+        daoFilm.save(film);
         return "redirect:/film/liste";
     }
     @GetMapping("/update/{id}")
-    public String updateFilm(Model m,@PathVariable("id") String id){
-        Long idFilm=Long.parseLong(id);
+    public String updateFilm(Model m,@PathVariable("id") long id){
+        Film film=daoFilm.findById(id).get();
         m.addAttribute("title","MAJ film");
         m.addAttribute("personnes",daoPersonne.findAll());
-        m.addAttribute("film", daoFilm.findById(idFilm).get());
+        m.addAttribute("film",daoFilm.findById(id).get());
+        m.addAttribute("newrole",new Play());
         return "/film/create";
     }
 
