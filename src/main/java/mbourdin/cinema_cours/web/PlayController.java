@@ -9,9 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
 import java.util.Set;
-import java.util.TreeSet;
 
 @Controller
 @RequestMapping("/play")
@@ -32,6 +30,7 @@ public class PlayController {
         m.addAttribute("play",play);
         m.addAttribute("films",films);
         m.addAttribute("acteurs",acteurs);
+
         return "/play/create";
     }
 
@@ -41,6 +40,18 @@ public class PlayController {
         play.setPersonne(personneDao.findById(play.getPersonne().getId()).get());
         playDao.save(play);
         return "redirect:/play/liste";
+    }
+    @PostMapping("/filmform")
+    public String addPlayToForm(Model m,@ModelAttribute Film film,@ModelAttribute Play newrole,@RequestParam Long id)
+    {   newrole.setFilm(filmDao.findById(id).get());
+        playDao.save(newrole);
+        film=filmDao.findById(id).get();
+        m.addAttribute("title","creation film");
+        m.addAttribute("personnes",personneDao.findAll());
+        m.addAttribute("readonly",Boolean.TRUE);
+        m.addAttribute("newrole",new Play());
+        m.addAttribute("film",film);
+        return "/film/create";
     }
     @GetMapping("/liste")
     public String listeRoles(Model m){
