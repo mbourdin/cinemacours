@@ -13,7 +13,7 @@
     </div>
     <div class="col-sm-10">
     <h1>liste des roles</h1>
-    <div class="row table-bordered table-primary" id="mainContent" th:each="role : ${plays}">
+    <div  class="row table-bordered table-primary" id="mainContent" th:each="role : ${plays}">
             <div class="col-sm-10"><a th:href="@{/personne/{Id} (Id=${role.personne.id})}" th:text="${role.personne.nom}+' '+${role.personne.prenom}"></a> dans
                 <a th:href="@{/film/{Id} (Id=${role.film.id})}" th:text="${role.film.titre} "> </a> joue <th:block th:text="${role.nom}"></th:block></div>
             <div class="col-sm-1"><a class="btn btn-danger"  th:if="${session.admin!=null}" th:href="@{/play/delete/{id} (id=${role.id})}">Effacer</a></div>
