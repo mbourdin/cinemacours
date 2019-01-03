@@ -58,6 +58,7 @@ public class SeanceController {
         if(admin!=null&&admin.equals(Boolean.TRUE))
         {
             Seance seance;
+
             for (SeanceChamp champs : seanceList.getChamps())
             {   Optional<Seance> seanceOptional=seanceDao.findById(champs.getSeanceId());
                 if(seanceOptional.isPresent())
@@ -67,6 +68,7 @@ public class SeanceController {
                 seance.setFilm(filmDao.findById(champs.getFilmId()).get());
                 seance.setSalle(salleDao.findById(champs.getSalleId()).get());
                 seance.setDebut(LocalDateTime.parse(champs.getDebut()));
+
 
                 //TODO assurer l'absence de collision entre seances, niveau applicatif ou niveau  BDD?
                 seanceDao.save(seance);
