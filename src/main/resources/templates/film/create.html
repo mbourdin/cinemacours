@@ -18,9 +18,14 @@
     <div class="col-sm-10" id="mainContent">
 
         <form action="/film/create" method="post" enctype="multipart/form-data">
-            <input type="hidden" th:field="${film.id}"/>
-            <input type="hidden" th:field="${film.afficheNom}"/>
+
             <table>
+                <tr>
+                    <td>
+                        <label>id</label>
+                    </td>
+                    <td><input name="id" type="text" th:field="${film.id}" readonly/>
+                </tr>
                 <tr>
                     <td>
                         <label>titre</label>
@@ -50,6 +55,37 @@
 
             </table>
             <label>resume</label><br><textarea name="resume" th:field="${film.resume}"></textarea>
+        </form>
+        <div  th:each="role : ${film.roles}">
+            <div class="col-sm-10"><a th:href="@{/personne/{Id} (Id=${role.personne.id})}" th:text="${role.personne.nom}+' '+${role.personne.prenom}"></a>  joue <th:block th:text="${role.nom}"></th:block></div>
+
+
+        </div>
+        <h2>creer un role</h2>
+        <form action="/play/filmform" method="post" th:if="${newrole}">
+            <table>
+                <tr>
+
+                    <td>
+                        <label>acteur</label>
+                    </td>
+                    <td><label>personnage</label></td>
+                    <td><label>rang</label></td>
+                </tr>
+                <tr>
+                    <td><input list="acteurs" id="acteur" name="acteur" th:field="${newrole.personne.id}" >
+                        <datalist id="acteurs">
+                            <option th:each="acteur : ${personnes}" th:value="${acteur.id}" th:label="${acteur.prenom}+' '+${acteur.nom}"></option>
+                        </datalist>
+                    </td>
+                    <td><input type="text" name="name" th:field="${newrole.nom}"/></td>
+                    <td><input type="text" name="rang" th:field="${newrole.numero}"/></td>
+                </tr>
+                <tr><td><input type="submit" value="creer role"/></td></tr>
+                <input name="id" type="hidden" th:field="${film.id}" readonly/>
+
+
+            </table>
         </form>
 
     </div>
