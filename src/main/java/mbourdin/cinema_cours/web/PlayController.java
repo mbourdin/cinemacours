@@ -46,6 +46,19 @@ public class PlayController {
     {   newrole.setFilm(filmDao.findById(id).get());
         playDao.save(newrole);
         film=filmDao.findById(id).get();
+        film.setRoles(playDao.findAllByFilm_IdOrderByNumeroAsc(film.getId()));
+        m.addAttribute("title","creation film");
+        m.addAttribute("personnes",personneDao.findAll());
+        m.addAttribute("readonly",Boolean.TRUE);
+        m.addAttribute("newrole",new Play());
+        m.addAttribute("film",film);
+        return "/film/create";
+    }
+    @GetMapping("delfromfilm/{id}")
+    public String deleteRoleFromFilm(Model m,@PathVariable Long id,@SessionAttribute Boolean admin)
+    {   Film film=filmDao.findById(playDao.findById(id).get().getFilm().getId()).get();
+        film.setRoles(playDao.findAllByFilm_IdOrderByNumeroAsc(film.getId()));
+        this.deleteRole(id,admin);
         m.addAttribute("title","creation film");
         m.addAttribute("personnes",personneDao.findAll());
         m.addAttribute("readonly",Boolean.TRUE);

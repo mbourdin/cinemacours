@@ -54,8 +54,7 @@ public class ReviewController {
         return "review/create";
     }
     @PostMapping("/create")
-    public String creer(@ModelAttribute Review review,HttpSession session){
-        Utilisateur utilisateur=(Utilisateur) session.getAttribute("user");
+    public String creer(@ModelAttribute Review review,@SessionAttribute Utilisateur utilisateur){
         if (review.getUtilisateur().equals(utilisateur)||utilisateur.getType()==Utilisateur.admin) {
             reviewDao.save(review);
         }
@@ -73,7 +72,7 @@ public class ReviewController {
         m.addAttribute("title","MAJ review");
         Review review=reviewDao.findById(id).get();
         m.addAttribute("review", review);
-        return "review/detail";
+        return "review/create";
     }
     @GetMapping("delete/{id}")
     public String deleteReview(@PathVariable("id") Long id,HttpSession session){
