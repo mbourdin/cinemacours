@@ -103,6 +103,7 @@ public class FilmController {
     @GetMapping("/update/{id}")
     public String updateFilm(Model m,@PathVariable("id") long id){
         Film film=daoFilm.findById(id).get();
+        film.setRoles(playDao.findAllByFilm_IdOrderByNumeroAsc(film.getId()));
         m.addAttribute("title","MAJ film");
         m.addAttribute("personnes",daoPersonne.findAll());
         m.addAttribute("film",daoFilm.findById(id).get());
