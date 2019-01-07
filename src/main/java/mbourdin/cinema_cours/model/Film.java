@@ -15,7 +15,7 @@ public class Film {
     double note;
     private String resume;
     private Personne realisateur;
-    private Set<Play> roles;
+    private List<Play> roles;
     private Set<Review> reviews;
     private Set<Genre> genres;
     private Set<Seance> seances;
@@ -94,11 +94,11 @@ public class Film {
 
 
     @OneToMany(mappedBy = "film",cascade=CascadeType.ALL,orphanRemoval = true)
-    public Set<Play> getRoles() {
+    public List<Play> getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<Play> roles) {
+    public void setRoles(List<Play> roles) {
         this.roles = roles;
     }
 
