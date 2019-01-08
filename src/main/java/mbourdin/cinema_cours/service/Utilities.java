@@ -1,4 +1,5 @@
 package mbourdin.cinema_cours.service;
+import mbourdin.cinema_cours.model.Commande;
 import mbourdin.cinema_cours.model.Utilisateur;
 
 import javax.servlet.http.HttpSession;
@@ -63,6 +64,8 @@ public abstract class Utilities {
     public static void setPermissions(HttpSession session,Utilisateur user)
     {   session.setAttribute("user",user);
         session.setAttribute("panier",new Panier());
+        Commande commande=new Commande();
+        session.setAttribute("commande",commande);
         if (user.getType()==Utilisateur.admin)
         {   session.setAttribute("admin",Boolean.TRUE);
             session.setAttribute("vendeur",Boolean.TRUE);
