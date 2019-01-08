@@ -6,10 +6,11 @@ import mbourdin.cinema_cours.service.Utilities;
 import javax.persistence.*;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name="users")
+@Table(name="users",schema="public")
 public class Utilisateur {
     static public final int admin=1;
     static public final int vendeur=2;
@@ -185,11 +186,16 @@ public class Utilisateur {
     }
     public void removeNewsletter(NewsLetter newsLetter)
     {   if(newsLetters.contains(newsLetter))
-    {
-        newsLetters.remove(newsLetter);
-        if (newsLetter.getUtilisateurs().contains(this)) {
-            newsLetter.removeUtilisateur(this);
+        {
+            newsLetters.remove(newsLetter);
+            if (newsLetter.getUtilisateurs().contains(this)) {
+                newsLetter.removeUtilisateur(this);
+            }
         }
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
     }
 }

@@ -1,6 +1,7 @@
 package mbourdin.cinema_cours.model;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name="play")
@@ -102,4 +103,10 @@ public class Play  implements Comparable<Play> {
         else if (film.getId()>o.film.getId()) return 1;
         else return 0;
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
+    }
+
 }

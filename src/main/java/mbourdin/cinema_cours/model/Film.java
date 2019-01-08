@@ -3,6 +3,7 @@ package mbourdin.cinema_cours.model;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -75,12 +76,6 @@ public class Film {
     }
 
 
-    @Override
-    public boolean equals(Object f)
-    {   if (this==f) return true;
-        if (!(f instanceof Film)) return false;
-        return (this.id==((Film) f).id);
-    }
     @OneToMany(mappedBy ="film")
     public Set<Seance> getSeances() {
         return seances;
@@ -136,8 +131,16 @@ public class Film {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Film)) return false;
+        Film film = (Film) o;
+        return getId() == film.getId();
+    }
+
+    @Override
     public int hashCode() {
-        return super.hashCode();
+        return Objects.hash(getId());
     }
 
     public void addGenre(Genre genre)
@@ -159,4 +162,5 @@ public class Film {
             }
         }
     }
+
 }

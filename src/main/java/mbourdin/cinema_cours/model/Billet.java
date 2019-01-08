@@ -8,7 +8,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name="billets")
-public class Billet {
+public class Billet implements Comparable{
     private Long id;
     private Seance seance;
     private Commande commande;
@@ -21,6 +21,13 @@ public class Billet {
         this.seance = seance;
         this.commande = commande;
         this.prix = prix;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        if (!(o instanceof Billet) )return 1;
+        Billet that=(Billet) o;
+        return id.compareTo(that.id);
     }
 
     @Id
@@ -66,7 +73,20 @@ public class Billet {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Billet)) return false;
+        Billet billet = (Billet) o;
+        return getId().equals(billet.getId());
+    }
+
+    @Override
     public int hashCode() {
-        return Objects.hashCode(this);
+        return Objects.hash(getId());
+    }
+
+    @Override
+    public String toString() {
+        return "seance "+seance.getId()+" salle "+seance.getSalle().getId()+" "+seance.getFilm().getTitre()+" date"+seance.getDebut().toString()+" prix:"+prix;
     }
 }

@@ -2,6 +2,7 @@ package mbourdin.cinema_cours.model;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Entity
 @Table(name="message")
@@ -66,5 +67,18 @@ public class MsgToAdmin {
 
     public void setLu(Boolean lu) {
         this.lu = lu;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof MsgToAdmin)) return false;
+        MsgToAdmin that = (MsgToAdmin) o;
+        return getId().equals(that.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getTexte(), getDate(), getEmail(), lu);
     }
 }

@@ -5,6 +5,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name="persons")
@@ -111,18 +112,13 @@ public class Personne {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Personne persons = (Personne) o;
-
-        if (id != persons.id) return false;
-        return true;
+        if (!(o instanceof Personne)) return false;
+        Personne personne = (Personne) o;
+        return getId() == personne.getId();
     }
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
-        return result;
+        return Objects.hash(getId());
     }
-
 }

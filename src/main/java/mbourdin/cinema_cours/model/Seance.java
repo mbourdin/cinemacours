@@ -6,11 +6,13 @@ import mbourdin.cinema_cours.service.SeanceChamp;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
 @Table(name="seance")
 public class Seance {
+    public static final double prixdefaut=9.00;
     private Long id;
     private Film film;
     private Salle salle;
@@ -69,5 +71,18 @@ public class Seance {
 
     public SeanceChamp toSeanceChamp()
     {   return new SeanceChamp(id,salle,film,debut);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Seance)) return false;
+        Seance seance = (Seance) o;
+        return getId().equals(seance.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
     }
 }

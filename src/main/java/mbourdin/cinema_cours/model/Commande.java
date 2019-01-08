@@ -8,13 +8,13 @@ import mbourdin.cinema_cours.service.Panier;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+
 @Entity
 @Table(name="commande")
 public class Commande {
     Long id;
-    Set<Billet> billets;
+    List<Billet> billets;
     LocalDateTime date;
     Boolean paye;
     Utilisateur utilisateur;
@@ -24,11 +24,15 @@ public class Commande {
     public Commande(Panier panier,Utilisateur utilisateur)
     {   this.utilisateur=utilisateur;
         setBillets(panier.getBillets());
+        for(Billet billet : billets)
+        {billet.setCommande(this);
+
+        }
         paye=Boolean.FALSE;
         date=LocalDateTime.now();
     }
     public Commande() {
-        billets=new HashSet<Billet>();
+        billets=new ArrayList<Billet>();
         paye=Boolean.FALSE;
         date=LocalDateTime.now();
     }
@@ -70,10 +74,10 @@ public class Commande {
     }
 
     @OneToMany(mappedBy = "commande")
-    public Set<Billet> getBillets() {
+    public List<Billet> getBillets() {
         return billets;
     }
-    public void setBillets(Set<Billet> billets) {
+    public void setBillets(List<Billet> billets) {
         this.billets = billets;
     }
 
@@ -94,5 +98,23 @@ public class Commande {
 
     public void setPaye(Boolean paye) {
         this.paye = paye;
+    }
+
+    public boolean payer()
+    {       setPaye(true);
+            return true;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Commande)) return false;
+        Commande commande = (Commande) o;
+        return getId().equals(commande.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getBillets(), getDate(), getPaye(), getUtilisateur());
     }
 }

@@ -3,6 +3,7 @@ package mbourdin.cinema_cours.model;
 import javax.persistence.*;
 import java.time.LocalDate;
 
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -76,5 +77,18 @@ public class NewsLetter {
                 utilisateur.removeNewsletter(this);
             }
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof NewsLetter)) return false;
+        NewsLetter that = (NewsLetter) o;
+        return getId().equals(that.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
     }
 }

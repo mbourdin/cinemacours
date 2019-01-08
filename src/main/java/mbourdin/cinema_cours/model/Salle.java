@@ -2,6 +2,7 @@ package mbourdin.cinema_cours.model;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -44,5 +45,18 @@ public class Salle {
 
     public void setSeances(Set<Seance> seances) {
         this.seances = seances;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Salle)) return false;
+        Salle salle = (Salle) o;
+        return getId() == salle.getId();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
     }
 }
