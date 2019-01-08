@@ -15,7 +15,7 @@
     <h1>liste des seances</h1>
     <div class="row table-bordered table-primary" id="mainContent" th:each="seance : ${seances}">
             <div class="col-sm-1"><span th:text="${seance.id}"></span></div>
-            <div class="col-sm-9"><a   th:href="@{/seance/{Id} (Id=${seance.id})}" th:text="${seance.film.titre}+' '+${seance.debut}"></a></div>
+            <div class="col-sm-9"><a   th:href="@{/panier/commande/{Id} (Id=${seance.id})}" th:text="${seance.film.titre}+' '+${seance.debut}"></a></div>
             <div class="col-sm-1"><a class="btn btn-danger"  th:if="${session.admin!=null}" th:href="@{/seance/delete/{Id} (Id=${seance.id})}">Effacer</a></div>
             <div class="col-sm-1"><a class="btn btn-warning" th:if="${session.admin!=null}" th:href="@{/seance/update/{Id} (Id=${seance.id})}">Editer</a></div>
     </div>
