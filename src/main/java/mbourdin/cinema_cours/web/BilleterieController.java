@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/panier")
@@ -31,12 +32,12 @@ public class BilleterieController {
             {
                 billetDao.save(billet);
 
-               billet.getSeance().getSalle().getId();
+             /*  billet.getSeance().getSalle().getId();
                billet.getSeance().getFilm().getTitre();
-               billet.getSeance().getDebut();
-               System.out.println(billet.toString());
+               billet.getSeance().getDebut();*/
             }
             session.setAttribute("commande",commande);
+            session.setAttribute("panier",new Panier());
         }
 
         return "panier/commande";
@@ -46,6 +47,21 @@ public class BilleterieController {
         m.addAttribute("seance", seanceDao.findById(id).get());
         return "/panier/create";
     }
+    @GetMapping("/enCours")
+    String getCmd(@SessionAttribute Utilisateur user,HttpSession session)
+    {   Commande commande=commandeDao.findCommandeByPayeFalseAndUtilisateur(user);
+        session.setAttribute("commande",commande);
+        for(Billet billet : commande.getBillets())
+        {
+            billetDao.save(billet);
+
+            /*billet.getSeance().getSalle().getId();
+            billet.getSeance().getFilm().getTitre();
+            billet.getSeance().getDebut();*/
+        }
+        return "panier/commande";
+    }
+
 
     @PostMapping("/commande")
     String ajouterACommande(@RequestParam Integer places, @SessionAttribute Panier panier, @RequestParam Long id, HttpSession session) {
