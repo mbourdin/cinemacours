@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 au détail et la mise a jour concernant
  UNIQUEMENT son propre compte*/
 /* Toutes les autres fonctions de ce controlleur sont réservées a l'admin*/
+
 @Controller
 @RequestMapping("/user")
 public class UserController {
@@ -60,6 +62,7 @@ public class UserController {
         m.addAttribute("newuser",newuser);
         return "/user/create";
     }
+
     @PostMapping("/create")
     public String doCreateUser(@ModelAttribute Utilisateur newuser,@RequestParam("password") String password,@SessionAttribute("user") Utilisateur user)
     {   Utilities.setHPW(newuser,password,prefix,suffix,salt);
