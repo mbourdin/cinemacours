@@ -10,7 +10,7 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name="users",schema="public")
+@Table(name="users")
 public class Utilisateur {
     static public final int admin=1;
     static public final int vendeur=2;
