@@ -35,18 +35,21 @@ public class PlayController {
     }
 
     @PostMapping("/create")
-    public String doCreatePlay(@ModelAttribute Play play)
-    {   play.setFilm(filmDao.findById(play.getFilm().getId()).get());
+    public String doCreatePlay(@ModelAttribute Play play,@RequestParam Long film)
+    {   play.setFilm(filmDao.findById(film).get());
         play.setPersonne(personneDao.findById(play.getPersonne().getId()).get());
-        playDao.save(play);
+        play=playDao.save(play);
+        play.getPersonne().addPlay(play);
+        play.getFilm().addPlay(play);
         return "redirect:/play/liste";
     }
     @PostMapping("/filmform")
-    public String addPlayToForm(Model m,@ModelAttribute Film film,@ModelAttribute Play newrole,@RequestParam Long id)
-    {   newrole.setFilm(filmDao.findById(id).get());
-        playDao.save(newrole);
-        film=filmDao.findById(id).get();
-        film.setRoles(playDao.findAllByFilm_IdOrderByNumeroAsc(film.getId()));
+    public String addPlayToForm(Model m,@ModelAttribute Play newrole,@RequestParam Long film_id)
+    {   newrole.setFilm(filmDao.findById(film_id).get());
+        newrole=playDao.save(newrole);
+        Film film=filmDao.findById(film_id).get();
+        newrole.getPersonne().addPlay(newrole);
+        newrole.getFilm().addPlay(newrole);
         m.addAttribute("title","creation film");
         m.addAttribute("personnes",personneDao.findAll());
         m.addAttribute("readonly",Boolean.TRUE);
@@ -56,9 +59,12 @@ public class PlayController {
     }
     @GetMapping("delfromfilm/{id}")
     public String deleteRoleFromFilm(Model m,@PathVariable Long id,@SessionAttribute Boolean admin)
-    {   Film film=filmDao.findById(playDao.findById(id).get().getFilm().getId()).get();
+    {   Play play=playDao.findById(id).get();
+
+        Film film=filmDao.findById(play.getFilm().getId()).get();
+        deleteRole(id,admin);
         film.setRoles(playDao.findAllByFilm_IdOrderByNumeroAsc(film.getId()));
-        this.deleteRole(id,admin);
+
         m.addAttribute("title","creation film");
         m.addAttribute("personnes",personneDao.findAll());
         m.addAttribute("readonly",Boolean.TRUE);
@@ -82,6 +88,9 @@ public class PlayController {
     public String deleteRole(@PathVariable Long id,@SessionAttribute Boolean admin){
 
         if (admin==Boolean.TRUE) {
+            Play play=playDao.findById(id).get();
+            play.getFilm().deletePlay(play);
+            play.getPersonne().deletePlay(play);
             playDao.deleteById(id);
         }
         return "redirect:/play/liste";
