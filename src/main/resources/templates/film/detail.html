@@ -19,6 +19,10 @@
 
                 <td id="mainContent" class="twelve wide">
                     <h1>détail du film</h1>
+                    <h2>séances pour ce film</h2>
+                    <ul th:each="seance : ${film.seances}">
+                        <li th:text="${seance.toString()}"></li>
+                    </ul>
                 <h3 th:text="${film.getTitre()}">détail du film</h3>
 
                 <h3>Realisateur:<a th:href="@{/personne/{Id} (Id=${film.getRealisateur().getId()})}" th:text="${film.realisateur.nom}+' '+${film.realisateur.prenom} ">Bay Michel</a></h3>

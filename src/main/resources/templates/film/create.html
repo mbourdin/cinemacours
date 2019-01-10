@@ -97,7 +97,8 @@
                 <tr><td><input type="submit" value="creer role"/></td></tr>
 
         </table>
-                <input name="id" readonly th:field="${film.id}" type="hidden"/>
+                <input name="film_id" readonly th:value="${film.id}" type="hidden"/>
+                <input name="role_id" readonly th:field="${newrole.id}" type="hidden">
             </form>
         </td></tr></tbody></table>
 
