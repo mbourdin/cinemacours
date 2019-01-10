@@ -5,19 +5,24 @@ import mbourdin.cinema_cours.service.SeanceChamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.time.format.DateTimeFormatter;
+
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
 
 @Entity
 @Table(name="seance")
 public class Seance {
+
     public static final double prixdefaut=9.00;
     private Long id;
     private Film film;
     private Salle salle;
     private LocalDateTime debut;
     private Set<Billet> billets;
+
+
 
     public Seance() {
     }
@@ -84,5 +89,10 @@ public class Seance {
     @Override
     public int hashCode() {
         return Objects.hash(getId());
+    }
+
+    @Override
+    public String toString()
+    {   return debut.format(DateTimeFormatter.ofPattern("EEEE dd MMMM yyyy HH:mm", Locale.FRANCE));
     }
 }
