@@ -7,14 +7,16 @@
     </head>
     <body>
         <header th:replace="basictemplate.html :: header"></header>
-        <div class="row">
-            <div class="col-sm-2"><nav th:replace="navtemplate :: barrenav"></nav></div>
-            <div class="col-sm-10" id="mainContent">
+        <table class="table ui">
 
+            <tbody>
+            <tr>
 
+                <td th:replace="navtemplate :: barrenav"></td>
+                <td class="twelve wide" id="mainContent">
                 <p th:text="${msg.texte}"></p>
-                <br/><a class="btn btn-danger" th:if="${session.admin!=null}" th:href="@{/msg/delete/{Id} (Id=${msg.id})}">Effacer</a>
-        </div>
+                <br/><a class="ui red button" th:if="${session.admin!=null}" th:href="@{/msg/delete/{Id} (Id=${msg.id})}">Effacer</a>
+                </td></tr></tbody></table>
         <footer th:replace="basictemplate :: footer"></footer>
 
     </body>

@@ -5,33 +5,50 @@
 
         <th:block th:fragment="header_css">
             <title th:text="${title}">Title</title>
-            <link href="/webjars/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" th:href="@{/webjars/bootstrap/4.1.3/css/bootstrap.min.css}" type="text/css">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <meta name="mobile-web-app-capable" content="yes">
+            <link rel="stylesheet" href="webjars/Semantic-UI/2.4.1/semantic.min.css"
+                  th:href="@{/webjars/Semantic-UI/2.4.1/semantic.min.css}"/>
             <link href="/CSS/baseStyle.css" rel="stylesheet">
         </th:block>
     </head>
     <body>
         <header th:fragment="header">
 
-            <div class="row" >
-                <div class="col-sm-10"><h1>Les Nanars Sauvages</h1></div>
-                <div class="col-sm-2"><a href="/">page d'accueil</a><br>
+            <table class="ui inverted green table">
+                <tbody>
+                <tr>
+                <td class="twelve wide"><h1>Les Nanars Sauvages</h1></td>
+                <td class="four wide hidden" id="loginarea"><a href="/">page d'accueil</a><br>
 
                     <th:block th:if="${session.user != null}" th:text="${session.user.login}"></th:block>
                     <a th:if="${session.user != null}" th:href="@{/login/logout}"><br>logout</a>
                     <a th:if="${session.user == null}" th:href="@{/login/connection}">se connecter</a><br>
                     <a th:if="${session.user == null}" th:href="@{/login/inscription}">s'inscrire</a>
 
-                </div>
-            </div>
+                </td>
+                </tr>
+                </tbody>
+            </table>
 
 
         </header>
         <section>Contenu de la section</section>
         <footer th:fragment="footer">
             <a href="/contact">nous contacter</a> Mentions legales ...
-            <script src="/webjars/jquery/3.1.1/jquery.js"></script>
-            <script src="/webjars/popper.js/1.14.3/popper.js"></script>
-            <script src="/webjars/bootstrap/4.1.3/js/bootstrap.js"></script>
+            <script src="webjars/jquery/3.3.1-1/jquery.js"
+                    th:src="@{/webjars/jquery/3.3.1-1/jquery.js}"></script>
+
+            <script src="webjars/Semantic-UI/2.4.1/semantic.min.js"
+                    th:src="@{/webjars/Semantic-UI/2.4.1/semantic.min.js}"></script>
+            <script src="webjars/tinymce/4.7.9/tinymce.min.js"
+                    th:src="@{/webjars/tinymce/4.7.9/tinymce.min.js}"></script>
+            <script type="application/javascript">
+                $('.ui.dropdown.item')
+                    .dropdown();
+            </script>
         </footer>
     </body>
 

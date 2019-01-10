@@ -8,9 +8,15 @@
     </head>
     <body>
     <header th:replace="basictemplate :: header"></header>
-    <div class="row">
-        <div class="col-sm-2"><nav th:replace="navtemplate :: barrenav"></nav></div>
-        <div class="col-sm-10" id="mainContent">
+    <table class="table ui">
+
+        <tbody>
+        <tr>
+
+            <td th:replace="navtemplate :: barrenav"></td>
+
+            <td id="mainContent" class="twelve wide">
+
             <h2 th:text="${personne.prenom}+' '+${personne.nom}">nom prénom</h2><br><h2 th:text="'Né le '+${personne.naissance}">date de naissance</h2>
             <img th:src="@{/personne/image/{id}(id=${personne.getId()})}"/>
             <h2>Filmographie</h2>
@@ -23,13 +29,10 @@
                 <li th:each="film : ${personne.realise}"><a th:href="@{/film/{Id} (Id=${film.id})}" th:text="${film.titre}"></a></li>
             </ul>
             <br/>
-            <a class="btn btn-danger" th:if="${session.admin!=null}" th:href="@{/personne/delete/{Id} (Id=${personne.id})}">Effacer</a>
+            <a class="ui red button" th:if="${session.admin!=null}" th:href="@{/personne/delete/{Id} (Id=${personne.id})}">Effacer</a>
             <br/>
-            <a class="btn btn-warning" th:if="${session.admin!=null}" th:href="@{/personne/update/{Id} (Id=${personne.id})}">Editer</a>
-        </div>
-
-
-    </div>
+            <a class="ui yellow button" th:if="${session.admin!=null}" th:href="@{/personne/update/{Id} (Id=${personne.id})}">Editer</a>
+            </td></tr></tbody></table>
         <footer th:replace="basictemplate :: footer"></footer>
     </body>
 </html>

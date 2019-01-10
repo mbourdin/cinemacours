@@ -9,26 +9,28 @@
 <body>
 
 <header class="block" th:replace="basictemplate :: header"></header>
+<table class="table ui">
 
+    <tbody>
+    <tr>
 
-<br>
-<div class="row">
-    <div class="col-sm-2">
-        <nav th:replace="navtemplate :: barrenav"></nav>
-    </div>
-    <div class="col-sm-10" id="mainContent"><h1>Liste des genres</h1>
-        <div class="row table-bordered table-primary" th:each="genre : ${genres}">
-            <div class="col-sm-1"><span th:text="${genre.id}"></span></div>
-            <div class="col-sm-9"><a th:href="@{/film/listParGenre/{Id} (Id=${genre.id})}" th:text="${genre.name}"></a></div>
+        <td th:replace="navtemplate :: barrenav"></td>
 
-            <div class="col-sm-1">
-                <a class="btn btn-danger" th:if="${session.admin!=null}" th:href="@{/genre/delete/{Id} (Id=${genre.id})}">Effacer</a>
-            </div>
-            <div class="col-sm-1">
-                <a class="btn btn-warning" th:if="${session.admin!=null}" th:href="@{/genre/update/{Id} (Id=${genre.id})}">Editer</a></div>
-        </div>
-    </div>
-</div>
+        <td id="mainContent" class="twelve wide">
+<h1>Liste des genres</h1>
+            <table class="ui table">
+        <tr  th:each="genre : ${genres}">
+            <td class="two wide"><span th:text="${genre.id}"></span></td>
+            <td class="ten wide"><a th:href="@{/film/listParGenre/{Id} (Id=${genre.id})}" th:text="${genre.name}"></a></td>
+
+            <td class="two wide">
+                <a class="ui red button" th:if="${session.admin!=null}" th:href="@{/genre/delete/{Id} (Id=${genre.id})}">Effacer</a>
+            </td>
+            <td class="two wide">
+                <a class="ui yellow button" th:if="${session.admin!=null}" th:href="@{/genre/update/{Id} (Id=${genre.id})}">Editer</a></td>
+        </tr>
+            </table>
+        </td></tr></tbody></table>
 <footer th:replace="basictemplate :: footer"></footer>
 </body>
 </html>

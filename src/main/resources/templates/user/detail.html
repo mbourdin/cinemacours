@@ -7,22 +7,41 @@
 </head>
 <body>
 <header th:replace="basictemplate :: header"></header>
-<div class="row">
-    <div class="col-sm-2">
-        <nav th:replace="navtemplate :: barrenav"></nav>
-    </div>
-    <div class="col-sm-10">
+<table class="table ui">
+    <tbody>
+    <tr>
 
-    <div class="row table-bordered table-primary" id="mainContent">
-        <h1>Detail utilisateur:</h1>
-            <div class="col-sm-1"><span th:text="${user.id}"></span></div>
-            <div class="col-sm-9" th:text="${user.toString()}"></div>
-            <div class="col-sm-1"><a class="btn btn-danger"  th:if="${session.admin!=null}" th:href="@{/user/delete/{Id} (Id=${user.id})}">Effacer</a></div>
-            <div class="col-sm-1"><a class="btn btn-warning" th:if="${session.admin!=null}" th:href="@{/user/update/{Id} (Id=${user.id})}">Editer</a></div>
-        <a class=centered th:href="@{/review/listeParUtilisateur/{Id} (Id=${user.id})}">Liste des commentaires</a>
-    </div>
-    </div>
-</div>
+
+            <td th:replace="navtemplate :: barrenav"></td>
+        <td id="mainContent" class="twelve column wide"><h1>Detail utilisateur:</h1>
+            <table class="table ui">
+                <thead>
+                <tr>
+                <th class="two wide">id</th>
+                <th class="ten wide">detail</th>
+
+                <th:block th:if="${session.admin!=null}">
+                    <th class="two wide">effacer</th>
+                    <th class="two wide">editer</th>
+                </th:block>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                <td><span th:text="${user.id}"></span></td>
+                <td th:text="${user.toString()}"></td>
+                <td><a class="ui  red button" th:if="${session.admin!=null}"
+                       th:href="@{/user/delete/{Id} (Id=${user.id})}">Effacer</a></td>
+                <td><a class="ui  yellow button" th:if="${session.admin!=null}"
+                       th:href="@{/user/update/{Id} (Id=${user.id})}">Editer</a></td>
+                </tr>
+                </tbody>
+            </table>
+            <a class=centered th:href="@{/review/listeParUtilisateur/{Id} (Id=${user.id})}">Liste des commentaires</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
 <footer th:replace="basictemplate :: footer"></footer>
 </body>
 </html>

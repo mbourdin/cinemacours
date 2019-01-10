@@ -7,20 +7,37 @@
 </head>
 <body>
 <header th:replace="basictemplate :: header"></header>
-<div class="row">
-    <div class="col-sm-2">
-        <nav th:replace="navtemplate :: barrenav"></nav>
-    </div>
-    <div class="col-sm-10">
-    <h1>liste des personnes</h1>
-    <div class="row table-bordered table-primary" id="mainContent" th:each="utilisateur : ${listeUsers}">
-            <div class="col-sm-1"><span th:text="${utilisateur.id}"></span></div>
-            <div class="col-sm-9"><a th:text="${utilisateur.toString()}" th:href="@{/user/detail/{Id} (Id=${utilisateur.id})}"></a></div>
-            <div class="col-sm-1"><a class="btn btn-danger"  th:if="${session.admin!=null}" th:href="@{/user/delete/{Id} (Id=${utilisateur.id})}">Effacer</a></div>
-            <div class="col-sm-1"><a class="btn btn-warning" th:if="${session.admin!=null}" th:href="@{/user/update/{Id} (Id=${utilisateur.id})}">Editer</a></div>
-    </div>
-    </div>
-</div>
+<table class="table ui">
+
+    <tbody>
+    <tr>
+
+            <td th:replace="navtemplate :: barrenav"></td>
+        <td id="mainContent" class="twelve wide">
+            <h1>liste des utilisateurs</h1>
+            <table class="table ui">
+                <thead>
+                <tr class="two wide"></tr>
+                <tr class="ten wide"></tr>
+                <tr class="two wide"></tr>
+                <tr class="two wide"></tr>
+                </thead>
+                <tbody>
+                <tr th:each="utilisateur : ${listeUsers}">
+                    <td><span th:text="${utilisateur.id}"></span></td>
+                    <td><a th:text="${utilisateur.toString()}"
+                           th:href="@{/user/detail/{Id} (Id=${utilisateur.id})}"></a></td>
+                    <td><a class="ui  red button" th:if="${session.admin!=null}"
+                           th:href="@{/user/delete/{Id} (Id=${utilisateur.id})}">Effacer</a></td>
+                    <td><a class="ui  yellow button" th:if="${session.admin!=null}"
+                           th:href="@{/user/update/{Id} (Id=${utilisateur.id})}">Editer</a></td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+    </tbody>
+</table>
 <footer th:replace="basictemplate :: footer"></footer>
 </body>
 </html>

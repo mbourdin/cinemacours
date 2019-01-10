@@ -1,22 +1,24 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
     <head>
-        <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
         <th:block th:replace="basictemplate :: header_css">
         </th:block>
     </head>
-
+<body>
     <header  class="block" th:replace="basictemplate :: header"></header>
+    <table class="table ui">
+
+        <tbody>
+        <tr>
+
+            <td th:replace="navtemplate :: barrenav"></td>
+
+            <td id="mainContent" class="twelve wide">
+    <h2>dissocier un genre d'film</h2>
 
 
-        <div class="row">
-            <div class="col-sm-2">
-                <nav th:replace="navtemplate :: barrenav"></nav>
-            </div>
-            <div class="col-sm-10" id="mainContent"><h2>dissocier un genre d'film</h2>
-
-
-                        <form action="/genre/dissocier " method="post">
+                        <form action="/genre/dissocier" method="post">
 
                             <table>
                            <tr><td><label>genre</label></td><td><label>film</label></td></tr>
@@ -25,24 +27,21 @@
                                 <datalist id="genres">
                                     <option th:each="genre : ${genres}" th:value="${genre.id}" th:label="${genre.name}"></option>
                                 </datalist>
-                                </input>
+
 
                             </td>
                             <td><input list="films" name="filmId" type="text">
                                 <datalist id="films">
                                     <option th:each="film : ${films}" th:value="${film.id}" th:label="${film.titre}"></option>
                                 </datalist>
-                                </input>
+
                             </td>
                         </tr>
                         <tr><td><input type="submit" value="Envoyer"/></td></tr>
                             </table>
                         </form>
 
-
-            </div>
-        </div>
-
+            </td></tr></tbody></table>
 
     <footer th:replace="basictemplate :: footer"></footer>
 </body></html>

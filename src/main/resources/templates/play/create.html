@@ -10,51 +10,54 @@
 <header class="block" th:replace="basictemplate :: header"></header>
 
 
-<br>
-<div class="row">
-    <div class="col-sm-2">
-        <nav th:replace="navtemplate :: barrenav"></nav>
-    </div>
-    <div class="col-sm-10" id="mainContent">
-        creer un role
+<table class="table ui">
+
+    <tbody>
+    <tr>
+
+        <td th:replace="navtemplate :: barrenav"></td>
+
+        <td id="mainContent" class="twelve wide">
+            <h2>creer un role</h2>
         <form action="/play/create" method="post">
             <input type="hidden" th:field="${play.id}">
-            <table>
+            <table class="ui table">
+                <thead>
                 <tr>
-                    <td>
+                    <th>
                         <label>film</label>
-                    </td>
+                    </th>
 
-                    <td>
+                    <th>
                         <label>acteur</label>
-                    </td>
-                    <td><label>personnage</label></td>
-                    <td><label>rang</label></td>
+                    </th>
+                    <th><label>personnage</label></th>
+                    <th><label>rang</label></th>
                 </tr>
+                </thead>
                 <tr>
                     <td><input list="films" id="film" name="film" th:field="${play.film.id}" th:readonly="${readonly}">
                         <datalist id="films">
                             <option th:each="film : ${films}" th:value="${film.id}" th:label="${film.titre}"></option>
                         </datalist>
-                        </input>
+
                     </td>
 
                     <td><input list="acteurs" id="acteur" name="acteur" th:field="${play.personne.id}" th:readonly="${readonly}">
                         <datalist id="acteurs">
                             <option th:each="acteur : ${acteurs}" th:value="${acteur.id}" th:label="${acteur.prenom}+' '+${acteur.nom}"></option>
                         </datalist>
-                        </input>
+
                     </td>
-                    <td><input type="text" name="name" th:field="${play.nom}"></input></td>
-                    <td><input type="text" name="rang" th:field="${play.numero}"></input></td>
+                    <td><input type="text" name="name" th:field="${play.nom}"></td>
+                    <td><input type="text" name="rang" th:field="${play.numero}"></td>
                 </tr>
                 <tr><td><input type="submit" value="Envoyer"/></td></tr>
 
             </table>
         </form>
 
-    </div>
-</div>
+        </td></tr></tbody></table>
 
 <footer th:replace="basictemplate :: footer"></footer>
 </body>

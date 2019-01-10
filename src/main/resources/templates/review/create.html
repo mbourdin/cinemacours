@@ -9,13 +9,14 @@
 
 <header class="block" th:replace="basictemplate :: header"></header>
 
+<table class="table ui">
 
-<br>
-<div class="row">
-    <div class="col-sm-2">
-        <nav th:replace="navtemplate :: barrenav"></nav>
-    </div>
-    <div class="col-sm-10" id="mainContent">
+    <tbody>
+    <tr>
+
+        <td th:replace="navtemplate :: barrenav"></td>
+
+        <td id="mainContent" class="twelve wide">
 
         <form action="/review/create" method="post">
             <input type="hidden" th:field="${review.id}"/>
@@ -26,8 +27,7 @@
             <input type="submit" value="envoyer"/>
         </form>
 
-    </div>
-</div>
+        </td></tr></tbody></table>
 
 <footer th:replace="basictemplate :: footer"></footer>
 </body>

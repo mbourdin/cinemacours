@@ -9,73 +9,73 @@
 
 <header class="block" th:replace="basictemplate :: header"></header>
 
+<table class="table ui">
 
-<br>
-<div class="row">
-    <div class="col-sm-2">
-        <nav th:replace="navtemplate :: barrenav"></nav>
-    </div>
-    <div class="col-sm-10" id="mainContent">
+    <tbody>
+    <tr>
 
-        <form action="/film/create" method="post" enctype="multipart/form-data">
+        <td th:replace="navtemplate :: barrenav"></td>
 
-            <table>
+        <td class="twelve wide" id="mainContent">
+
+        <form action="/film/create" enctype="multipart/form-data" method="post">
+
+            <table class="ui table">
                 <tr>
                     <td>
                         <label>id</label>
                     </td>
-                    <td><input name="id" type="text" th:field="${film.id}" readonly/>
+                    <td><input name="id" readonly th:field="${film.id}" type="text"/>
                 </tr>
                 <tr>
                     <td>
                         <label>titre</label>
                     </td>
-                    <td><input name="titre" type="text" th:field="${film.titre}"/>
+                    <td><input name="titre" th:field="${film.titre}" type="text"/>
                 </tr>
 
                 <tr>
                     <td>
                         <label>note</label>
                     </td>
-                    <td><input name="note" type="text" th:field="${film.note}"/>
+                    <td><input name="note" th:field="${film.note}" type="text"/>
                 </tr>
                 <tr>
                     <td>
                         <label>realisateur</label>
                     </td>
-                    <td><input list="reals" id="choixreal" name="realisateur" th:field="${film.realisateur}">
+                    <td><input id="choixreal" list="reals" name="realisateur" th:field="${film.realisateur}">
                         <datalist id="reals">
-                        <option th:each="personne : ${personnes}" th:value="${personne.id}" th:label="${personne.nom}"></option>
+                        <option th:each="personne : ${personnes}" th:label="${personne.nom}" th:value="${personne.id}"></option>
                         </datalist>
-                        </input>
+
                     </td>
                 </tr>
-                <tr><td><input type="file" name="image"></td></tr>
+                <tr><td><input name="image" type="file"></td></tr>
                 <tr><td><input type="submit" value="Envoyer"/></td></tr>
 
             </table>
             <label>resume</label><br><textarea name="resume" th:field="${film.resume}"></textarea>
         </form>
-        <table>
-        <div  th:each="role : ${film.roles}">
-                <tr>
+            <form action="/play/filmform" method="post">
+        <table class="ui table">
+        <tr  th:each="role : ${film.roles}">
+
                     <td>
                 <a th:href="@{/personne/{Id} (Id=${role.personne.id})}" th:text="${role.personne.prenom}+' '+${role.personne.nom}"></a>
                     </td>
+
+                <td th:text="${role.nom}"></td>
+                <td th:text="${role.numero}"></td>
+
                     <td>
-                <th:block th:text="${role.nom}"></th:block></td>
-                    </td>
-                    <td>
-                        <th:block th:text="${role.numero}"></th:block>
-                    </td>
-                    <td>
-                    <a class="btn btn-danger" th:href="@{/play/delfromfilm/{Id} (Id=${role.id})}">effacer</a>
-                </tr>
-        </div>
+                        <a class="ui red button" th:href="@{/play/delfromfilm/{Id} (Id=${role.id})}">effacer</a></td>
+
+        </tr>
         <tr>
         <td></td><td><h2>creer un role</h2></td>
         </tr>
-        <form action="/play/filmform" method="post" th:if="${newrole}">
+
 
                 <tr>
 
@@ -86,23 +86,20 @@
                     <td><label>rang</label></td>
                 </tr>
                 <tr>
-                    <td><input list="acteurs" id="acteur" name="acteur" th:field="${newrole.personne.id}" >
+                    <td><input id="acteur" list="acteurs" name="acteur" th:field="${newrole.personne.id}" >
                         <datalist id="acteurs">
-                            <option th:each="acteur : ${personnes}" th:value="${acteur.id}" th:label="${acteur.prenom}+' '+${acteur.nom}"></option>
+                            <option th:each="acteur : ${personnes}" th:label="${acteur.prenom}+' '+${acteur.nom}" th:value="${acteur.id}"></option>
                         </datalist>
                     </td>
-                    <td><input type="text" name="name" th:field="${newrole.nom}"/></td>
-                    <td><input type="text" name="rang" th:field="${newrole.numero}"/></td>
+                    <td><input name="name" th:field="${newrole.nom}" type="text"/></td>
+                    <td><input name="rang" th:field="${newrole.numero}" type="text"/></td>
                 </tr>
                 <tr><td><input type="submit" value="creer role"/></td></tr>
-                <input name="id" type="hidden" th:field="${film.id}" readonly/>
 
-
-            </table>
-        </form>
-
-    </div>
-</div>
+        </table>
+                <input name="id" readonly th:field="${film.id}" type="hidden"/>
+            </form>
+        </td></tr></tbody></table>
 
 <footer th:replace="basictemplate :: footer"></footer>
 </body>

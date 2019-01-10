@@ -7,21 +7,25 @@
 </head>
 <body>
 <header th:replace="basictemplate :: header"></header>
-<div class="row">
-    <div class="col-sm-2">
-        <nav th:replace="navtemplate :: barrenav"></nav>
-    </div>
-    <div class="col-sm-10">
+<table class="table ui">
+
+    <tbody>
+    <tr>
+
+        <td th:replace="navtemplate :: barrenav"></td>
+
+        <td id="mainContent" class="twelve wide">
     <h1>liste des newsletters</h1>
-    <div class="row table-bordered table-primary" id="mainContent" th:each="news : ${newslist}">
-            <div class="col-sm-1"><span th:text="${news.id}"></span></div>
-            <div class="col-sm-8"><span th:text="${news.date.toString()}"></span></div>
-            <div class="col-sm-1"><a class="btn btn-primary"  th:if="${session.admin!=null}" th:href="@{/news/send/{Id} (Id=${news.id})}">Envoyer</a></div>
-            <div class="col-sm-1"><a class="btn btn-danger"  th:if="${session.admin!=null}" th:href="@{/news/delete/{Id} (Id=${news.id})}">Effacer</a></div>
-            <div class="col-sm-1"><a class="btn btn-warning" th:if="${session.admin!=null}" th:href="@{/news/update/{Id} (Id=${news.id})}">Editer</a></div>
-    </div>
-    </div>
-</div>
+            <table class="ui table">
+    <tr th:each="news : ${newslist}">
+            <td class="one wide"><span th:text="${news.id}"></span></td>
+            <td class="eleven wide"><span th:text="${news.date.toString()}"></span></td>
+            <td class="one wide"><a class="ui green button"  th:if="${session.admin!=null}" th:href="@{/news/send/{Id} (Id=${news.id})}">Envoyer aux abonnés</a></td>
+            <td class="one wide"><a class="ui red button"  th:if="${session.admin!=null}" th:href="@{/news/delete/{Id} (Id=${news.id})}">Effacer</a></td>
+            <td class="one wide"><a class="ui yellow button" th:if="${session.admin!=null}" th:href="@{/news/update/{Id} (Id=${news.id})}">Editer</a></td>
+    </tr>
+            </table>
+        </td></tr></tbody></table>
 <footer th:replace="basictemplate :: footer"></footer>
 </body>
 </html>

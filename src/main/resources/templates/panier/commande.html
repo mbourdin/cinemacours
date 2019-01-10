@@ -7,21 +7,22 @@
 </head>
 <body>
 <header th:replace="basictemplate :: header"></header>
-<div class="row">
-    <div class="col-sm-2">
-        <nav th:replace="navtemplate :: barrenav"></nav>
-    </div>
-    <div class="col-sm-10">
 
-    <div id="mainContent">
+<table class="table ui">
+
+    <tbody>
+    <tr>
+
+        <td th:replace="navtemplate :: barrenav"></td>
+
+        <td id="mainContent" class="twelve wide">
         <h1>Detail commande:</h1>
             <ul th:each="billet : ${session.commande.billets}">
                 <li th:text="${billet.toString()}"</li>
             </ul>
         <h2 th:text="'prix total'+${session.commande.prix()}"></h2>
 
-    </div>
-    </div>
+        </td></tr></tbody></table>
 </div>
 <footer th:replace="basictemplate :: footer"></footer>
 </body>

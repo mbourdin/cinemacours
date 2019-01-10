@@ -7,22 +7,23 @@
 </head>
 <body>
 <header th:replace="basictemplate :: header"></header>
-<div class="row">
-    <div class="col-sm-2">
-        <nav th:replace="navtemplate :: barrenav"></nav>
-    </div>
-    <div class="col-sm-10" id="mainContent">
+<table class="table ui">
 
+    <tbody>
+    <tr>
+
+
+        <td th:replace="navtemplate :: barrenav"></td>
+        <td id="mainContent" class="twelve wide">
         <ul class="sanspuce">
             <li th:each="msg : ${msgs}">
                 <a th:href="@{/msg/detail/{Id} (Id=${msg.id})}"
                        th:text="${'message de : '+msg.email+' du '+msg.date}"></a>
-                <br/><a class="btn btn-danger" th:href="@{/msg/delete/{Id} (Id=${msg.id})}"
+                <br><a class="ui red button" th:href="@{/msg/delete/{Id} (Id=${msg.id})}"
                         th:if="${session.admin!=null}">Effacer</a>
             </li>
         </ul>
-    </div>
-</div>
+        </td></tr></tbody></table>
 <footer th:replace="basictemplate :: footer"></footer>
 </body>
 </html>

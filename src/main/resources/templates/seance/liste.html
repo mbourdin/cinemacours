@@ -7,24 +7,26 @@
 </head>
 <body>
 <header th:replace="basictemplate :: header"></header>
-<div class="row">
-    <div class="col-sm-2">
-        <nav th:replace="navtemplate :: barrenav"></nav>
-    </div>
-    <div class="col-sm-10">
+<table class="table ui">
+
+    <tbody>
+    <tr>
+            <td th:replace="navtemplate :: barrenav"></td>
+        <td id="mainContent" class="twelve wide">
     <h1>liste des seances</h1>
-    <div class="row table-bordered table-primary" id="mainContent" th:each="seance : ${seances}">
-            <div class="col-sm-1"><span th:text="${seance.id}"></span></div>
-            <div class="col-sm-9"><a   th:href="@{/panier/commande/{Id} (Id=${seance.id})}" th:text="${seance.film.titre}+' '+${seance.debut}"></a></div>
-            <div class="col-sm-1"><a class="btn btn-danger"  th:if="${session.admin!=null}" th:href="@{/seance/delete/{Id} (Id=${seance.id})}">Effacer</a></div>
-            <div class="col-sm-1"><a class="btn btn-warning" th:if="${session.admin!=null}" th:href="@{/seance/update/{Id} (Id=${seance.id})}">Editer</a></div>
-    </div>
+            <table class="ui table">
+    <tr  id="mainContent" th:each="seance : ${seances}">
+            <td class="two wide"><span th:text="${seance.id}"></span></td>
+            <td class="ten wide"><a   th:href="@{/panier/commande/{Id} (Id=${seance.id})}" th:text="${seance.film.titre}+' '+${seance.debut}"></a></td>
+            <td class="two wide"><a class="ui red button"  th:if="${session.admin!=null}" th:href="@{/seance/delete/{Id} (Id=${seance.id})}">Effacer</a></td>
+            <td class="two wide"><a class="ui yellow button" th:if="${session.admin!=null}" th:href="@{/seance/update/{Id} (Id=${seance.id})}">Editer</a></td>
+    </tr>
+                </table>
         <form action="/seance/create" method="get">
             <label>Combien de seances voulez vous creer?</label>
             <input type="text" name="n"/><input type="submit" value="cree des seances">
         </form>
-    </div>
-</div>
+        </td></tr></tbody></table>
 <footer th:replace="basictemplate :: footer"></footer>
 </body>
 </html>

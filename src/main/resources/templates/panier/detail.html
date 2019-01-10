@@ -7,21 +7,22 @@
 </head>
 <body>
 <header th:replace="basictemplate :: header"></header>
-<div class="row">
-    <div class="col-sm-2">
-        <nav th:replace="navtemplate :: barrenav"></nav>
-    </div>
-    <div class="col-sm-10">
 
-    <div id="mainContent">
+<table class="table ui">
+
+    <tbody>
+    <tr>
+
+        <td th:replace="navtemplate :: barrenav"></td>
+
+        <td id="mainContent" class="twelve wide">
         <h1>Detail panier:</h1>
             <ul th:each="string : ${strings}">
-                <li th:text="${string}"</li>
+                <li th:text="${string}"></li>
             </ul>
-        <a class="btn btn-warning" href="/panier/payer">payer</a>
-    </div>
-    </div>
-</div>
+        <a class="ui green button" href="/panier/payer">payer</a>
+        </td></tr></tbody></table>
+
 <footer th:replace="basictemplate :: footer"></footer>
 </body>
 </html>

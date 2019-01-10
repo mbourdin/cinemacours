@@ -10,27 +10,33 @@
 
 <header class="block" th:replace="basictemplate :: header"></header>
 
+<table class="table ui">
 
-<br>
-<div class="row">
-    <div class="col-sm-2">
-        <nav th:replace="navtemplate :: barrenav"></nav>
-    </div>
-    <div class="col-sm-10" id="mainContent"><h1>Liste des films</h1>
+    <tbody>
+    <tr>
+
+        <td th:replace="navtemplate :: barrenav"></td>
+
+        <td class="twelve wide" id="mainContent">
+
+            <form action="/film/create" enctype="multipart/form-data" method="post">
+<h1>Liste des films</h1>
+
             <h2 th:if="${choix}" th:text="${choix}"></h2>
-        <div class="row table-bordered table-primary" th:each="film : ${listefilms}">
-            <div class="col-sm-1"><span th:text="${film.id}"></span></div>
-            <div class="col-sm-9"><a th:href="@{/film/{Id} (Id=${film.id})}"
-                                      th:text="${film.titre}+' '+${film.note}"></a></div>
+                <table class="ui table">
+        <tr  th:each="film : ${listefilms}">
+            <td class="two wide" th:text="${film.id}"></td>
+            <td class="ten wide"><a th:href="@{/film/{Id} (Id=${film.id})}"
+                                      th:text="${film.titre}+' '+${film.note}"></a></td>
 
-            <div class="col-sm-1">
-                <a class="btn btn-danger" th:if="${session.admin!=null}" th:href="@{/film/delete/{Id} (Id=${film.id})}">Effacer</a>
-            </div>
-            <div class="col-sm-1">
-                <a class="btn btn-warning" th:if="${session.admin!=null}" th:href="@{/film/update/{Id} (Id=${film.id})}">Editer</a></div>
-        </div>
-    </div>
-</div>
+            <td class="two wide">
+                <a class="ui red button" th:if="${session.admin!=null}" th:href="@{/film/delete/{Id} (Id=${film.id})}">Effacer</a>
+            </td>
+            <td class="two wide">
+                <a class="ui yellow button" th:if="${session.admin!=null}" th:href="@{/film/update/{Id} (Id=${film.id})}">Editer</a></td>
+        </tr>
+                </table>
+            </form></td></tr></tbody></table>
 <footer th:replace="basictemplate :: footer"></footer>
 </body>
 </html>

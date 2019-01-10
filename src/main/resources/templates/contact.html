@@ -1,32 +1,38 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <html lang="en" xmlns:th="http://www.thymeleaf.org">
-        <th:block th:replace="basictemplate :: header_css">
-        </th:block>
+<head>
+
+    <th:block th:replace="basictemplate :: header_css">
+    </th:block>
 
     </head>
+<body>
+    <header class="block" th:replace="basictemplate :: header"></header>
 
-    <header  class="block" th:replace="basictemplate :: header"></header>
+    <table class="table ui">
 
-        <div class="row">
-            <div class="col-sm-2"><nav th:replace="navtemplate :: barrenav"></nav></div>
-            <div class="col-sm-10" id="mainContent">
+        <tbody>
+        <tr>
+
+
+                <td th:replace="navtemplate :: barrenav"></td>
+
+            <td id="mainContent" class="twelve column wide">
                 <h2>Saisissez votre message</h2>
-                <section>
-                    <form action="sendMsgToAdmin" method="post" >
-                        <table>
-                            <tr>
-                                <td><label>email *</label></td>
-                                <td th:if="${session.user}"><input name="email" type="text" th:value="${session.user.email}" readonly></td>
-                                <td th:unless="${session.user}"><input name="email" type="text" ></td>
-                        </tr>
-                        </table>
-                       <label for="msg">Message</label>
-                        <textarea id="msg" name="texte"></textarea><input type="submit" value="Envoyer" />
-                    </form>
-                </section>
-            </div>
-        </div>
+                <form action="sendMsgToAdmin" method="post">
+
+            <label>email *</label>
+            <input th:if="${session.user}" class="fullwidth" name="email" readonly th:value="${session.user.email}"
+                                               type="text">
+            <input th:unless="${session.user}" class="fullwidth" name="email" type="text">
+
+            <label for="msg">Message</label>
+            <textarea class="fullwidth" id="msg" name="texte"></textarea>
+                    <br>
+            <input type="submit" value="Envoyer"/>
+            </form>
+            </td></tr>
+        </tbody>
+    </table>
     <footer th:replace="basictemplate :: footer"></footer>
-</body></html>
+    </body></html>

@@ -10,30 +10,31 @@
 <header class="block" th:replace="basictemplate :: header"></header>
 
 
-<br>
-<div class="row">
-    <div class="col-sm-2">
-        <nav th:replace="navtemplate :: barrenav"></nav>
-    </div>
-    <div class="col-sm-10" id="mainContent">
+<table class="table ui">
+
+    <tbody>
+    <tr>
+            <td th:replace="navtemplate :: barrenav"></td>
+        <td id="mainContent" class="twelve wide">
 
         <form action="/seance/create" method="post" th:object="${seanceList}">
             <fieldset>
-            <table>
+            <table class="ui table">
+                <thead>
                 <tr>
-                    <td>
+                    <th>
                         <label>salle</label>
-                    </td>
-                    <td>
+                    </th>
+                    <th>
                         <label>debut YYYY-MM-DDTHH:mm</label>
-                    </td>
-                    <td>
+                    </th>
+                    <th>
                         <label>film</label>
-                    </td>
+                    </th>
 
 
                 </tr>
-
+                </thead>
                 <tr th:each="champ ,itemStat : *{champs}">
                     <input type="hidden" th:field="*{champs[__${itemStat.index}__].seanceId}">
                     <td><input type=text th:field="*{champs[__${itemStat.index}__].salleId}"  /></td>
@@ -48,8 +49,7 @@
             </fieldset>
         </form>
 
-    </div>
-</div>
+        </td></tr></tbody></table>
 
 <footer th:replace="basictemplate :: footer"></footer>
 </body>
