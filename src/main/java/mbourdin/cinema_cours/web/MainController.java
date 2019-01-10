@@ -16,9 +16,12 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Locale;
 
 @Controller
 public class MainController {
+
+
     @Autowired
     PersonneDao daoPersonne;
 
