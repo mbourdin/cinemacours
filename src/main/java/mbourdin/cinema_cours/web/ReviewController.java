@@ -54,8 +54,8 @@ public class ReviewController {
         return "review/create";
     }
     @PostMapping("/create")
-    public String creer(@ModelAttribute Review review,@SessionAttribute Utilisateur utilisateur){
-        if (review.getUtilisateur().equals(utilisateur)||utilisateur.getType()==Utilisateur.admin) {
+    public String creer(@ModelAttribute Review review,@SessionAttribute Utilisateur user){
+        if (review.getUtilisateur().equals(user)||user.getType()==Utilisateur.admin) {
             reviewDao.save(review);
         }
         return "redirect:/review/liste";
