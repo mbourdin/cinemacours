@@ -1,9 +1,7 @@
 package mbourdin.cinema_cours.service;
 
-import mbourdin.cinema_cours.dao.UserDao;
-import mbourdin.cinema_cours.model.Utilisateur;
 
-public class Email {
+public class Email{
     public static final String recoveryEmailTexte="Vous avez demandé la recupération de votre mot de passe sur le site Les Nanars Sauvages" +
             "\n si vous n'êtes pas à l'origine de cette demande veuillez ignorer ce message"+
             "\n pour vous connecter copiez-collez ce texte dans le champ de connexion à usage unique sur la page de connection:\n";
