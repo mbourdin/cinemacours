@@ -23,6 +23,13 @@ public class BilleterieController {
     SeanceDao seanceDao;
     @Autowired
     CommandeDao commandeDao;
+
+    @GetMapping("/annuler")
+    String supprimerCmd(@SessionAttribute Utilisateur user)
+    {   Commande commande=commandeDao.findCommandeByPayeFalseAndUtilisateur(user);
+        commandeDao.delete(commande);
+        return "redirect:/panier/detail";
+    }
     @GetMapping("/payer")
     String payer(Model m,HttpSession session,@SessionAttribute Panier panier, @SessionAttribute Utilisateur user,@SessionAttribute Commande commande)
     {   if(commande.getId()==null)
@@ -67,9 +74,9 @@ public class BilleterieController {
     String ajouterACommande(@RequestParam Integer places, @SessionAttribute Panier panier, @RequestParam Long id, HttpSession session) {
         // Les appels suivants sont nécessaires pour initialiser completement l'objet panier
         Seance seance=seanceDao.findById(id).get();
-        seance.getDebut();
-        Film film=seance.getFilm();
-        film.getTitre();
+        //seance.getDebut();
+        //Film film=seance.getFilm();
+        //film.getTitre();
 
         for (int i = 0; i < places; i++) {
             Billet billet = new Billet();
