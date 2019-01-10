@@ -7,18 +7,22 @@ import mbourdin.cinema_cours.model.Seance;
 import mbourdin.cinema_cours.service.SeanceChamp;
 import mbourdin.cinema_cours.service.SeanceList;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 @Controller
 @RequestMapping("/seance")
 public class SeanceController {
+    public static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
     @Autowired
     SeanceDao seanceDao;
     @Autowired
@@ -38,11 +42,13 @@ public class SeanceController {
     {
         List<Seance> seances=seanceDao.getAllByDebutIsGreaterThanEqualAndDebutIsLessThanEqual(LocalDateTime.now(),LocalDateTime.now().plusDays(7));
         m.addAttribute("seances",seances);
+        m.addAttribute("formatter",formatter);
         return "seance/liste";
     }
     @GetMapping("/all")
     public String toutesLesSeances(Model m)
     {   m.addAttribute("seances",seanceDao.findAll());
+        m.addAttribute("formatter",formatter);
         return "seance/liste";
     }
     @GetMapping("/combien")
@@ -67,7 +73,7 @@ public class SeanceController {
                 {seance=new Seance();}
                 seance.setFilm(filmDao.findById(champs.getFilmId()).get());
                 seance.setSalle(salleDao.findById(champs.getSalleId()).get());
-                seance.setDebut(LocalDateTime.parse(champs.getDebut()));
+                seance.setDebut(LocalDateTime.parse(champs.getDebut(),formatter));
 
 
                 //TODO assurer l'absence de collision entre seances, niveau applicatif ou niveau  BDD?
