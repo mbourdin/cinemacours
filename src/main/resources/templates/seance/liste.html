@@ -11,22 +11,28 @@
 
     <tbody>
     <tr>
-            <td th:replace="navtemplate :: barrenav"></td>
+        <td th:replace="navtemplate :: barrenav"></td>
         <td id="mainContent" class="twelve wide">
-    <h1>liste des seances</h1>
+            <h1>liste des seances</h1>
             <table class="ui table">
-    <tr  id="mainContent" th:each="seance : ${seances}">
-            <td class="two wide"><span th:text="${seance.id}"></span></td>
-            <td class="ten wide"><a   th:href="@{/panier/commande/{Id} (Id=${seance.id})}" th:text="${seance.film.titre}+' '+${seance.debut}"></a></td>
-            <td class="two wide"><a class="ui red button"  th:if="${session.admin!=null}" th:href="@{/seance/delete/{Id} (Id=${seance.id})}">Effacer</a></td>
-            <td class="two wide"><a class="ui yellow button" th:if="${session.admin!=null}" th:href="@{/seance/update/{Id} (Id=${seance.id})}">Editer</a></td>
+                <tr th:each="seance : ${seances}">
+                    <td class="four wide" th:text="${seance.id}+' '+${seance.debut.format(formatter)}"></td>
+                    <td class="six wide"><a th:href="@{/film/{Id} (Id=${seance.film.id})}" th:text="${seance.film.titre}"></a></td>
+                    <td class="two wide"><a class="ui green button"
+                                            th:href="@{/panier/commande/{Id} (Id=${seance.id})}">commander</a></td>
+                    <th:block th:if="${session.admin!=null}">
+                    <td class="two wide"><a class="ui red button"
+                                            th:href="@{/seance/delete/{Id} (Id=${seance.id})}">Effacer</a></td>
+                    <td class="two wide"><a class="ui yellow button"
+                                            th:href="@{/seance/update/{Id} (Id=${seance.id})}">Editer</a></td>
+                    </th:block>
+                </tr>
+            </table>
+            <a th:if="${session.admin!=null}" href="/seance/create" method="get">creer séances</a>
+        </td>
     </tr>
-                </table>
-        <form action="/seance/create" method="get">
-            <label>Combien de seances voulez vous creer?</label>
-            <input type="text" name="n"/><input type="submit" value="cree des seances">
-        </form>
-        </td></tr></tbody></table>
+    </tbody>
+</table>
 <footer th:replace="basictemplate :: footer"></footer>
 </body>
 </html>
