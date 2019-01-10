@@ -1,6 +1,5 @@
 package mbourdin.cinema_cours.service;
 
-
 public class Email{
     public static final String recoveryEmailTexte="Vous avez demandé la recupération de votre mot de passe sur le site Les Nanars Sauvages" +
             "\n si vous n'êtes pas à l'origine de cette demande veuillez ignorer ce message"+
