@@ -1,5 +1,5 @@
 body
-{	background-color: rgb(150,150,150);
+{	background-color: rgb(80,80,80);
     font-size:100%;
     font-family:  Arial, Helvetica, sans-serif;
 }
@@ -69,8 +69,8 @@ textarea
 
 #mainContent{
     text-align: center;
-    background: lightskyblue;
-    height: 280px;
+    background: blue;
+
 }
 #loginarea
 {    text-align: center;
@@ -78,10 +78,11 @@ textarea
 }
 #navbararea
 {   text-align: center;
-    background: darkblue;
+    background: #191919;
     position: relative;
-
+    height: 280px;
 }
+
 #navbarre
 {  position: absolute;
     top: 0;
