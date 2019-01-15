@@ -10,4 +10,5 @@ public interface GenreDao extends CrudRepository<Genre,Long> {
     @Override
     Set<Genre> findAll();
     List<Genre> findAllByOrderByNameAsc();
+    Genre findByName(String name);
 }
