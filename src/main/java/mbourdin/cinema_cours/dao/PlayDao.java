@@ -9,4 +9,6 @@ import java.util.List;
 
 public interface PlayDao extends CrudRepository<Play, Long> {
           List<Play> findAllByFilm_IdOrderByNumeroAsc(Long filmId);
+          @Override
+          List<Play> findAll();
      }
