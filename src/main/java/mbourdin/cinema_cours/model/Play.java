@@ -1,5 +1,9 @@
 package mbourdin.cinema_cours.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -108,5 +112,11 @@ public class Play  implements Comparable<Play> {
     public int hashCode() {
         return Objects.hash(getId());
     }
-
+    public void setAll(Film film,Personne personne,Integer numero,String nom)
+    {
+        this.film=film;
+        this.personne=personne;
+        this.numero=numero;
+        this.nom=nom;
+    }
 }

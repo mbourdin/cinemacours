@@ -1,5 +1,6 @@
 package mbourdin.cinema_cours.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -70,6 +71,7 @@ public class Personne {
     }
 
     @OneToMany(mappedBy="realisateur")
+    @JsonIgnore
     public List<Film> getRealise() {
         return realise;
     }
@@ -79,6 +81,7 @@ public class Personne {
     }
 
     @OneToMany(mappedBy= "personne")
+    @JsonIgnore
     public List<Play> getRoles() {
         return roles;
     }
