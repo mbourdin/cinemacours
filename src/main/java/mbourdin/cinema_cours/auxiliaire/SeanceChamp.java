@@ -1,4 +1,4 @@
-package mbourdin.cinema_cours.service;
+package mbourdin.cinema_cours.auxiliaire;
 
 import mbourdin.cinema_cours.model.Film;
 import mbourdin.cinema_cours.model.Salle;
