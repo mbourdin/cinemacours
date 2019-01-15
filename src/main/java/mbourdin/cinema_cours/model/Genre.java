@@ -1,5 +1,8 @@
 package mbourdin.cinema_cours.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
@@ -31,12 +34,8 @@ public class Genre {
     public void setName(String name) {
         this.name = name;
     }
-    @ManyToMany(cascade = CascadeType.MERGE)
-    @JoinTable(name = "film_genre",
-            joinColumns = @JoinColumn(name = "genre_id",
-            referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "film_id",
-                    referencedColumnName = "id"))
+    @ManyToMany(mappedBy = "genres")
+    @JsonIgnore
     public Set<Film> getFilms() {
         return films;
     }

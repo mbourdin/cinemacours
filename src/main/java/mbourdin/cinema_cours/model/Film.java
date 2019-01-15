@@ -1,6 +1,17 @@
 package mbourdin.cinema_cours.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import mbourdin.cinema_cours.web.FilmController;
+import mbourdin.cinema_cours.web.SeanceController;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.datetime.DateFormatter;
+
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -9,7 +20,8 @@ import java.util.Set;
 @Entity
 @Table(name="films")
 public class Film {
-    //private PersonsDao personsDao;
+
+
     private long id;
     String titre;
     String afficheNom;
@@ -20,6 +32,13 @@ public class Film {
     private Set<Review> reviews;
     private Set<Genre> genres;
     private Set<Seance> seances;
+    private LocalDate annee;
+
+    public Film() {
+        annee=LocalDate.now();
+        titre="";
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -67,6 +86,7 @@ public class Film {
     public void setAfficheNom(String afficheNom){this.afficheNom=afficheNom;}
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "film_director")
     public Personne getRealisateur(){return realisateur;
     }
@@ -77,6 +97,7 @@ public class Film {
 
 
     @OneToMany(mappedBy ="film")
+    @JsonIgnore
     public Set<Seance> getSeances() {
         return seances;
     }
@@ -89,6 +110,7 @@ public class Film {
 
 
     @OneToMany(mappedBy = "film",cascade=CascadeType.ALL,orphanRemoval = true)
+    @JsonIgnore
     public List<Play> getRoles() {
         return roles;
     }
@@ -98,6 +120,7 @@ public class Film {
     }
 
     @OneToMany(mappedBy = "film",cascade=CascadeType.ALL,orphanRemoval = true)
+    @JsonIgnore
     public Set<Review> getReviews() {
         return reviews;
     }
@@ -106,7 +129,14 @@ public class Film {
         this.reviews = reviews;
     }
 
-    @ManyToMany(mappedBy = "films")
+
+    @ManyToMany(cascade = CascadeType.MERGE)
+    @JoinTable(name = "film_genre",
+            joinColumns = @JoinColumn(name = "film_id",
+                    referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "genre_id",
+                    referencedColumnName = "id"))
+    @JsonManagedReference
     public Set<Genre> getGenres() {
         return genres;
     }
@@ -115,6 +145,15 @@ public class Film {
         this.genres = genres;
     }
 
+    @Basic
+    @Column(name="release_date")
+        public LocalDate getAnnee() {
+        return annee;
+    }
+
+    public void setAnnee(LocalDate annee) {
+        this.annee = annee;
+    }
 
     public boolean addPlay(Play role)
     {   if (!roles.contains(role))
@@ -163,4 +202,8 @@ public class Film {
         }
     }
 
+    public String formattedDate()
+    {
+        return annee.format(FilmController.formatter);
+    }
 }
