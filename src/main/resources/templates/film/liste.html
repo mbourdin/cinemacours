@@ -26,14 +26,14 @@
                 <table class="ui table">
         <tr  th:each="film : ${listefilms}">
             <td class="two wide" th:text="${film.id}"></td>
-            <td class="ten wide"><a th:href="@{/film/{Id} (Id=${film.id})}"
+            <td class="ten wide"><a th:href="@{/film/detail/{Id} (Id=${film.id})}"
                                       th:text="${film.titre}+' '+${film.note}"></a></td>
 
             <td class="two wide">
                 <a class="ui red button" th:if="${session.admin!=null}" th:href="@{/film/delete/{Id} (Id=${film.id})}">Effacer</a>
             </td>
             <td class="two wide">
-                <a class="ui yellow button" th:if="${session.admin!=null}" th:href="@{/film/update/{Id} (Id=${film.id})}">Editer</a></td>
+                <a class="ui yellow button" th:if="${session.admin!=null}" th:href="@{/film/mod/{Id} (Id=${film.id})}">Editer</a></td>
         </tr>
                 </table>
             </form></td></tr></tbody></table>
