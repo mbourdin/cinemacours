@@ -1,22 +1,22 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <th:block th:replace="basictemplate :: header_css">
-    </th:block>
-</head>
-<body>
-<header th:replace="basictemplate.html :: header"></header>
+            <html lang="en" xmlns:th="http://www.thymeleaf.org">
+            <head>
+                <meta charset="UTF-8">
+                <th:block th:replace="basictemplate :: header_css">
+                </th:block>
+            </head>
+            <body>
+            <header th:replace="basictemplate.html :: header"></header>
 
 
-<table class="table ui">
+            <table class="table ui">
 
-    <tbody>
-    <tr>
+                <tbody>
+                <tr>
 
-        <td th:replace="navtemplate :: barrenav"></td>
+                    <td th:replace="navtemplate :: barrenav"></td>
 
-        <td id="mainContent" class="twelve wide">
+                    <td id="mainContent" class="twelve wide">
 
     <h1>Bienvenue sur le site des Nanars Sauvages</h1>
         <p th:if="message!=null" th:text="${message}"></p>
