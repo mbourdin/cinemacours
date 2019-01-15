@@ -17,7 +17,7 @@
             <table class="ui table">
                 <tr th:each="seance : ${seances}">
                     <td class="four wide" th:text="${seance.id}+' '+${seance.debut.format(formatter)}"></td>
-                    <td class="six wide"><a th:href="@{/film/{Id} (Id=${seance.film.id})}" th:text="${seance.film.titre}"></a></td>
+                    <td class="six wide"><a th:href="@{/film/detail/{Id} (Id=${seance.film.id})}" th:text="${seance.film.titre}"></a></td>
                     <td class="two wide"><a class="ui green button"
                                             th:href="@{/panier/commande/{Id} (Id=${seance.id})}">commander</a></td>
                     <th:block th:if="${session.admin!=null}">
