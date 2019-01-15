@@ -9,7 +9,7 @@
 
     <div class="ui page grid" id="navbarre">
     <div class="computer tablet only row">
-        <div class="ui vertical inverted menu navbar">
+        <div class="ui vertical inverted menu navbar teal">
 
             <!--<a href="" class="active item">Link</a>-->
             <a class="item" href="/">Home</a>
@@ -19,7 +19,7 @@
                 <i class="dropdown icon"></i>
                 <div class="menu">
                     <a class="item" href="/film/liste">liste</a>
-                    <a th:if="${session.admin!=null}" class="item" href="/film/create">creer</a>
+                    <a th:if="${session.admin!=null}" class="item" href="/film/add">creer</a>
                 </div>
             </div>
             <div class="ui dropdown item">Personnes
