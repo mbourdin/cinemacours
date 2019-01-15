@@ -26,7 +26,8 @@
                 <h3 th:text="${film.getTitre()}">détail du film</h3>
 
                 <h3>Realisateur:<a th:href="@{/personne/{Id} (Id=${film.getRealisateur().getId()})}" th:text="${film.realisateur.nom}+' '+${film.realisateur.prenom} ">Bay Michel</a></h3>
-                <h3>Note:<span th:text="${film.note}">10</span></h3>
+                    <h3 th:text="'sorti le ' +${film.formattedDate()}"></h3>
+                    <h3>Note:<span th:text="${film.note}">10</span></h3>
                 <img th:src="@{/film/image/{id}(id=${film.id})}"/>
                 <h3>Appartient aux genres suivant:</h3>
                 <ul class="sanspuce" th:each="genre : ${film.genres}">
@@ -44,7 +45,7 @@
                 <br><a class=centered th:href="@{/review/listeParFilm/{id} (id=${film.id})}">Liste des commentaires sur ce film</a>
                 <br><a th:href="@{/review/create/{id} (id=${film.id})}">commenter ce film</a>
                 <br/><a class="ui red button" th:if="${session.admin!=null}" th:href="@{/film/delete/{Id} (Id=${film.id})}">Effacer</a>
-                <br/><a class="ui yellow button" th:if="${session.admin!=null}" th:href="@{/film/update/{Id} (Id=${film.id})}">Editer</a>
+                <br/><a class="ui yellow button" th:if="${session.admin!=null}" th:href="@{/film/mod/{Id} (Id=${film.id})}">Editer</a>
                 </td></tr></tbody></table>
         <footer th:replace="basictemplate :: footer"></footer>
 
