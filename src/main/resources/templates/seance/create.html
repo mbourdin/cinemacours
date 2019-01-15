@@ -17,7 +17,7 @@
             <td th:replace="navtemplate :: barrenav"></td>
         <td id="mainContent" class="twelve wide">
 
-        <form action="/seance/create" method="post" th:object="${seanceList}">
+        <form action="/seance/create" method="post" >
             <fieldset>
             <table class="ui table">
                 <thead>
@@ -35,14 +35,14 @@
 
                 </tr>
                 </thead>
-                <tr th:each="champ ,itemStat : *{champs}">
+                <tr>
 
-                    <td><input type=text th:field="*{champs[__${itemStat.index}__].salleId}"  /></td>
-                    <td><input type=text th:field="*{champs[__${itemStat.index}__].debut}" pattern="[0-9]{2}+/[0-1]{1}[0-9]{1}+/[0-9]{4} [0-5]{1}[0-1]{1}:[0-5]{1}[0-1]{1}" required></td>
-                    <td><input type="text" list="films" th:field="*{champs[__${itemStat.index}__].filmId}" ><datalist id="films">
+                    <td><input type="text" th:field="${seanceChamp.salleId}"  /></td>
+                    <td><input type="text" th:field="${seanceChamp.debut}" pattern="[0-9]{2}+/[0-1]{1}[0-9]{1}+/[0-9]{4} [0-5]{1}[0-1]{1}:[0-5]{1}[0-1]{1}" required></td>
+                    <td><input type="text" list="films" th:field="${seanceChamp.filmId}" ><datalist id="films">
                         <option th:each="film : ${films}" th:value="${film.id}" th:label="${film.titre}"></option>
                     </datalist></td>
-                    <td><input type="hidden" th:field="*{champs[__${itemStat.index}__].seanceId}"></td>
+                    <td><input type="hidden" th:field="${seanceChamp.seanceId}"></td>
                 </tr>
                 <tr><td><input type="submit" value="Envoyer"/></td></tr>
 
