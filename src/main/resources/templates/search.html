@@ -22,10 +22,10 @@
             <h1>Liste des films</h1>
             <ul class="sanspuce">
                 <li>resultats par film</li>
-                <li th:each="film : ${films}"><a th:href="@{/film/{Id} (Id=${film.id})}"
+                <li th:each="film : ${films}"><a th:href="@{/film/detail/{Id} (Id=${film.id})}"
                                                  th:text="${film.titre}+' '+${film.note}"></a></li>
                 <li>resultats par role</li>
-                <li th:each="role : ${roles}"><a th:href="@{/film/{Id} (Id=${role.getFilm().getId()})}"
+                <li th:each="role : ${roles}"><a th:href="@{/film/detail/{Id} (Id=${role.getFilm().getId()})}"
                                                  th:text="${role.getFilm().getTitre()}+':'+${role.getNom()}"></a></li>
                 <li>resultats par personne</li>
                 <li th:each="personne : ${personnes}"><a th:href="@{/personne/{Id} (Id=${personne.id})}"
