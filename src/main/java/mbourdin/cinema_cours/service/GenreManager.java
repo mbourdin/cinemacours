@@ -4,6 +4,7 @@ import mbourdin.cinema_cours.dao.GenreDao;
 import mbourdin.cinema_cours.model.Genre;
 import org.springframework.stereotype.Component;
 
+import javax.validation.ConstraintViolationException;
 import java.util.List;
 
 /**
@@ -51,7 +52,14 @@ public class GenreManager {
      * @return le genre sauvegardé ou créé
      */
     public Genre save(Genre genre){
-        return genreDao.save(genre);
+        if(genreDao.findByName(genre.getName())==null) {
+            return genreDao.save(genre);
+        }
+        else
+        {
+            throw new IllegalArgumentException("le genre "+genre.getName()+" existe déja");
+        }
+
     }
 
     /**
