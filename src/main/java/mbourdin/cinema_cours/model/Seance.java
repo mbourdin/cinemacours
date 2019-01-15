@@ -1,7 +1,8 @@
 package mbourdin.cinema_cours.model;
 
 
-import mbourdin.cinema_cours.service.SeanceChamp;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import mbourdin.cinema_cours.auxiliaire.SeanceChamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -66,6 +67,7 @@ public class Seance {
     }
 
     @OneToMany(mappedBy = "seance")
+    @JsonIgnore
     public Set<Billet> getBillets() {
         return billets;
     }
