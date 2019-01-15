@@ -41,7 +41,7 @@
     </div>
 </div>
 
-<table class="ui table inverted blue">
+<table class="ui celled table inverted blue">
     <thead>
     <tr>
         <th>Genre</th>
@@ -49,7 +49,7 @@
     </thead>
     <tbody>
     <tr th:id="'ligne0'" >
-        <td th:id="'genre0'" th:onclick="'openDialog(0)'">ajouter un genre</td></tr>
+        <td class="ui green button" th:id="'genre0'" th:onclick="'openDialog(0)'">ajouter un genre</td></tr>
     <tr th:each="genre, rowStat: ${genres}" th:id="'ligne'+ ${genre.id}">
         <td th:text="${genre.name}" th:id="'genre'+ ${genre.id}" th:onclick="'openDialog(' + ${genre.id}+')'">Un genre</td>
     </tr>
@@ -130,7 +130,7 @@
 
 
     function onErrorOnGenre(jqXHR, textStatus, errorThrown) {
-        alert("Echec de l'opération de mise à jour...");
+
         console.log('jqXHR:');
         console.log(jqXHR);
         console.log("message d'erreur: "+jqXHR.responseJSON.message);
@@ -138,6 +138,7 @@
         console.log(textStatus);
         console.log('errorThrown:');
         console.log(errorThrown);
+        alert("Echec de l'opération\n"+jqXHR.responseJSON.message);
     }
 
     function eraseGenre() {
