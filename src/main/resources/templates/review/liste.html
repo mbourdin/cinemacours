@@ -18,14 +18,14 @@
 
         <ul class="sanspuce">
             <li th:each="review : ${reviews}">
-                <h1><a th:href="@{/film/{Id} (Id=${review.film.id})}"
+                <h1><a th:href="@{/film/detail/{Id} (Id=${review.film.id})}"
                        th:text="${'commentaire sur : '+review.film.titre}"></a></h1>
                 <div th:text="'utilisateur: '+${review.utilisateur.nom}+' '+${review.utilisateur.prenom}"></div>
                 <br/>
                 <div th:text="${review.article}"></div>
                 <br/><a class="ui red button" th:href="@{/review/delete/{Id} (Id=${review.id})}"
                         th:if="${session.admin!=null}">Effacer</a>
-                <a class=ui yellow button" th:href="@{/review/update/{Id} (Id=${review.id})}"
+                <a class="ui yellow button" th:href="@{/review/update/{Id} (Id=${review.id})}"
                    th:if="${session.admin!=null}">Editer</a>
             </li>
         </ul>
