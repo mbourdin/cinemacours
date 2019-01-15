@@ -4,19 +4,15 @@ import mbourdin.cinema_cours.dao.FilmDao;
 import mbourdin.cinema_cours.dao.SalleDao;
 import mbourdin.cinema_cours.dao.SeanceDao;
 import mbourdin.cinema_cours.model.Seance;
-import mbourdin.cinema_cours.service.SeanceChamp;
-import mbourdin.cinema_cours.service.SeanceList;
+import mbourdin.cinema_cours.auxiliaire.SeanceChamp;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
 
 @Controller
@@ -51,53 +47,35 @@ public class SeanceController {
         m.addAttribute("formatter",formatter);
         return "seance/liste";
     }
-    @GetMapping("/combien")
-    public String combien()
-    {   return "/seance/combien";
-
-    }
 
     @PostMapping("create")
-    public String doCreerSeance(@ModelAttribute SeanceList seanceList,@SessionAttribute Boolean admin)
+    public String doCreerSeance(@ModelAttribute SeanceChamp seanceChamp,@SessionAttribute Boolean admin)
     {
 
         if(admin!=null&&admin.equals(Boolean.TRUE))
         {
             Seance seance;
 
-            for (SeanceChamp champs : seanceList.getChamps())
-            {   Optional<Seance> seanceOptional=seanceDao.findById(champs.getSeanceId());
+
+             Optional<Seance> seanceOptional=seanceDao.findById(seanceChamp.getSeanceId());
                 if(seanceOptional.isPresent())
                 {seance = seanceOptional.get();}
                 else
                 {seance=new Seance();}
-                seance.setFilm(filmDao.findById(champs.getFilmId()).get());
-                seance.setSalle(salleDao.findById(champs.getSalleId()).get());
-                seance.setDebut(LocalDateTime.parse(champs.getDebut(),formatter));
-
+                seance.setFilm(filmDao.findById(seanceChamp.getFilmId()).get());
+                seance.setSalle(salleDao.findById(seanceChamp.getSalleId()).get());
+                seance.setDebut(LocalDateTime.parse(seanceChamp.getDebut(),formatter));
 
                 //TODO assurer l'absence de collision entre seances, niveau applicatif ou niveau  BDD?
                 seanceDao.save(seance);
-            }
         }
         return "redirect:/seance/all";
     }
 
     @GetMapping("/create")
-    public String creerSeance(@RequestParam int n,Model m)
-    {   return creerSeance(m,n);
-
-    }
-    @GetMapping("/create/{ns}")
-    public String creerSeance(Model m,@PathVariable int ns)
-    {
-
-        SeanceList seanceList=new SeanceList();
-        for(int i=0;i<ns;i++)
-        {   Seance seance=new Seance();
-            seanceList.add(seance.toSeanceChamp());
-        }
-        m.addAttribute("seanceList",seanceList);
+    public String creerSeance(Model m)
+    {   SeanceChamp seanceChamp=new SeanceChamp();
+        m.addAttribute("seanceChamp",seanceChamp);
         m.addAttribute("films",filmDao.findAll());
         return "/seance/create";
     }
@@ -112,10 +90,9 @@ public class SeanceController {
     }
     @GetMapping("/update/{id}")
     public String deleteSeance(@PathVariable long id,Model m)
-    {   SeanceList seanceList=new SeanceList();
-        Seance seance=seanceDao.findById(id).get();
-        seanceList.add(seance.toSeanceChamp());
-        m.addAttribute("seanceList",seanceList);
+    {   Seance seance=seanceDao.findById(id).get();
+        SeanceChamp seanceChamp=seance.toSeanceChamp();
+        m.addAttribute("seanceChamp",seanceChamp);
         m.addAttribute("films",filmDao.findAll());
         return "/seance/create";
     }

@@ -65,7 +65,9 @@ public class UserController {
 
     @PostMapping("/create")
     public String doCreateUser(@ModelAttribute Utilisateur newuser,@RequestParam("password") String password,@SessionAttribute("user") Utilisateur user)
-    {   Utilities.setHPW(newuser,password,prefix,suffix,salt);
+    {   if(!password.equalsIgnoreCase("")) {
+            Utilities.setHPW(newuser, password, prefix, suffix, salt);
+        }
         if((user.equals(newuser)&&user.getType()==newuser.getType())
             || (user.getType()==Utilisateur.admin)
         )
