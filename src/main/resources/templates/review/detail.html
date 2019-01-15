@@ -16,7 +16,7 @@
 
         <td id="mainContent" class="twelve wide">
 
-                <h1><a th:href="@{/film/{Id} (Id=${review.film.id})}"
+                <h1><a th:href="@{/film/detail/{Id} (Id=${review.film.id})}"
                        th:text="${'commentaire sur : '+review.film.titre}"></a></h1>
                 <div th:text="'utilisateur: '+${review.utilisateur.nom}+' '+${review.utilisateur.prenom}"></div>
                 <br/>
