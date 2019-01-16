@@ -89,7 +89,7 @@
         };
         console.log(genreVal);
         $.ajax({
-            url: '/api/genre',
+            url: '/api/genre/crud',
             type: 'post',
             dataType: 'json',
             contentType: 'application/json',
@@ -103,7 +103,7 @@
         console.log(result);
         idElt = "#genre" + result.id;
         newName = result.name;
-        if ($(idElt).exists) {
+        if ($(idElt).length > 0) {
             $(idElt).text(newName);
         }
         else
@@ -149,7 +149,7 @@
        //console.log("Ecrire la méthode permettant de supprimer un genre");
         console.log(genreVal);
         $.ajax({
-            url: '/api/genre',
+            url: '/api/genre/crud',
             type: 'delete',
             dataType: 'json',
             contentType: 'application/json',
