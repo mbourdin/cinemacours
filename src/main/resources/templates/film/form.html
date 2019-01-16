@@ -91,7 +91,7 @@
                             <label>Notation</label>
                         </td>
                         <td>
-                            <input th:field="*{note}" type="number">
+                            <input th:field="*{note}" type="text">
                         </td>
                     <tr>
                         <td>
@@ -117,15 +117,11 @@
                                 </option>
                             </select>
                         </td>
+
                     </tr>
                     <tr>
                         <td><label>importer image</label></td>
                         <td class="field"><input name="image" type="file" value="upload image"></td>
-                    </tr>
-                    <tr>
-                        <td class="field">
-                            <label>Genres</label>
-                        </td>
                     </tr>
                     <tr>
                         <td>
@@ -143,10 +139,10 @@
 
                     <table>
                         <tr>
-                            <td>
-                                <select class="ui search dropdown" multiple="" th:field="*{genres}">
+                            <td><input id="id_genre" name="id" readonly type="hidden">
+                                <select class="ui search dropdown" id="nom_genre">
                                     <option
-                                            th:each="genre: ${genresFilm}"
+                                            th:each="genre: ${genres}"
                                             th:text="${genre.name}"
                                             th:value="${genre.id}"
                                     >
@@ -154,6 +150,20 @@
                                     </option>
                                 </select>
                             </td>
+
+                        </tr>
+                        <tr class="actions">
+
+                            <td class="circular ui green icon button" onclick="validForm2()">
+                                <i class="white check icon icon"></i>
+                            </td>
+                            <td class="circular ui icon red button" onclick="erase2()">
+                                <i class="white close icon icon"></i>
+                            </td>
+                            <td class="circular ui icon blue button" onclick="abort()">
+                                <i class="white close icon icon"></i>
+                            </td>
+
                         </tr>
                     </table>
 
@@ -169,9 +179,9 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr id="ligne0" onclick="openDialog(0)">
+                <tr id="ligne0">
                     <td id="play_actor0" value="0"></td>
-                    <td id="play_nom0">nouveau role</td>
+                    <td id="play_nom0" class="green ui button" onclick="openDialog(0)">nouveau role</td>
                     <td id="play_rank0"></td>
                 </tr>
                 <tr th:each="play :  ${plays}" th:id="'ligne'+ ${play.id}"
@@ -195,14 +205,14 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr id="ligne_0" onclick="openDialog2(0)">
-                    <td id="genre0" value="0">nouveau genre</td>
+                <tr id="genre_id0" onclick="openDialog2(0)" class="green ui button">
+                    <td id="genre_nom0" value="0">ajouter genre</td>
                 </tr>
-                <tr th:each="genre :  ${genres}" th:id="'ligne_'+ ${genre.id}"
+                <tr th:each="genre :  ${film.genres}" th:id="'genre_id'+ ${genre.id}"
                     th:onclick="'openDialog2(' +${genre.id}+ ')'">
 
-                    <td th:id="'genre'+${genre.id}" th:text="${genre.getName()}"
-                        th:value="${genre.id}">un genre
+                    <td th:text="${genre.getName()}"
+                        th:value="${genre.id}" th:id="'genre_nom'+${genre.id}">un genre
                     </td>
                 </tr>
                 </tbody>
@@ -243,6 +253,10 @@
 
     function openDialog2(idGenre) {
         // $('.ui.modal').modal('show');
+        document.getElementById('id_genre').value = idGenre;
+        var nomId='genre_nom'+idGenre;
+        var nom=document.getElementById(nomId);
+        document.getElementById('nom_genre').value=nom.textContent;
         $('#modal2').modal('show');
     }
 
@@ -252,7 +266,6 @@
             "id": document.getElementById('id_play').value,
             "filmId": document.getElementById('id').value,
             "personneId": document.getElementById('actor_play').value,
-
             "numero": document.getElementById('rank_play').value,
             "nom": document.getElementById('name_play').value
 
@@ -313,6 +326,31 @@
         }
     }
 
+    function onSuccessGenre(result) {
+        console.log(result);
+        var idElt = "#genre_id" + result.id;
+        console.log(idElt);
+        if ($(idElt).length > 0) {
+
+        } else {
+            id = result.id;
+            var el = document.createElement("tr");
+            el.setAttribute("id","genre_id"+id);
+            var td1=document.createElement("td");
+            td1.setAttribute("id","genre_nom"+id);
+            td1.value=id;
+            td1.textContent=result.nom;
+            el.addEventListener("click", function () {
+                openDialog2(id)
+            });
+            var node = document.getElementById("#genre_id0");
+            var parentNode = node.parentNode;
+            parentNode.appendChild(el);
+      //  <tr id="genre_id0" onclick="openDialog2(0)" class="green ui button">
+        //        <td id="genre_nom0" value="0">ajouter genre</td>
+        //    </tr>
+        }
+    }
 
     function onError(jqXHR, textStatus, errorThrown) {
 
@@ -328,7 +366,6 @@
 
     function erase() {
         $('.ui.modal').modal('hide');
-
         playChampVal = {
             "id": document.getElementById('id_play').value
         };
@@ -344,13 +381,56 @@
             data: JSON.stringify(playChampVal)
         });
     }
+    function erase2()
+    {   $('.ui.modal').modal('hide');
+        var filmId=document.getElementById('id').value;
+        var genreId=document.getElementById('nom_genre').value;
+        genreVal = {
+            "id": genreId
+        };
+        //console.log("Ecrire la méthode permettant de supprimer un genre");
+        console.log(genreVal);
+        $.ajax({
+            url: '/api/genre/film/'+filmId,
+            type: 'delete',
+            dataType: 'json',
+            contentType: 'application/json',
+            success: onSuccessDeleteGenre,
+            error: onError,
+            data: JSON.stringify(genreVal)
+        });
+    }
+    function validForm2()
+    {
+        $('.ui.modal').modal('hide');
+        var filmId=document.getElementById('id').value;
+        var genreId=document.getElementById('nom_genre').value;
+        genreVal = {
+            "id": genreId
 
+        };
+        console.log(genreVal);
+        $.ajax({
+            url: '/api/genre/film/'+filmId,
+            type: 'post',
+            dataType: 'json',
+            contentType: 'application/json',
+            success: onSuccessGenre,
+            error: onError,
+            data: JSON.stringify(genreVal)
+        });
+    }
     function onSuccessDeletePlay(result) {
         console.log(result);
         idElt = "#ligne" + result.id;
         $(idElt).remove();
     }
+    function onSuccessDeleteGenre(result) {
+        console.log(result);
+        genreId="#genre_id"+result.id;
+        $(genreId).remove();
 
+    }
     function abort() {
         $('.ui.modal').modal('hide');
     }
