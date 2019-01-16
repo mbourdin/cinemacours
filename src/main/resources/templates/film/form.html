@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <th:block th:replace="basictemplate :: header_css">
+    </th:block>
+</head>
+<body>
+<header th:replace="basictemplate.html :: header"></header>
+
+
+<table class="table ui">
+
+    <tbody>
+    <tr>
+
+        <td th:replace="navtemplate :: barrenav"></td>
+
+        <td class="twelve wide" id="mainContent">
+            <div class="ui modal" id="modal1">
+                <div class="Header">
+                    Modification/Ajout d'un rôle
+                </div>
+                <div class="ui blue padded form">
+                    <label>id</label><input id="id_play" name="id" readonly type="text">
+                    <div class="three wide field">
+                        <label>personnage</label><input id="name_play" name="name" type="text">
+                    </div>
+                    <div class="one wide field">
+                        <label>rang</label><input id="rank_play" name="rank" type="text">
+                    </div>
+                    <div class="ten wide field">
+                        <label>acteur</label>
+                        <select class="ui search dropdown" id="actor_play" name="actor">
+                            <option disabled selected value="">Choisissez un acteur</option>
+                            <option
+                                    th:each="person: ${persons}"
+                                    th:text="${person.prenom}+' '+${person.nom}"
+                                    th:value="${person.id}"
+
+                            >
+                                Prénom Nom
+                            </option>
+                        </select>
+                    </div>
+                    <div class="actions">
+
+                        <div class="circular ui green icon button" onclick="validForm()">
+                            <i class="white check icon icon"></i>
+                        </div>
+                        <div class="circular ui icon red button" onclick="erase()">
+                            <i class="white close icon icon"></i>
+                        </div>
+                        <div class="circular ui icon blue button" onclick="abort()">
+                            <i class="white close icon icon"></i>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="ui dividing">Fiche signalétique</h2>
+            <form
+                    action="#"
+                    enctype="multipart/form-data"
+                    id="film-form"
+                    method="post"
+                    th:action="@{/film/add}"
+                    th:object="${film}"
+            >
+                <input th:field="${film.id}" type="hidden">
+                <input th:field="${film.afficheNom}" type="hidden">
+                <table class="ui blue inverted table">
+
+                    <thead>
+                    <tr>
+                        <th class="three wide"></th>
+                        <th class="nine wide"></th>
+                    </tr>
+                    </thead>
+                    <tr>
+                        <td>
+                            <label>Titre</label>
+                        </td>
+                        <td>
+                            <input th:field="${film.titre}" type="text">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Notation</label>
+                        </td>
+                        <td>
+                            <input th:field="*{note}" type="number">
+                        </td>
+                    <tr>
+                        <td>
+                            <label>Date de sortie</label>
+                        </td>
+                        <td>
+                            <input name="dateString" th:value="${film.formattedDate()}" type="text">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Réalisateur</label>
+                        </td>
+                        <td>
+                            <select class="ui search dropdown" th:field="${film.realisateur}">
+                                <option
+                                        th:each="person: ${persons}"
+                                        th:text="${person.prenom}+' '+${person.nom}"
+                                        th:value="${person.id}"
+
+                                >
+                                    Prénom Nom
+                                </option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label>importer image</label></td>
+                        <td class="field"><input name="image" type="file" value="upload image"></td>
+                    </tr>
+                    <tr>
+                        <td class="field">
+                            <label>Genres</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+
+                            <label>Résumé</label></td>
+                        <td>
+                            <textarea form="film-form" rows="5" th:field="*{resume}"></textarea>
+                            <input class="ui button" type="submit" value="Valider">
+                        </td>
+                    </tr>
+                </table>
+            </form>
+            <div class="ui modal" id="modal2">
+                <form>
+
+                    <table>
+                        <tr>
+                            <td>
+                                <select class="ui search dropdown" multiple="" th:field="*{genres}">
+                                    <option
+                                            th:each="genre: ${genresFilm}"
+                                            th:text="${genre.name}"
+                                            th:value="${genre.id}"
+                                    >
+                                        Drame
+                                    </option>
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+
+                </form>
+            </div>
+            <table class="ui celled table inverted blue" th:hidden="${nouveau}">
+                <thead>
+                <tr>
+
+                    <th>acteur</th>
+                    <th>role</th>
+                    <th>rang</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr id="ligne0" onclick="openDialog(0)">
+                    <td id="play_actor0" value="0"></td>
+                    <td id="play_nom0">nouveau role</td>
+                    <td id="play_rank0"></td>
+                </tr>
+                <tr th:each="play :  ${plays}" th:id="'ligne'+ ${play.id}"
+                    th:onclick="'openDialog(' + ${play.id}+')'">
+
+                    <td th:id="'play_actor'+${play.id}" th:text="${play.personne.prenom}+' '+${play.personne.nom}"
+                        th:value="${play.personne.id}">Un acteur
+                    </td>
+                    <td th:id="'play_nom'+${play.id}" th:text="${play.nom}">Un role</td>
+                    <td th:id="'play_rank'+${play.id}" th:text="${play.numero}">Un rang</td>
+
+                </tr>
+
+                </tbody>
+            </table>
+            <table class="ui celled table inverted blue" th:hidden="${nouveau}">
+                <thead>
+                <tr>
+
+                    <th>genre</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr id="ligne_0" onclick="openDialog2(0)">
+                    <td id="genre0" value="0">nouveau genre</td>
+                </tr>
+                <tr th:each="genre :  ${genres}" th:id="'ligne_'+ ${genre.id}"
+                    th:onclick="'openDialog2(' +${genre.id}+ ')'">
+
+                    <td th:id="'genre'+${genre.id}" th:text="${genre.getName()}"
+                        th:value="${genre.id}">un genre
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<footer th:replace="basictemplate :: footer"></footer>
+
+<script type="application/javascript">
+
+    $('.ui.dropdown').dropdown();
+    $(document).ready(function () {
+        tinymce.init({
+            selector: '#summary'
+        });
+    })
+
+    function openDialog(idPlay) {
+        console.log("id=" + idPlay);
+
+        var actorId = 'play_actor' + idPlay;
+        var actor = document.getElementById(actorId);
+        var nomId = 'play_nom' + idPlay;
+        var nom = document.getElementById(nomId);
+        var rankId = 'play_rank' + idPlay;
+        var rank = document.getElementById(rankId);
+
+        document.getElementById('id_play').value = idPlay;
+        document.getElementById('name_play').value = nom.textContent;
+        document.getElementById('rank_play').value = rank.textContent;
+        document.getElementById('actor_play').value = actor.value;
+
+        // $('.ui.modal').modal('show');
+        $('#modal1').modal('show');
+    }
+
+    function openDialog2(idGenre) {
+        // $('.ui.modal').modal('show');
+        $('#modal2').modal('show');
+    }
+
+    function validForm() {
+        $('.ui.modal').modal('hide');
+        playChampVal = {
+            "id": document.getElementById('id_play').value,
+            "filmId": document.getElementById('id').value,
+            "personneId": document.getElementById('actor_play').value,
+
+            "numero": document.getElementById('rank_play').value,
+            "nom": document.getElementById('name_play').value
+
+        };
+        console.log(playChampVal);
+        $.ajax({
+            url: '/api/play',
+            type: 'post',
+            dataType: 'json',
+            contentType: 'application/json',
+            success: onSuccess,
+            error: onError,
+            data: JSON.stringify(playChampVal)
+        });
+    }
+
+    function onSuccess(result) {
+        console.log(result);
+        var idElt = "#ligne" + result.id;
+        console.log(idElt);
+        if ($(idElt).length > 0) {
+            var ligne = document.getElementById("ligne" + result.id);
+            var acteur = document.getElementById("play_actor" + result.id);
+            acteur.value = result.personne.id;
+
+            var nom = document.getElementById("play_nom" + result.id);
+            nom.textContent = result.nom;
+            var numero = document.getElementById("play_rank" + result.id);
+            numero.textContent = result.numero;
+
+        } else {
+            id = result.id;
+            var el = document.createElement("tr");
+            var td1 = document.createElement("td");
+            var td2 = document.createElement("td");
+            var td3 = document.createElement("td");
+            el.setAttribute("id", "ligne" + id);
+            td1.setAttribute("id", "play_actor" + id);
+            td1.innerText = result.personne.prenom + " " + result.personne.nom;
+            el.appendChild(td1);
+            td2.setAttribute("id", "play_nom" + id);
+            td2.innerText = result.nom;
+            el.appendChild(td2);
+            td3.setAttribute("id", "play_rank" + id)
+            td3.innerText = result.numero;
+            el.appendChild(td3);
+            el.addEventListener("click", function () {
+                openDialog(id)
+            });
+
+            var node = document.getElementById("ligne0");
+            var parentNode = node.parentNode;
+            // inserer la nouvelle ligne en deuxième position du tableau
+            parentNode.insertBefore(el, node.nextSibling);
+
+            // <a class="small circular ui blue icon button"
+            //     th:onclick="'create()'"><i class="small white edit icon"></i></a>
+        }
+    }
+
+
+    function onError(jqXHR, textStatus, errorThrown) {
+
+        console.log('jqXHR:');
+        console.log(jqXHR);
+        console.log("message d'erreur: " + jqXHR.responseJSON.message);
+        console.log('textStatus:');
+        console.log(textStatus);
+        console.log('errorThrown:');
+        console.log(errorThrown);
+        alert("Echec de l'opération\n" + jqXHR.responseJSON.message);
+    }
+
+    function erase() {
+        $('.ui.modal').modal('hide');
+
+        playChampVal = {
+            "id": document.getElementById('id_play').value
+        };
+        //console.log("Ecrire la méthode permettant de supprimer un genre");
+        console.log(playChampVal);
+        $.ajax({
+            url: '/api/play',
+            type: 'delete',
+            dataType: 'json',
+            contentType: 'application/json',
+            success: onSuccessDeletePlay,
+            error: onError,
+            data: JSON.stringify(playChampVal)
+        });
+    }
+
+    function onSuccessDeletePlay(result) {
+        console.log(result);
+        idElt = "#ligne" + result.id;
+        $(idElt).remove();
+    }
+
+    function abort() {
+        $('.ui.modal').modal('hide');
+    }
+</script>
+</body>
+</html>
