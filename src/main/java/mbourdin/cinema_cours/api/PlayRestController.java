@@ -98,7 +98,7 @@ public class PlayRestController {
 
     /**
      *
-     * @param id l'identifiant du Genre a supprimer
+     * @param id l'identifiant du play a supprimer
      * @return l'objet Genre qui a été supprimé de la base
      */
     @GetMapping("/rm/{id}")
