@@ -28,7 +28,7 @@ public class Utilisateur {
     private Set<Review> reviews;
     private Set<Commande> commandes;
     private Set<NewsLetter> newsLetters;
-
+    private boolean actif;
 
     public Utilisateur()
     {   type=Utilisateur.normal;
@@ -38,6 +38,15 @@ public class Utilisateur {
     }
     public void generateLink()
     {   link= Utilities.get_SHA_256_SecurePassword(Calendar.getInstance().getTimeInMillis()+"",id+"");
+    }
+    @Basic
+    @Column(name="actif")
+    public boolean isActif() {
+        return actif;
+    }
+
+    public void setActif(boolean actif) {
+        this.actif = actif;
     }
 
     @Basic
