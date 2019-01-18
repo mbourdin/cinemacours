@@ -109,7 +109,7 @@ public class Film {
 
 
 
-    @OneToMany(mappedBy = "film",cascade=CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "film",cascade=CascadeType.MERGE)
     @JsonIgnore
     public List<Play> getRoles() {
         return roles;
@@ -119,7 +119,7 @@ public class Film {
         this.roles = roles;
     }
 
-    @OneToMany(mappedBy = "film",cascade=CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "film",cascade=CascadeType.MERGE)
     @JsonIgnore
     public Set<Review> getReviews() {
         return reviews;
@@ -130,13 +130,13 @@ public class Film {
     }
 
 
-    @ManyToMany(cascade = CascadeType.MERGE)
+    @ManyToMany(cascade ={ CascadeType.MERGE,CascadeType.PERSIST})
     @JoinTable(name = "film_genre",
             joinColumns = @JoinColumn(name = "film_id",
                     referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "genre_id",
                     referencedColumnName = "id"))
-    @JsonManagedReference
+    @JsonIgnore
     public Set<Genre> getGenres() {
         return genres;
     }
