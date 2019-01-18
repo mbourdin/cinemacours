@@ -11,6 +11,8 @@ package mbourdin.cinema_cours.web;
         import org.springframework.ui.Model;
         import org.springframework.web.bind.annotation.*;
 
+        import javax.mail.internet.AddressException;
+        import javax.mail.internet.InternetAddress;
         import javax.servlet.http.HttpServletRequest;
         import javax.servlet.http.HttpSession;
         import java.util.Calendar;
@@ -49,7 +51,9 @@ public class LoginController {
         String hpw= Utilities.get_SHA_512_SecurePassword(cleanPassword,salt);
         Optional<Utilisateur> utilisateurOptional=userDao.findByLogin(login);
         boolean acceptConnection=(utilisateurOptional.isPresent())&&
-                (utilisateurOptional.get().getHpw().equals(hpw));
+                (utilisateurOptional.get().getHpw().equals(hpw))&&
+                (utilisateurOptional.get().isActif())
+                ;
         //System.out.println(acceptConnection);
         if(acceptConnection)
         {   Utilities.setPermissions(session,utilisateurOptional.get());
@@ -62,20 +66,28 @@ public class LoginController {
         return "/login/recoverPW";
     }
     @PostMapping("/recover")
-    public String sendRecoverEmail(HttpServletRequest request,Model m)
+    public String sendRecoverEmail(@RequestParam  String email,Model m)
     {//TODO fonction qui envoie un mail contenant un lien de connection à usage unique
         //ne pas essayer de faire le getparameter dans le findbyemail,
         // cela conduit à un comportement des plus etranges,
         // du fait de la presence de plusieurs '.' dans une adress email
-        String email=request.getParameter("email");
         Utilisateur user=userDao.findByEmail(email).get();
         user.generateLink();
         String link=user.getLink();
         userDao.save(user);
         String texte=Email.recoveryEmailTexte+user.getId()+link;
-        Email mail=new Email(texte,email);
-        mail.send();
+        try
+        {    InternetAddress adresse=new InternetAddress(email);
+            InternetAddress[] addresses=new InternetAddress[1];
+            addresses[0]=adresse;
+            Email mail=new Email(texte,"Recupération Mot de passe Les Nanars Sauvages",addresses);
+        mail.send();}catch (AddressException e)
+            {m.addAttribute("message","adresse email invalide");
+                e.printStackTrace();
+                return connection(m);
+            }
         m.addAttribute("message","Un mail de connection a été envoyé à l'adresse : "+email);
+        //redirige vers la page de connexion, en affichant qu'un message a été envoyé
         return connection(m);
     }
     @PostMapping("/subscribe")
@@ -104,9 +116,9 @@ public class LoginController {
         boolean ok=lnk.equals(user.getLink());
         if (ok)
         {   user.setLink(null);
+            user.setActif(true);
             userDao.save(user);
             Utilities.setPermissions(session,user);
-
         }
         return "redirect:/";
     }

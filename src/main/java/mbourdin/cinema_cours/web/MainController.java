@@ -3,20 +3,14 @@ package mbourdin.cinema_cours.web;
 import mbourdin.cinema_cours.dao.FilmDao;
 import mbourdin.cinema_cours.dao.MsgDao;
 import mbourdin.cinema_cours.dao.PersonneDao;
-import mbourdin.cinema_cours.model.Film;
 import mbourdin.cinema_cours.model.MsgToAdmin;
-import mbourdin.cinema_cours.model.Personne;
-import mbourdin.cinema_cours.model.Utilisateur;
 import mbourdin.cinema_cours.service.ImageManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Locale;
 
 @Controller
 public class MainController {
@@ -51,6 +45,7 @@ public class MainController {
     @GetMapping("/")
     public String main(Model m){
         m.addAttribute("title","Accueil");
+
         return "index";
     }
 
@@ -96,6 +91,7 @@ public class MainController {
             MsgToAdmin msg= msgDao.findById(id).get();
             m.addAttribute("msg",msg);
             msg.setLu(Boolean.TRUE);
+            msgDao.save(msg);
         }
         return "/msg";
     }
