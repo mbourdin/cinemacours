@@ -1,5 +1,5 @@
 body
-{	background-color: rgb(140,140,140);
+{	background-color: rgb(150,150,250);
     font-size:100%;
     font-family:  Arial, Helvetica, sans-serif;
 }
@@ -42,7 +42,9 @@ textarea
 
 }
 
-
+a{
+    color: darkgreen;
+}
 .saisie{
     text-align: center
 }
@@ -66,7 +68,7 @@ textarea
 
 #mainContent{
     text-align: center;
-    background: #ccc;
+    background: aqua;
 
 }
 #loginarea
@@ -77,10 +79,11 @@ textarea
 {   text-align: center;
     background: teal;
     position: relative;
-    height: 280px;
+    height: 360px;
 }
 
-/*#navbarre
+#navbarre
 {  position: absolute;
     top: 0;
-}*/
+    left: 0;
+}
