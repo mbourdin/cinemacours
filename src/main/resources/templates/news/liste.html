@@ -15,6 +15,7 @@
         <td th:replace="navtemplate :: barrenav"></td>
 
         <td id="mainContent" class="twelve wide">
+            <p th:text="${message}"></p>
     <h1>liste des newsletters</h1>
             <table class="ui table">
     <tr th:each="news : ${newslist}">
