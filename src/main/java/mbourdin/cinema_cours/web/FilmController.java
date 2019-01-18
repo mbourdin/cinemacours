@@ -128,13 +128,15 @@ public class FilmController {
 
     @GetMapping("/add")
     public String add(Model model) {
-
+        Film film=new Film();
+        filmManager.save(film);
         model.addAttribute("title", "Ajout d'un film");
         model.addAttribute("persons", daoPersonne.findAll());
         model.addAttribute("genres", genreManager.getAll());
-        model.addAttribute("film", new Film());
+        model.addAttribute("film", film);
         model.addAttribute("newrole", new Play());
         model.addAttribute("nouveau",true);
+
         return "film/form";
     }
 
@@ -163,16 +165,10 @@ public class FilmController {
         }
         LocalDate date=LocalDate.parse(dateString, formatter);
         film.setAnnee(date);
-        try{Film film2=filmManager.getById(film.getId());
-            film2.getGenres().clear();
-            film2.getGenres().addAll(film.getGenres());
-            film.setRoles(film2.getRoles());
-            film.setGenres(film2.getGenres());
-            film.setReviews(film2.getReviews());
-            film.setSeances(film2.getSeances());
-            }catch (NoSuchElementException e){e.printStackTrace();}
 
         filmManager.save(film);
+
+
         return "redirect:/film/liste";
     }
 
