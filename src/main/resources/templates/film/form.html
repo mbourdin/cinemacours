@@ -9,7 +9,7 @@
 <header th:replace="basictemplate.html :: header"></header>
 
 
-<table class="table ui">
+<table class="ui celled table inverted blue">
 
     <tbody>
     <tr>
@@ -18,20 +18,16 @@
 
         <td class="twelve wide" id="mainContent">
             <div class="ui modal" id="modal1">
-                <div class="Header">
-                    Modification/Ajout d'un rôle
-                </div>
-                <div class="ui blue padded form">
-                    <label>id</label><input id="id_play" name="id" readonly type="text">
-                    <div class="three wide field">
-                        <label>personnage</label><input id="name_play" name="name" type="text">
-                    </div>
-                    <div class="one wide field">
-                        <label>rang</label><input id="rank_play" name="rank" type="text">
-                    </div>
-                    <div class="ten wide field">
-                        <label>acteur</label>
-                        <select class="ui search dropdown" id="actor_play" name="actor">
+                <form>
+
+                <table class="ui teal inverted table">
+                    <tr>
+                        <th>acteur</th>
+                        <th>role</th>
+                        <th>rang</th>
+                    </tr>
+                    <tr>
+                        <td><select class="ui search dropdown" id="actor_play" name="actor">
                             <option disabled selected value="">Choisissez un acteur</option>
                             <option
                                     th:each="person: ${persons}"
@@ -41,8 +37,14 @@
                             >
                                 Prénom Nom
                             </option>
-                        </select>
-                    </div>
+                        </select></td>
+                        <td><input id="name_play" name="name" type="text"></td>
+                        <td><input id="rank_play" name="rank" type="text"></td>
+                    </tr>
+
+                    <tr>
+                        <td><input id="id_play" name="id" readonly type="hidden"></td>
+                        <td>
                     <div class="actions">
 
                         <div class="circular ui green icon button" onclick="validForm()">
@@ -56,16 +58,19 @@
                         </div>
 
                     </div>
-                </div>
+                    </td>
+                    </tr>
+                </table>
+
+                </form>
             </div>
 
-            <h2 class="ui dividing">Fiche signalétique</h2>
+            <h1 class="ui blue">Fiche signalétique</h1>
             <form
                     action="#"
                     enctype="multipart/form-data"
                     id="film-form"
                     method="post"
-                    th:action="@{/film/add}"
                     th:object="${film}"
             >
                 <input th:field="${film.id}" type="hidden">
@@ -83,7 +88,7 @@
                             <label>Titre</label>
                         </td>
                         <td>
-                            <input th:field="${film.titre}" type="text">
+                            <input th:field="${film.titre}" id="titre" type="text" onblur="savefilm()">
                         </td>
                     </tr>
                     <tr>
@@ -91,14 +96,14 @@
                             <label>Notation</label>
                         </td>
                         <td>
-                            <input th:field="*{note}" type="text">
+                            <input th:field="*{note}" type="text" id="note" onblur="savefilm()">
                         </td>
                     <tr>
                         <td>
                             <label>Date de sortie</label>
                         </td>
                         <td>
-                            <input name="dateString" th:value="${film.formattedDate()}" type="text">
+                            <input id="datestring"  th:value="${film.formattedDate()}"  type="text" onblur="savefilm()">
                         </td>
                     </tr>
                     <tr>
@@ -106,7 +111,7 @@
                             <label>Réalisateur</label>
                         </td>
                         <td>
-                            <select class="ui search dropdown" th:field="${film.realisateur}">
+                            <select class="ui search dropdown" th:field="${film.realisateur}" id="realisateur" onchange="savefilm()">
                                 <option
                                         th:each="person: ${persons}"
                                         th:text="${person.prenom}+' '+${person.nom}"
@@ -128,8 +133,7 @@
 
                             <label>Résumé</label></td>
                         <td>
-                            <textarea form="film-form" rows="5" th:field="*{resume}"></textarea>
-                            <input class="ui button" type="submit" value="Valider">
+                            <textarea form="film-form" rows="5" th:field="*{resume}" id="resume" onchange="savefilm()"></textarea>
                         </td>
                     </tr>
                 </table>
@@ -137,7 +141,7 @@
             <div class="ui modal" id="modal2">
                 <form>
 
-                    <table>
+                    <table class="ui celled table inverted teal">
                         <tr>
                             <td><input id="id_genre" name="id" readonly type="hidden">
                                 <select class="ui search dropdown" id="nom_genre">
@@ -157,9 +161,6 @@
                             <td class="circular ui green icon button" onclick="validForm2()">
                                 <i class="white check icon icon"></i>
                             </td>
-                            <td class="circular ui icon red button" onclick="erase2()">
-                                <i class="white close icon icon"></i>
-                            </td>
                             <td class="circular ui icon blue button" onclick="abort()">
                                 <i class="white close icon icon"></i>
                             </td>
@@ -169,7 +170,7 @@
 
                 </form>
             </div>
-            <table class="ui celled table inverted blue" th:hidden="${nouveau}">
+            <table class="ui celled table inverted blue" >
                 <thead>
                 <tr>
 
@@ -197,23 +198,28 @@
 
                 </tbody>
             </table>
-            <table class="ui celled table inverted blue" th:hidden="${nouveau}">
+            <table class="ui celled table inverted blue" >
                 <thead>
                 <tr>
 
-                    <th>genre</th>
+                    <th class="ui ten wide">genre</th>
+                    <th class="ui two wide">effacer</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr id="genre_id0" onclick="openDialog2(0)" class="green ui button">
                     <td id="genre_nom0" value="0">ajouter genre</td>
                 </tr>
-                <tr th:each="genre :  ${film.genres}" th:id="'genre_id'+ ${genre.id}"
-                    th:onclick="'openDialog2(' +${genre.id}+ ')'">
+                <tr th:each="genre :  ${film.genres}" th:id="'genre_id'+ ${genre.id}">
 
                     <td th:text="${genre.getName()}"
                         th:value="${genre.id}" th:id="'genre_nom'+${genre.id}">un genre
                     </td>
+
+                    <td class="circular ui icon red button" th:onclick="'erase2('+${genre.id}+')'">
+                        <i class="white close icon icon"></i>
+                    </td>
+
                 </tr>
                 </tbody>
             </table>
@@ -250,6 +256,30 @@
         // $('.ui.modal').modal('show');
         $('#modal1').modal('show');
     }
+    function savefilm() {
+        var filmId=document.getElementById('id').value;
+        realisateur=document.getElementById("realisateur");
+        titre=document.getElementById("titre");
+        note=document.getElementById("note");
+        datestring=document.getElementById("datestring");
+        resume=document.getElementById("resume");
+        filmVal={
+            "id" : filmId,
+            "titre" : titre.value,
+            "realisateur" : realisateur.value,
+            "note" : note.value,
+            "resume" : resume.value
+        };
+        $.ajax({
+            url: '/api/film/save/'+datestring.value,
+            type: 'put',
+            dataType: 'json',
+            contentType: 'application/json',
+            success: onSuccess,
+            error: onError,
+            data: JSON.stringify(filmVal)
+        });
+    }
 
     function openDialog2(idGenre) {
         // $('.ui.modal').modal('show');
@@ -276,10 +306,13 @@
             type: 'post',
             dataType: 'json',
             contentType: 'application/json',
-            success: onSuccess,
+            success: onSuccessFilm,
             error: onError,
             data: JSON.stringify(playChampVal)
         });
+    }
+    function onSuccessFilm()
+    {   console.log(result);
     }
 
     function onSuccess(result) {
@@ -290,11 +323,11 @@
             var ligne = document.getElementById("ligne" + result.id);
             var acteur = document.getElementById("play_actor" + result.id);
             acteur.value = result.personne.id;
-
+            acteur.innerText=result.personne.prenom+" "+result.personne.nom;
             var nom = document.getElementById("play_nom" + result.id);
-            nom.textContent = result.nom;
+            nom.innerText = result.nom;
             var numero = document.getElementById("play_rank" + result.id);
-            numero.textContent = result.numero;
+            numero.innerText = result.numero;
 
         } else {
             id = result.id;
@@ -339,16 +372,24 @@
             var td1=document.createElement("td");
             td1.setAttribute("id","genre_nom"+id);
             td1.value=id;
-            td1.textContent=result.nom;
-            el.addEventListener("click", function () {
-                openDialog2(id)
+            td1.textContent=result.name;
+            var i1=document.createElement("i");
+            i1.setAttribute("class","white close icon");
+            var td2=document.createElement("td");
+            td2.setAttribute("class","circular ui icon red button")
+            /*<td class="circular ui icon red button" th:onclick="'erase2('+${genre.id}+')'">
+                <i class="white close icon icon"></i>
+                </td>*/
+            td2.appendChild(i1);
+            td2.addEventListener("click", function () {
+                erase2(id);
             });
-            var node = document.getElementById("#genre_id0");
+            var node = document.getElementById("genre_id0");
             var parentNode = node.parentNode;
             parentNode.appendChild(el);
-      //  <tr id="genre_id0" onclick="openDialog2(0)" class="green ui button">
-        //        <td id="genre_nom0" value="0">ajouter genre</td>
-        //    </tr>
+            el.appendChild(td1);
+            el.appendChild(td2);
+            el.value=id;
         }
     }
 
@@ -381,10 +422,10 @@
             data: JSON.stringify(playChampVal)
         });
     }
-    function erase2()
+    function erase2(genreId)
     {   $('.ui.modal').modal('hide');
         var filmId=document.getElementById('id').value;
-        var genreId=document.getElementById('nom_genre').value;
+        //var genreId=document.getElementById('nom_genre').value;
         genreVal = {
             "id": genreId
         };
