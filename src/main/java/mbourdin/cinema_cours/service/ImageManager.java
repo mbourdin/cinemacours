@@ -58,7 +58,7 @@ public class ImageManager {
             String numStr = fileName.substring(1, fileName.indexOf(".jpg"));
             System.out.println(numStr);
             Integer num = Integer.parseInt(numStr);
-            numStr = String.format("%04d",num+1);
+            numStr = String.format("%07d",num+1);
             System.out.println(numStr);
             fileName = prefix+numStr+".jpg";
             String filePath = path+"/"+subPath+"/"+fileName;

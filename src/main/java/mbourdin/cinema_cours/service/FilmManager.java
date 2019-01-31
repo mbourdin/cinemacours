@@ -2,9 +2,11 @@ package mbourdin.cinema_cours.service;
 
 
 import mbourdin.cinema_cours.dao.FilmDao;
+import mbourdin.cinema_cours.dao.PersonneDao;
 import mbourdin.cinema_cours.dao.PlayDao;
 import mbourdin.cinema_cours.model.Film;
 import mbourdin.cinema_cours.model.Genre;
+import mbourdin.cinema_cours.model.Personne;
 import mbourdin.cinema_cours.model.Play;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -18,6 +20,8 @@ public class FilmManager {
 
     @Autowired
     private PlayDao roleDao;
+    @Autowired
+    private PersonneDao personneDao;
 
     FilmManager()
     {   this.filmDao = filmDao;
@@ -49,7 +53,37 @@ public class FilmManager {
         return film.getId();
     }
 
+    public Long merge(Film film){
 
+        Film filmToSave=filmDao.findById(film.getId()).get();
+        if(film.getAnnee()!=null)
+        {   filmToSave.setAnnee(film.getAnnee());
+        }
+        if(film.getNote()!=0)
+        {   filmToSave.setNote(film.getNote());
+        }
+        if(film.getTitre()!=null)
+        {   filmToSave.setTitre(film.getTitre());
+        }
+        if(film.getAfficheNom()!=null)
+        {   filmToSave.setAfficheNom(film.getTitre());
+        }
+        if(film.getResume()!=null)
+        {   filmToSave.setResume(film.getResume());
+        }
+        if(film.getAnnee()!=null)
+        {   filmToSave.setAnnee(film.getAnnee());
+        }
+        Personne realisateur=film.getRealisateur();
+        if(realisateur!=null)
+        {   filmToSave.setRealisateur(personneDao.findById(film.getRealisateur().getId()).get());
+        }
+        if(film.getAfficheNom()!=null)
+        {   filmToSave.setAfficheNom(film.getAfficheNom());
+        }
+        filmDao.save(filmToSave);
+        return film.getId();
+    }
     /**
      * effacer le film
      */
