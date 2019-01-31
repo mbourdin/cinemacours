@@ -25,10 +25,10 @@
                     </ul>
                 <h3 th:text="${film.getTitre()}">détail du film</h3>
 
-                <h3>Realisateur:<a th:href="@{/personne/{Id} (Id=${film.getRealisateur().getId()})}" th:text="${film.realisateur.nom}+' '+${film.realisateur.prenom} ">Bay Michel</a></h3>
+                <h3>Realisateur:<a th:if="${film.getRealisateur()!=null}" th:href="@{/personne/{Id} (Id=${film.getRealisateur().getId()})}" th:text="${film.realisateur.name}">Bay Michel</a></h3>
                     <h3 th:text="'sorti le ' +${film.formattedDate()}"></h3>
                     <h3>Note:<span th:text="${film.note}">10</span></h3>
-                <img th:src="@{/film/image/{id}(id=${film.id})}"/>
+                <img th:if="${film.id}" th:src="@{/film/image/{id}(id=${film.id})}"/>
                 <h3>Appartient aux genres suivant:</h3>
                 <ul class="sanspuce" th:each="genre : ${film.genres}">
                     <li><a th:href="@{/film/listParGenre/{Id} (Id=${genre.id})}" th:text="${genre.name}"></a></li>
@@ -36,7 +36,7 @@
 
                 <h3>Distribution</h3>
                 <ul class="sanspuce">
-                    <li th:each="role : ${film.getRoles()}"><a th:href="@{/personne/{Id} (Id=${role.personne.id})}" th:text="${role.personne.prenom}+' '+${role.personne.nom}+':'+${role.nom} "></a></li>
+                    <li th:each="role : ${film.getRoles()}"><a th:href="@{/personne/{Id} (Id=${role.personne.id})}" th:text="${role.personne.name}"></a></li>
                 </ul>
 
                 <span th:text="${film.resume}"></span>

@@ -19,7 +19,7 @@
             <table class="ui table">
     <tr th:each="personne : ${personnes}">
             <td class="two wide" th:text="${personne.id}"></td>
-            <td class="ten wide"><a   th:href="@{/personne/{Id} (Id=${personne.id})}" th:text="${personne.nom}+' '+${personne.prenom}"></a></td>
+            <td class="ten wide"><a   th:href="@{/personne/{Id} (Id=${personne.id})}" th:text="${personne.name}"></a></td>
             <td class="two wide"><a class="ui red button"  th:if="${session.admin!=null}" th:href="@{/personne/delete/{Id} (Id=${personne.id})}">Effacer</a></td>
             <td class="two wide"><a class="ui yellow button" th:if="${session.admin!=null}" th:href="@{/personne/update/{Id} (Id=${personne.id})}">Editer</a></td>
     </tr>

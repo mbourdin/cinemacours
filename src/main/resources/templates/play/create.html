@@ -45,7 +45,7 @@
 
                     <td><input list="acteurs" id="acteur" name="acteur" th:field="${play.personne.id}" th:readonly="${readonly}">
                         <datalist id="acteurs">
-                            <option th:each="acteur : ${acteurs}" th:value="${acteur.id}" th:label="${acteur.prenom}+' '+${acteur.nom}"></option>
+                            <option th:each="acteur : ${acteurs}" th:value="${acteur.id}" th:label="${acteur.name}"></option>
                         </datalist>
 
                     </td>

@@ -31,7 +31,7 @@
                             <option disabled selected value="">Choisissez un acteur</option>
                             <option
                                     th:each="person: ${persons}"
-                                    th:text="${person.prenom}+' '+${person.nom}"
+                                    th:text="${person.name}"
                                     th:value="${person.id}"
 
                             >
@@ -67,7 +67,7 @@
 
             <h1 class="ui blue">Fiche signalétique</h1>
             <form
-                    action="#"
+                    action="/film/create"
                     enctype="multipart/form-data"
                     id="film-form"
                     method="post"
@@ -111,22 +111,24 @@
                             <label>Réalisateur</label>
                         </td>
                         <td>
-                            <select class="ui search dropdown" th:field="${film.realisateur}" id="realisateur" onchange="savefilm()">
-                                <option
+                            <input list="realisateurs" class="ui search" th:field="${film.realisateur}" id="realisateur" onblur="savefilm()">
+                            <datalist id="realisateurs">
+                            <option
                                         th:each="person: ${persons}"
-                                        th:text="${person.prenom}+' '+${person.nom}"
+                                        th:text="${person.name}"
                                         th:value="${person.id}"
 
                                 >
                                     Prénom Nom
                                 </option>
-                            </select>
+                                </datalist>
+                            </input>
                         </td>
 
                     </tr>
                     <tr>
                         <td><label>importer image</label></td>
-                        <td class="field"><input name="image" type="file" value="upload image"></td>
+                        <td class="field"><input name="image" type="file" value="upload image"></td><td><input type="submit" value="uploader image"></td>
                     </tr>
                     <tr>
                         <td>
@@ -188,7 +190,7 @@
                 <tr th:each="play :  ${plays}" th:id="'ligne'+ ${play.id}"
                     th:onclick="'openDialog(' + ${play.id}+')'">
 
-                    <td th:id="'play_actor'+${play.id}" th:text="${play.personne.prenom}+' '+${play.personne.nom}"
+                    <td th:id="'play_actor'+${play.id}" th:text="${play.personne.name}"
                         th:value="${play.personne.id}">Un acteur
                     </td>
                     <td th:id="'play_nom'+${play.id}" th:text="${play.nom}">Un role</td>
@@ -266,12 +268,11 @@
         filmVal={
             "id" : filmId,
             "titre" : titre.value,
-            "realisateur" : realisateur.value,
             "note" : note.value,
             "resume" : resume.value
         };
         $.ajax({
-            url: '/api/film/save/'+datestring.value,
+            url: '/api/film/save/'+datestring.value+'/'+realisateur.value,
             type: 'put',
             dataType: 'json',
             contentType: 'application/json',
@@ -323,7 +324,7 @@
             var ligne = document.getElementById("ligne" + result.id);
             var acteur = document.getElementById("play_actor" + result.id);
             acteur.value = result.personne.id;
-            acteur.innerText=result.personne.prenom+" "+result.personne.nom;
+            acteur.innerText=result.personne.name;
             var nom = document.getElementById("play_nom" + result.id);
             nom.innerText = result.nom;
             var numero = document.getElementById("play_rank" + result.id);
@@ -337,7 +338,7 @@
             var td3 = document.createElement("td");
             el.setAttribute("id", "ligne" + id);
             td1.setAttribute("id", "play_actor" + id);
-            td1.innerText = result.personne.prenom + " " + result.personne.nom;
+            td1.innerText = result.personne.name;
             el.appendChild(td1);
             td2.setAttribute("id", "play_nom" + id);
             td2.innerText = result.nom;

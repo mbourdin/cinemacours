@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
     <head>
         <meta charset="UTF-8">
-        <title th:text="${personne.nom+' '+personne.prenom}">Nom</title>
+        <title th:text="${personne.name}">Nom</title>
         <th:block th:replace="basictemplate :: header_css">
         </th:block>
     </head>
@@ -17,16 +17,16 @@
 
             <td id="mainContent" class="twelve wide">
 
-            <h2 th:text="${personne.prenom}+' '+${personne.nom}">nom prénom</h2><br><h2 th:text="'Né le '+${personne.naissance}">date de naissance</h2>
+            <h2 th:text="${personne.name}">nom prénom</h2><br><h2 th:text="'Né le '+${personne.naissance}">date de naissance</h2>
             <img th:src="@{/personne/image/{id}(id=${personne.getId()})}"/>
             <h2>Filmographie</h2>
             <h3 th:if="${personne.roles.size()!=0}">En tant qu'acteur</h3>
             <ul class="sanspuce">
-                <li th:each="role : ${personne.roles}"><a th:href="@{/film/{Id} (Id=${role.film.id})}" th:text="${role.film.titre}+':'+${role.nom}"></a></li>
+                <li th:each="role : ${personne.roles}"><a th:href="@{/film/detail/{Id} (Id=${role.film.id})}" th:text="${role.film.titre}+':'+${role.nom}"></a></li>
             </ul>
             <h3 th:if="${personne.realise.size()!=0}">En tant que réalisateur</h3>
             <ul class="sanspuce">
-                <li th:each="film : ${personne.realise}"><a th:href="@{/film/{Id} (Id=${film.id})}" th:text="${film.titre}"></a></li>
+                <li th:each="film : ${personne.realise}"><a th:href="@{/film/detail/{Id} (Id=${film.id})}" th:text="${film.titre}"></a></li>
             </ul>
             <br/>
             <a class="ui red button" th:if="${session.admin!=null}" th:href="@{/personne/delete/{Id} (Id=${personne.id})}">Effacer</a>
