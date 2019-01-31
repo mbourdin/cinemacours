@@ -24,7 +24,7 @@
                 <br/><a class="ui red button" th:href="@{/review/delete/{Id} (Id=${review.id})}"
                         th:if="${session.admin!=null}">Effacer</a>
                 <a class="ui green button" th:href="@{/review/valide/{Id} (Id=${review.id})}"
-                   th:if="${session.admin!=null}">valider</a>
+                   th:if="${(session.admin!=null) && (!review.valide)}">valider</a>
 
         </td></tr></tbody></table>
 <footer th:replace="basictemplate :: footer"></footer>
