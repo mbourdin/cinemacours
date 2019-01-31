@@ -14,7 +14,7 @@ public class PersonneManager {
     PersonneDao personneDao;
 
     public List<Personne> getAll(){
-        return personneDao.findAllByOrderByNom();
+        return personneDao.findAllByOrderByName();
     }
     public Personne getById(Long id)
     {   Personne personne=personneDao.findById(id).orElseThrow(()->new IllegalArgumentException("Personne.id inexistant: "+id));
