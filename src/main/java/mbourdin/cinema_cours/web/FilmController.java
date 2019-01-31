@@ -4,6 +4,7 @@ import mbourdin.cinema_cours.dao.*;
 import mbourdin.cinema_cours.model.Film;
 import mbourdin.cinema_cours.model.Genre;
 import mbourdin.cinema_cours.model.Play;
+import mbourdin.cinema_cours.model.Utilisateur;
 import mbourdin.cinema_cours.service.FilmManager;
 import mbourdin.cinema_cours.service.GenreManager;
 import mbourdin.cinema_cours.service.ImageManager;
@@ -18,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -69,9 +71,19 @@ public class FilmController {
 
 
     @GetMapping("/detail/{id}")
-    public String detail(Model m, @PathVariable("id") Long id) {
+    public String detail(Model m, @PathVariable("id") Long id, HttpSession session) {
         Film film = filmManager.getById(id);
+        Utilisateur user=(Utilisateur) session.getAttribute("user");
+        boolean commentable=true;
+        if(
+                (user==null) ||
+                        (reviewDao.findByFilmAndUtilisateur(film,user)!=null)
+            )
+        {   commentable=false;
+
+        }
         m.addAttribute("film", film);
+        m.addAttribute("commentable",commentable);
         return "film/detail";
     }
 
