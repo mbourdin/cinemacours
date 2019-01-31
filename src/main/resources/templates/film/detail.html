@@ -43,7 +43,7 @@
                 <br>
 
                 <br><a class=centered th:href="@{/review/listeParFilm/{id} (id=${film.id})}">Liste des commentaires sur ce film</a>
-                <br><a th:href="@{/review/create/{id} (id=${film.id})}">commenter ce film</a>
+                <br><a th:if="${commentable}" th:href="@{/review/create/{id} (id=${film.id})}">commenter ce film</a>
                 <br/><a class="ui red button" th:if="${session.admin!=null}" th:href="@{/film/delete/{Id} (Id=${film.id})}">Effacer</a>
                 <br/><a class="ui yellow button" th:if="${session.admin!=null}" th:href="@{/film/mod/{Id} (Id=${film.id})}">Editer</a>
                 </td></tr></tbody></table>
