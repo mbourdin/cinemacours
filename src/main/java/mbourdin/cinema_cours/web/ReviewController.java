@@ -67,7 +67,7 @@ public class ReviewController {
         if (review.getUtilisateur().equals(user)||user.getType()==Utilisateur.admin) {
             reviewDao.save(review);
         }
-        return "redirect:/review/liste";
+        return "redirect:/film/detail/"+review.getFilm().getId();
     }
     @GetMapping("/{id}")
     public String reviewParId(Model m,@PathVariable("id") Long id){
@@ -98,6 +98,6 @@ public class ReviewController {
         Review review=reviewDao.findById(id).get();
         review.setValide(true);
         reviewDao.save(review);
-        return "redirect:/review/liste";
+        return "redirect:/review/new";
     }
 }
