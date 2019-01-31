@@ -2,6 +2,7 @@ package mbourdin.cinema_cours.api;
 
 import mbourdin.cinema_cours.model.Film;
 import mbourdin.cinema_cours.model.Genre;
+import mbourdin.cinema_cours.model.Personne;
 import mbourdin.cinema_cours.service.FilmManager;
 import mbourdin.cinema_cours.service.PersonneManager;
 import mbourdin.cinema_cours.service.PlayManager;
@@ -24,12 +25,14 @@ public class FilmRestController {
         this.personneManager = personneManager;
     }
 
-    @PutMapping("/save/{datestring}")
-    public Long saveFilm(@RequestBody Film film,@PathVariable String datestring)
+    @PutMapping("/save/{datestring}/{idreal}")
+    public Long saveFilm(@RequestBody Film film,@PathVariable String datestring,@PathVariable Long idreal)
     {
         LocalDate date=LocalDate.parse(datestring, DateTimeFormatter.ISO_DATE);
         film.setAnnee(date);
-        return filmManager.save(film);
+        Personne realisateur=personneManager.getById(idreal);
+        film.setRealisateur(realisateur);
+        return filmManager.merge(film);
     }
 
 }
