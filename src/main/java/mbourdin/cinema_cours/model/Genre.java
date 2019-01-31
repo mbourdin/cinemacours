@@ -12,17 +12,31 @@ import java.util.Set;
 @Table(name="genres")
 public class Genre {
 
-    private long id;
+    private Long id;
     private String name;
     private Set<Film> films;
+    private Long tmdbId;
+    @Basic
+    @Column(name="tmbdId")
+    public Long getTmdbId(){
+        return tmdbId;
+    }
+
+    public void setTmdbId(Long tmdbId) {
+        this.tmdbId = tmdbId;
+    }
+
+
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
     @Basic
@@ -72,6 +86,31 @@ public class Genre {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getName(), getFilms());
+        return Objects.hash(getId());
+    }
+
+    @Override
+    public String toString()
+    {   String s="";
+        if(id!=null)
+        {   s=s+id+",";
+        }
+        else
+        {
+            s=s+"null,";
+        }
+        if(name!=null)
+        {   s=s+name+",";
+        }
+        else
+        {   s=s+"null,";
+        }
+        if(tmdbId!=null)
+        {   s=s+tmdbId;
+        }
+        else
+        {   s=s+"null";
+        }
+        return s;
     }
 }

@@ -12,13 +12,32 @@ import java.util.Objects;
 @Table(name="persons")
 public class Personne {
     private long id;
-    private String nom;
-    private String prenom;
+
+    private String name;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate naissance;
     private String photopath;
     private List<Film> realise ;
     private List<Play> roles;
+    private Long tmdbId;
+    @Basic
+    @Column(name="name")
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+    @Basic
+    @Column(name="tmdbId")
+    public Long getTmdbId() {
+        return tmdbId;
+    }
+
+    public void setTmdbId(Long tmdbId) {
+        this.tmdbId = tmdbId;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,25 +50,6 @@ public class Personne {
         this.id = id;
     }
 
-    @Basic
-    @Column(name = "surname", nullable = false, length = 60)
-    public String getNom() {
-        return nom;
-    }
-
-    public void setNom(String surname) {
-        this.nom = surname;
-    }
-
-    @Basic
-    @Column(name = "givenname", nullable = true, length = 40)
-    public String getPrenom() {
-        return prenom;
-    }
-
-    public void setPrenom(String givenname) {
-        this.prenom = givenname;
-    }
 
     @Basic
     @Column(name = "birthday", nullable = true)

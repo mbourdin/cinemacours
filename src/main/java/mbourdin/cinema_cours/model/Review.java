@@ -12,6 +12,7 @@ public class Review {
     private Utilisateur utilisateur;
     private String article;
     private LocalDate date;
+    private Boolean valide;
 
     public Review(Film film, Utilisateur utilisateur) {
         this.film = film;
@@ -68,6 +69,16 @@ public class Review {
 
     public void setDate(LocalDate date) {
         this.date = date;
+    }
+
+    @Basic
+    @Column(name="valide")
+    public Boolean getValide() {
+        return valide;
+    }
+
+    public void setValide(Boolean valide) {
+        this.valide = valide;
     }
 
     @Override

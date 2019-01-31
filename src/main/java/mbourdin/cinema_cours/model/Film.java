@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import mbourdin.cinema_cours.web.FilmController;
 import mbourdin.cinema_cours.web.SeanceController;
+import org.checkerframework.checker.units.qual.C;
+import org.checkerframework.common.aliasing.qual.Unique;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.datetime.DateFormatter;
 
@@ -22,10 +24,12 @@ import java.util.Set;
 public class Film {
 
 
-    private long id;
-    String titre;
-    String afficheNom;
-    double note;
+    private Long id;
+    private Long tmdbId;
+    private String titre;
+    private String titreOriginal;
+    private String afficheNom;
+    private double note;
     private String resume;
     private Personne realisateur;
     private List<Play> roles;
@@ -33,20 +37,52 @@ public class Film {
     private Set<Genre> genres;
     private Set<Seance> seances;
     private LocalDate annee;
+    private Integer duree;// duree en minutes
+
 
     public Film() {
         annee=LocalDate.now();
         titre="";
     }
+    @Basic
+    @Column(name="titreOriginal")
+    public String getTitreOriginal() {
+        return titreOriginal;
+    }
+
+    public void setTitreOriginal(String titreOriginal) {
+        this.titreOriginal = titreOriginal;
+    }
+
+    @Basic
+    @Unique
+    @Column(name="tmbdId")
+    public Long getTmdbId() {
+        return tmdbId;
+    }
+
+    public void setTmdbId(Long tmdbId) {
+        this.tmdbId = tmdbId;
+    }
+
+    @Basic
+    @Column(name="duree")
+    public Integer getDuree() {
+        return duree;
+    }
+
+    public void setDuree(Integer duree) {
+        this.duree = duree;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -206,4 +242,13 @@ public class Film {
     {
         return annee.format(FilmController.formatter);
     }
+
+    @Override
+    public String toString()
+    {
+
+        return "tmdbid="+tmdbId+" titre original="+titreOriginal;
+    }
+
+
 }

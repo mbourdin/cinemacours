@@ -93,8 +93,8 @@ public class Play  implements Comparable<Play> {
     public String toString() {
         return "Play{" +
                 "nom='" + nom + '\'' +
-                ", acteur=" + personne.getNom() +
-                ",prenom="+personne.getPrenom()+
+                ", acteur=" + personne.getName() +
+
                 ", numero=" + numero +
                 ", film=" + film.getTitre() +
                 '}';
