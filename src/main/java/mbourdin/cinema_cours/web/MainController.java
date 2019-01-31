@@ -3,17 +3,24 @@ package mbourdin.cinema_cours.web;
 import mbourdin.cinema_cours.dao.FilmDao;
 import mbourdin.cinema_cours.dao.MsgDao;
 import mbourdin.cinema_cours.dao.PersonneDao;
+import mbourdin.cinema_cours.dao.TmdbFilmDao;
+import mbourdin.cinema_cours.model.Film;
 import mbourdin.cinema_cours.model.MsgToAdmin;
+import mbourdin.cinema_cours.model.TmdbFilm;
+import mbourdin.cinema_cours.service.FilmIdImport;
+import mbourdin.cinema_cours.service.FilmStream;
 import mbourdin.cinema_cours.service.ImageManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.BufferedReader;
 import java.time.LocalDate;
 
 @Controller
 public class MainController {
+
 
 
     @Autowired
@@ -27,6 +34,10 @@ public class MainController {
 
     @Autowired
     MsgDao msgDao;
+    @Autowired
+    TmdbFilmDao tmdbFilmDao;
+    @Autowired
+    FilmIdImport filmIdImport;
 /*
     @PostMapping("/search")
     public String search(Model m, HttpServletRequest request)
@@ -101,5 +112,27 @@ public class MainController {
         msgDao.deleteById(id);
     }
         return "redirect:/msgliste/nonlus";
+    }
+    @GetMapping("/importFilms")
+    public String testfilmstream()
+    {
+
+        FilmStream fs=new FilmStream();
+
+        BufferedReader br=fs.getBr();
+        TmdbFilm film;
+        try{    String ligne=br.readLine();
+                while(ligne!=null)
+                {   film=filmIdImport.importedFilm(ligne);
+                    if(film!=null) {
+                        tmdbFilmDao.save(film);
+
+                    }
+                    ligne=br.readLine();
+
+                }
+            System.out.println(filmIdImport.importedFilm(ligne));
+        }catch (Exception e){e.printStackTrace();}
+        return "/index";
     }
 }

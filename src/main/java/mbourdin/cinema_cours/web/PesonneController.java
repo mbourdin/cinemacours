@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URISyntaxException;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/personne")
@@ -101,4 +102,16 @@ public class PesonneController {
 
     }
 
+    /*
+    @GetMapping("refitpersons")
+    public String refit()
+    {
+        Set<Personne> personnes=daoPersonne.findAll();
+        for(Personne personne: personnes)
+        {   personne.setName(personne.getPrenom()+" "+personne.getNom());
+            daoPersonne.save(personne);
+        }
+        return "/index";
+    }
+    */
 }

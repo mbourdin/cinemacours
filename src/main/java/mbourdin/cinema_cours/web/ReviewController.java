@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/review")
@@ -26,8 +27,9 @@ public class ReviewController {
 
     @GetMapping("/listeParFilm/{filmId}")
     public String listeParFilm(Model m, @PathVariable("filmId") Long id){
+
         Film film= filmDao.findById(id).get();
-        m.addAttribute("reviews",film.getReviews());
+        m.addAttribute("reviews",reviewDao.findAllByFilmAndValideIsTrue(film));
         return "review/liste";
     }
     @GetMapping("/listeParUtilisateur/{userId}")
@@ -42,11 +44,18 @@ public class ReviewController {
         m.addAttribute("reviews",reviewDao.findAll());
         return "review/liste";
     }
+    @GetMapping("/new")
+    public String nouveaux(Model m,@SessionAttribute Utilisateur user){
+        Set<Review> reviews=reviewDao.findAllByValideIsFalse();
+        m.addAttribute("reviews",reviews);
+        return "review/liste";
+    }
+
     @GetMapping("/create/{filmId}")
     public String formCreer(Model m, @PathVariable("filmId") Long id, HttpSession session){
         Film film= filmDao.findById(id).get();
         Utilisateur utilisateur=(Utilisateur) session.getAttribute("user");
-        Review review=reviewDao.findByFilmAndAndUtilisateur(film,utilisateur);
+        Review review=reviewDao.findByFilmAndUtilisateur(film,utilisateur);
         if(review==null) {
             review = new Review(film, utilisateur);
         }
@@ -81,6 +90,14 @@ public class ReviewController {
         if (review.getUtilisateur().equals(utilisateur)||utilisateur.getType()==Utilisateur.admin) {
             reviewDao.delete(review);
         }
+        return "redirect:/review/liste";
+    }
+    @GetMapping("/valide/{id}")
+    public String valideReview(Model m,@PathVariable("id") Long id){
+        m.addAttribute("title","MAJ review");
+        Review review=reviewDao.findById(id).get();
+        review.setValide(true);
+        reviewDao.save(review);
         return "redirect:/review/liste";
     }
 }
