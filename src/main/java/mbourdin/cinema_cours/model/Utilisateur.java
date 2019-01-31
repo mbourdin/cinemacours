@@ -15,7 +15,7 @@ public class Utilisateur {
     static public final int admin=1;
     static public final int vendeur=2;
     static public final int normal=3;
-
+    static public final int visiteur=0;
     private long id;
     private String nom;
     private String prenom;
@@ -32,6 +32,13 @@ public class Utilisateur {
 
     public Utilisateur()
     {   type=Utilisateur.normal;
+        link=null;
+        hpw="";
+        abonne=Boolean.FALSE;
+    }
+    public Utilisateur(int type)
+    {
+        this.type=type;
         link=null;
         hpw="";
         abonne=Boolean.FALSE;
