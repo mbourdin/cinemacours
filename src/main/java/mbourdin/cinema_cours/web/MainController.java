@@ -7,6 +7,7 @@ import mbourdin.cinema_cours.dao.TmdbFilmDao;
 import mbourdin.cinema_cours.model.Film;
 import mbourdin.cinema_cours.model.MsgToAdmin;
 import mbourdin.cinema_cours.model.TmdbFilm;
+import mbourdin.cinema_cours.model.Utilisateur;
 import mbourdin.cinema_cours.service.FilmIdImport;
 import mbourdin.cinema_cours.service.FilmStream;
 import mbourdin.cinema_cours.service.ImageManager;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.io.BufferedReader;
 import java.time.LocalDate;
 
@@ -54,9 +56,9 @@ public class MainController {
 
 
     @GetMapping("/")
-    public String main(Model m){
+    public String main(Model m, HttpSession session){
         m.addAttribute("title","Accueil");
-
+        Utilisateur user=(Utilisateur) session.getAttribute("user");
         return "index";
     }
 
