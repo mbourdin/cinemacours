@@ -11,5 +11,6 @@ import java.util.Set;
 public interface PersonneDao extends CrudRepository<Personne, Long> {
     @Override
     Set<Personne> findAll();
-    List<Personne> findAllByOrderByNom();
+    List<Personne> findAllByOrderByName();
+    Personne findByTmdbId(Long id);
 }
