@@ -27,6 +27,7 @@ import java.io.OutputStream;
 import java.net.URISyntaxException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 
 @Controller
 @RequestMapping("/film")
@@ -82,6 +83,7 @@ public class FilmController {
         {   commentable=false;
 
         }
+        film.setRoles(playDao.findAllByFilm_IdOrderByNumeroAsc(id));
         m.addAttribute("film", film);
         m.addAttribute("commentable",commentable);
         return "film/detail";
