@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -46,7 +47,7 @@ public class ImageManager {
     }
 
     private String save(String prefix, String subPath, InputStream fi){
-        String fileName = "";
+        String fileName=prefix+"0000000.jpg" ;
         try(DirectoryStream<Path> dir = Files.newDirectoryStream(Paths.get(path+"/"+subPath),prefix+"*")){
 
             for (Path file: dir
