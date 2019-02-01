@@ -35,10 +35,11 @@
                 </ul>
 
                 <h3>Distribution</h3>
-                <ul class="sanspuce">
-                    <li th:each="role : ${film.getRoles()}"><a th:href="@{/personne/{Id} (Id=${role.personne.id})}" th:text="${role.personne.name}"></a></li>
-                </ul>
+                    <table class="ui inverted teal table centered">
 
+                        <tr th:each="role : ${film.getRoles()}"><td><a th:href="@{/personne/{Id} (Id=${role.personne.id})}" th:text="${role.personne.name}"></a></td><td></td><td th:text="${role.nom}"></td></tr>
+
+                    </table>
                 <span th:text="${film.resume}"></span>
                 <br>
 
