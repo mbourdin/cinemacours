@@ -15,7 +15,7 @@
         <td th:replace="navtemplate :: barrenav"></td>
 
         <td id="mainContent" class="twelve wide">
-
+        <H1 th:if="${reviews.isEmpty()}">Liste des commentaires VIDE</H1>
         <ul class="sanspuce">
             <li th:each="review : ${reviews}">
                 <div th:if="${(review.valide)} or ${session.admin!=null}">
