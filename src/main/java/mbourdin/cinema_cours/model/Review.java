@@ -18,10 +18,11 @@ public class Review {
         this.film = film;
         this.utilisateur = utilisateur;
         date=LocalDate.now();
+        valide=false;
     }
 
     public Review() {
-
+        valide=false;
     }
 
     @Id

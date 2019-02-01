@@ -86,7 +86,9 @@ public class Play  implements Comparable<Play> {
         if (this==obj) return true;
         if (!(obj instanceof Play))  return false;
         Play that=(Play) obj;
-        return that.id.equals(this);
+        if (this.id==null) return false;
+        if (that.id==null) return false;
+        return that.id.equals(this.id);
     }
 
     @Override
