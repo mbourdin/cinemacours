@@ -19,7 +19,7 @@
                     <td class="four wide" th:text="${seance.id}+' '+${seance.debut.format(formatter)}"></td>
                     <td class="six wide"><a th:href="@{/film/detail/{Id} (Id=${seance.film.id})}" th:text="${seance.film.titre}"></a></td>
                     <td class="two wide"><a class="ui green button"
-                                            th:href="@{/panier/commande/{Id} (Id=${seance.id})}">commander</a></td>
+                                            th:if="${session.panier}" th:href="@{/panier/commande/{Id} (Id=${seance.id})}">commander</a></td>
                     <th:block th:if="${session.admin!=null}">
                     <td class="two wide"><a class="ui red button"
                                             th:href="@{/seance/delete/{Id} (Id=${seance.id})}">Effacer</a></td>
