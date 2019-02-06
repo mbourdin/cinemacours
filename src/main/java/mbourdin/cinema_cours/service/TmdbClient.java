@@ -7,7 +7,6 @@ import mbourdin.cinema_cours.model.Film;
 import mbourdin.cinema_cours.model.Genre;
 import mbourdin.cinema_cours.model.Personne;
 import mbourdin.cinema_cours.model.Play;
-import org.checkerframework.checker.units.qual.A;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +24,6 @@ import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Optional;
 
 
@@ -76,11 +74,18 @@ public class TmdbClient {
     public Personne getPersonByTmdbId(long id) throws Exception
     {   RestTemplate template = new RestTemplate();
         ResponseEntity<String> response;
-        long reset;
+        Long reset;
+
         String resourceUrl = "https://api.themoviedb.org/3/person/"+id+"?api_key="+apiKey+"&language=fr-FR";
         response = template.getForEntity(resourceUrl, String.class);
         System.out.println(response.getBody());
         JSONObject person = new JSONObject(response.getBody());
+        int nbReq= Integer.parseInt(stripBraces(response.getHeaders().get("x-ratelimit-remaining").toString()));
+        System.out.println(nbReq+" requetes restantes");
+        reset = secondsBeforeReset(response.getHeaders().get("x-ratelimit-reset").toString());
+        if (nbReq==1)
+        {   Thread.sleep(reset*1001);
+        }
         Personne importedPerson;
 
         //Long tmdbId=person.getLong("id");
@@ -112,11 +117,29 @@ public class TmdbClient {
     public void getMovieByTmdbId(long id) throws Exception {
         RestTemplate template = new RestTemplate();
         ResponseEntity<String> response;
-        long reset;
+        Long reset;
 
         String resourceUrl = "https://api.themoviedb.org/3/movie/"+id+"?api_key="+apiKey+"&language=fr-FR";
         response = template.getForEntity(resourceUrl, String.class);
         System.out.println(response.getBody());
+        int nbReq= Integer.parseInt(stripBraces(response.getHeaders().get("x-ratelimit-remaining").toString()));
+        System.out.println(nbReq+" requetes restantes");
+        reset = secondsBeforeReset(response.getHeaders().get("x-ratelimit-reset").toString());
+        if (nbReq==1)
+        {   Thread.sleep(reset*1001);
+        }
+
+
+
+
+
+
+
+
+
+
+
+        System.out.println("Temps restant avant reset : "+reset+"\n\n");
         JSONObject film = new JSONObject(response.getBody());
         System.out.println("Titre : "+film.getString("title"));
 
@@ -172,12 +195,7 @@ public class TmdbClient {
 
         System.out.println(importedFilm);
 
-        //filmDao.save(importedFilm); la fonction getImage sauvegarde déja !
-
-        System.out.println("--------\nRequetes restantes : "+stripBraces(response.getHeaders().get("x-ratelimit-remaining").toString()));
-        reset = secondsBeforeReset(response.getHeaders().get("x-ratelimit-reset").toString());
-        System.out.println("Temps restant avant reset : "+reset+"\n\n");
-
+        filmDao.save(importedFilm);
 
         String resourceCredit = "https://api.themoviedb.org/3/movie/"+id+"/credits?api_key="+apiKey+"&language=fr-FR";
         response = template.getForEntity(resourceCredit, String.class);
@@ -223,14 +241,14 @@ public class TmdbClient {
                     filmDao.save(importedFilm);
                 //personneDao.save(realisateur); l'appel a la fonction précedente declanche déja une sauvegarde
                 }
+                importedFilm.setRealisateur(realisateur);
+                filmDao.save(importedFilm);
             }
             System.out.println(job);
         }
 
 
 
-        System.out.println("--------\nRequetes restantes : "+stripBraces(response.getHeaders().get("x-ratelimit-remaining").toString()));
-        reset = secondsBeforeReset(response.getHeaders().get("x-ratelimit-reset").toString());
-        System.out.println("Temps restant avant reset : "+reset+"\n\n");
+
     }
 }
