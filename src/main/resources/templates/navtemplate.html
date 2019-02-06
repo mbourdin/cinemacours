@@ -22,7 +22,7 @@
                             <div class="menu">
                                 <a class="item" href="/film/liste">liste</a>
                                 <a th:if="${session.admin!=null}" class="item" href="/film/add">creer</a>
-                                <a th:if="${session.admin!=null}" class="item" href="/film/import">importer</a>
+                                <a th:if="${session.admin!=null}" class="item" href="/film/import?str=">importer</a>
                             </div>
                         </div>
                         <div class="ui dropdown item">Personnes
@@ -39,7 +39,7 @@
                                 <a class="item" href="/user/create">creer</a>
                             </div>
                         </div>
-                        <div th:if="${session.admin!=null}" class="ui dropdown item">seances
+                        <div class="ui dropdown item">seances
                             <i class="dropdown icon"></i>
                             <div class="menu">
                                 <a class="item" href="/seance/semaine">cette semaine</a>
