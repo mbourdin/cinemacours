@@ -145,7 +145,7 @@ public class Film {
 
 
 
-    @OneToMany(mappedBy = "film",cascade=CascadeType.MERGE)
+    @OneToMany(mappedBy = "film",cascade={CascadeType.MERGE,CascadeType.REMOVE})
     @JsonIgnore
     public List<Play> getRoles() {
         return roles;
