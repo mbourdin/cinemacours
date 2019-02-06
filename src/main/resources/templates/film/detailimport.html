@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <th:block th:replace="basictemplate :: header_css">
+    </th:block>
+</head>
+<body>
+
+<header class="block" th:replace="basictemplate :: header"></header>
+
+<table class="table ui">
+
+    <tbody>
+    <tr>
+
+        <td th:replace="navtemplate :: barrenav"></td>
+
+        <td class="twelve wide" id="mainContent">
+            <table class="ui table">
+                <tr><td>
+            <form action="/film/detailImport"  method="get">
+                <label>importer par Id tmdb</label><input type="text" name="id"><input type="submit" value="importer">
+            </form>
+                </td></tr>
+                <tr><td>
+            <form action="/film/import" method="get">
+                <label>titre original</label><input type="text" name="str"><input type="submit" value="rechercher">
+            </form>
+                </td></tr>
+            <tr th:each="film : ${films}">
+                <td><a th:text="${film.id}+' '+${film.title}" th:href="@{/film/detailImport/{id} (id=${film.id})}" ></a></td>
+            </tr>
+            </table>
+
+        </td></tr></tbody></table>
+<footer th:replace="basictemplate :: footer"></footer>
+</body>
+</html>
