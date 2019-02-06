@@ -1,10 +1,7 @@
 package mbourdin.cinema_cours.web;
 
 import mbourdin.cinema_cours.dao.*;
-import mbourdin.cinema_cours.model.Film;
-import mbourdin.cinema_cours.model.Genre;
-import mbourdin.cinema_cours.model.Play;
-import mbourdin.cinema_cours.model.Utilisateur;
+import mbourdin.cinema_cours.model.*;
 import mbourdin.cinema_cours.service.FilmManager;
 import mbourdin.cinema_cours.service.GenreManager;
 import mbourdin.cinema_cours.service.ImageManager;
@@ -28,6 +25,7 @@ import java.net.URISyntaxException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
+import java.util.List;
 
 @Controller
 @RequestMapping("/film")
@@ -57,6 +55,8 @@ public class FilmController {
 
     @Autowired
     TmdbClient tmdbClient;
+    @Autowired
+    TmdbFilmDao tmdbFilmDao;
 
 
 
@@ -239,10 +239,19 @@ public class FilmController {
         return "redirect:/film/liste";
     }
 
-    @GetMapping("/import")
-    public String importer()
-    {   return "/film/import";
+    @GetMapping("/detailImport/{id}")
+    public String importerFilm(@PathVariable Long id)
+    {
+        return importFilm(id);
     }
 
-
+    @GetMapping("/import")
+    public String importer(Model m,@RequestParam String str)
+    {   if(str.length()>=3)
+        {
+            List<TmdbFilm> films=tmdbFilmDao.findAllByTitleContainingIgnoreCase(str);
+            m.addAttribute("films",films);
+        }
+        return "/film/import";
+    }
 }
