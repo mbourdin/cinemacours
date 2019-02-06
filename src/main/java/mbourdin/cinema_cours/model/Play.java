@@ -86,9 +86,8 @@ public class Play  implements Comparable<Play> {
         if (this==obj) return true;
         if (!(obj instanceof Play))  return false;
         Play that=(Play) obj;
-        if (this.id==null) return false;
-        if (that.id==null) return false;
-        return that.id.equals(this.id);
+        if(this.id!=null&&that.id!=null&&this.id==that.id)return true;
+        return(this.nom.equals(that.nom)&&this.film.equals(that.film)&&this.personne.equals(that.personne)&&this.numero==that.numero);
     }
 
     @Override
@@ -101,20 +100,20 @@ public class Play  implements Comparable<Play> {
                 ", film=" + film.getTitre() +
                 '}';
     }
+
     @Override
-    public int compareTo(Play o) {
-        if (this.personne.getId()<o.personne.getId()) return -1;
-        else if (personne.getId()>o.personne.getId()) return 1;
-        else if (film.getId()<o.film.getId()) return -1;
-        else if (film.getId()>o.film.getId()) return 1;
-        else return 0;
+    public int compareTo(Play that) {
+        if(this.equals(that)) return 0;
+        if(this.numero<that.numero) return -1;
+        return 1;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId());
+        return Objects.hash(getNom(), getNumero(), getFilm(), getPersonne());
     }
-    public void setAll(Film film,Personne personne,Integer numero,String nom)
+
+    public void setAll(Film film, Personne personne, Integer numero, String nom)
     {
         this.film=film;
         this.personne=personne;
