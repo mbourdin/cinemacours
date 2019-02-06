@@ -8,6 +8,7 @@ import java.io.*;
 import java.net.URL;
 import java.nio.file.Files;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.zip.GZIPInputStream;
 
@@ -16,14 +17,14 @@ public  class FilmStream {
     public static final String tempfiles="C:\\cinemaTMP\\";
 
 
-    private  static final DateTimeFormatter formatter=DateTimeFormatter.ofPattern("MM_DD_YYYY");
+    private  static final DateTimeFormatter formatter=DateTimeFormatter.ofPattern("MM_dd_yyyy");
         private BufferedReader br;
      public  BufferedReader getBr()
      { return br;
      }
      public FilmStream()
      {
-         String adresse="http://files.tmdb.org/p/exports/movie_ids_"+ LocalDate.now().minusDays(1).format(formatter)+".json.gz";
+         String adresse="http://files.tmdb.org/p/exports/movie_ids_"+ LocalDateTime.now().minusDays(2).format(formatter)+".json.gz";
          try {
              //sauvegarde du fichier
          InputStream httpIs = new URL(adresse).openStream();
