@@ -17,12 +17,23 @@
         <td th:replace="navtemplate :: barrenav"></td>
 
         <td class="twelve wide" id="mainContent">
-
+            <table class="ui table">
+                <tr><td>
             <form action="/film/detailImport"  method="get">
-                <label>Id tmdb</label><input type="text" name="id">
+                <label>importer par Id tmdb</label><input type="text" name="id"><input type="submit" value="importer">
             </form>
-        </td></tr></tbody></table>
+                </td></tr>
+                <tr><td>
+            <form action="/film/import" method="get">
+                <label>titre original</label><input type="text" name="str"><input type="submit" value="rechercher">
+            </form>
+                </td></tr>
+            <tr th:each="film : ${films}">
+                <td><a th:text="${film.id}+' '+${film.title}" th:href="@{/film/detailImport/{id} (id=${film.id})}" ></a></td>
+            </tr>
+            </table>
 
+        </td></tr></tbody></table>
 <footer th:replace="basictemplate :: footer"></footer>
 </body>
 </html>
