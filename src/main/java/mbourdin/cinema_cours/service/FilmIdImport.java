@@ -1,8 +1,6 @@
 package mbourdin.cinema_cours.service;
 
-import mbourdin.cinema_cours.dao.FilmDao;
 import mbourdin.cinema_cours.dao.TmdbFilmDao;
-import mbourdin.cinema_cours.model.Film;
 import mbourdin.cinema_cours.model.TmdbFilm;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
