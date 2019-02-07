@@ -29,7 +29,7 @@
             </form>
                 </td></tr>
             <tr th:each="film : ${films}">
-                <td><a th:text="${film.id}+' '+${film.title}" th:href="@{/film/detailImport/{id} (id=${film.id})}" ></a></td>
+                <td><a th:text="${film.id}+' '+${film.title}" th:href="@{/film/smallDetail/{id} (id=${film.id})}" ></a></td>
             </tr>
             </table>
 

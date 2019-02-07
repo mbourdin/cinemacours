@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <th:block th:replace="basictemplate :: header_css">
+    </th:block>
+</head>
+<body>
+
+<header class="block" th:replace="basictemplate :: header"></header>
+
+<table class="table ui">
+
+    <tbody>
+    <tr>
+
+        <td th:replace="navtemplate :: barrenav"></td>
+
+        <td class="twelve wide" id="mainContent">
+            <table class="ui table">
+                <tr><td>
+                    <h1>Détail du film</h1>
+                    <h3 th:text="${film.getTitre()}">détail du film</h3>
+                    <h3>Realisateur:<a th:if="${film.getRealisateur()!=null}" th:href="@{/personne/{Id} (Id=${film.getRealisateur().getId()})}" th:text="${film.realisateur.name}">Bay Michel</a></h3>
+                    <h3 th:text="'sorti le ' +${film.formattedDate()}"></h3>
+                    <span th:text="${film.resume}"></span>
+                    <h3>Note:<span th:text="${film.note}">10</span></h3>
+                    <a class="ui green button" th:href="@{/film/detailImport/{id} (id=${film.tmdbId})}" >importer</a>
+           </td>
+            </tr>
+            </table>
+
+        </td></tr></tbody></table>
+<footer th:replace="basictemplate :: footer"></footer>
+</body>
+</html>
