@@ -39,6 +39,10 @@ public class FilmManager {
         return filmDao.findById(id).get();
     }
 
+    public Film getByTmdbId(long id){
+        return filmDao.findByTmdbId(id).get();
+    }
+
     public List<Film> getAll(){
         return filmDao.findAllByOrderByTitreAsc();
     }
