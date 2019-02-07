@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
@@ -225,9 +226,15 @@ public class FilmController {
 
     }
 
+    @GetMapping("/smallDetail/{id}")
+    public String smallDetail(Model m,@PathVariable Long id)
+    {   Film film=tmdbClient.getMovieSmallDetail(id);
+        m.addAttribute("film",film);
+        return "/film/smalldetail";
+    }
 
     @GetMapping("/detailImport")
-    public String importFilm(@RequestParam Long id) {
+    public String importFilm(@RequestParam Long id,RedirectAttributes attributes) {
         Film film;
 
         try {
@@ -235,14 +242,14 @@ public class FilmController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        attributes.addFlashAttribute("flashMessage", "le film "+filmManager.getByTmdbId(id).getTitre()+" a bien été ajouté");
         return "redirect:/film/liste";
     }
 
     @GetMapping("/detailImport/{id}")
-    public String importerFilm(@PathVariable Long id)
+    public String importerFilm(@PathVariable Long id,RedirectAttributes attributes)
     {
-        return importFilm(id);
+        return importFilm(id,attributes);
     }
 
     @GetMapping("/import")
