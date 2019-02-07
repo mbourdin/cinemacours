@@ -114,8 +114,8 @@ public class TmdbClient {
         personneDao.save(importedPerson);
         return importedPerson;
     }
-    public void getMovieByTmdbId(long id) throws Exception {
-        RestTemplate template = new RestTemplate();
+    public Film getMovieSmallDetail(Long id)
+    {    RestTemplate template = new RestTemplate();
         ResponseEntity<String> response;
         Long reset;
 
@@ -126,26 +126,75 @@ public class TmdbClient {
         System.out.println(nbReq+" requetes restantes");
         reset = secondsBeforeReset(response.getHeaders().get("x-ratelimit-reset").toString());
         if (nbReq==1)
-        {   Thread.sleep(reset*1001);
+        {   try{Thread.sleep(reset*1001);}catch (Exception e){e.printStackTrace();}
         }
-
-
-
-
-
-
-
-
-
-
-
         System.out.println("Temps restant avant reset : "+reset+"\n\n");
         JSONObject film = new JSONObject(response.getBody());
         System.out.println("Titre : "+film.getString("title"));
 
+        Film importedFilm=new Film();
+        Long tmdbId=film.getLong("id");
+        String imagepath=film.getString("poster_path");
+        String titreOriginal=film.getString("original_title");
+        Double note=film.getDouble("vote_average")/2;
+        LocalDate annee=LocalDate.parse(film.getString("release_date"));
+        String titre=film.getString("title");
+        String resume=film.getString("overview");
+        Integer duree=null;
+        if(!film.isNull("runtime")) {
+            duree= film.getInt("runtime");
+        }
+        importedFilm.setTmdbId(tmdbId);
+        importedFilm.setTitreOriginal(titreOriginal);
+        importedFilm.setTitre(titre);
+        importedFilm.setAnnee(annee);
+        importedFilm.setResume(resume);
+        importedFilm.setNote(note);
+        importedFilm.setDuree(duree);
+        importedFilm.setAfficheNom(imagepath);
+
+        String resourceCredit = "https://api.themoviedb.org/3/movie/"+id+"/credits?api_key="+apiKey+"&language=fr-FR";
+        response = template.getForEntity(resourceCredit, String.class);
+        JSONObject credit = new JSONObject(response.getBody());
+
+        Personne acteur;
+        Play play;
+        JSONArray cast =credit.getJSONArray("cast");
+        Personne realisateur=new Personne();
+        JSONArray crew=credit.getJSONArray("crew");
+        for (int i = 0; i < crew.length(); i++ ) {
+            JSONObject job =crew.getJSONObject(i);
+            String jobtitle=job.getString("job");
+            if(jobtitle.equals("Director"))
+            {   i=crew.length();
+                 try{realisateur=getPersonByTmdbId(job.getLong("id"));}catch (Exception e){e.printStackTrace();}
+                    getImage(realisateur);
+                    importedFilm.setRealisateur(realisateur);
+                    //personneDao.save(realisateur); l'appel a la fonction précedente declanche déja une sauvegarde
+
+                importedFilm.setRealisateur(realisateur);
+            }
+            System.out.println(job);
+        }
+
+        return importedFilm;
+    }
+
+    public void getMovieByTmdbId(long id) throws Exception {
+        RestTemplate template = new RestTemplate();
+        ResponseEntity<String> response;
+        Long reset;
         Film importedFilm;
-
-
+        String resourceUrl = "https://api.themoviedb.org/3/movie/"+id+"?api_key="+apiKey+"&language=fr-FR";
+        response = template.getForEntity(resourceUrl, String.class);
+        System.out.println(response.getBody());
+        int nbReq= Integer.parseInt(stripBraces(response.getHeaders().get("x-ratelimit-remaining").toString()));
+        System.out.println(nbReq+" requetes restantes");
+        reset = secondsBeforeReset(response.getHeaders().get("x-ratelimit-reset").toString());
+        if (nbReq==1)
+        {   Thread.sleep(reset*1001);
+        }
+        JSONObject film = new JSONObject(response.getBody());
         Long tmdbId=film.getLong("id");
         String imagepath=film.getString("poster_path");
         JSONArray genres=film.getJSONArray("genres");
@@ -154,8 +203,12 @@ public class TmdbClient {
         LocalDate annee=LocalDate.parse(film.getString("release_date"));
         String titre=film.getString("title");
         String resume=film.getString("overview");
-        Integer duree=film.getInt("runtime");
-
+        Integer duree=null;
+        if(!film.isNull("runtime")) {
+            duree= film.getInt("runtime");
+        }
+        System.out.println("Temps restant avant reset : "+reset+"\n\n");
+        System.out.println("Titre : "+film.getString("title"));
         Optional<Film> filmOptional=filmDao.findByTmdbId(tmdbId);
         if(filmOptional.isPresent())
         {   importedFilm=filmOptional.get();
@@ -194,7 +247,6 @@ public class TmdbClient {
 
 
         System.out.println(importedFilm);
-
         filmDao.save(importedFilm);
 
         String resourceCredit = "https://api.themoviedb.org/3/movie/"+id+"/credits?api_key="+apiKey+"&language=fr-FR";
