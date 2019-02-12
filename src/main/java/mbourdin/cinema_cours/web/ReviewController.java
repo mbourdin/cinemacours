@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -63,9 +64,21 @@ public class ReviewController {
         return "review/create";
     }
     @PostMapping("/create")
-    public String creer(@ModelAttribute Review review,@SessionAttribute Utilisateur user){
-        if (review.getUtilisateur().equals(user)||user.getType()==Utilisateur.admin) {
-            reviewDao.save(review);
+    public String creer(@ModelAttribute Review review,@SessionAttribute Utilisateur user,RedirectAttributes attributes){
+        if (   (review.getUtilisateur().equals(user)||user.getType()==Utilisateur.admin)
+                && (!reviewDao.existsByFilmAndUtilisateur(review.getFilm(),user))
+        )
+        {
+            if (review.getArticle().length()==0 || review.getArticle().length()>1500)
+            {   attributes.addFlashAttribute("flashMessage", "votre commentaire est vide, ou trop long, ne dépassez pas 1500 caractères");
+                return "redirect:/film/detail/"+review.getFilm().getId();
+            }
+            try{reviewDao.save(review);
+                attributes.addFlashAttribute("flashMessage", "l'ajout de votre commentaire sur "+review.getFilm().getTitre()+" a réussi, il sera visible une fois validé par la modération");
+            }catch (Exception e)
+            {//e.printStackTrace();
+                attributes.addFlashAttribute("flashMessage", "l'ajout de votre commentaire a échoué");
+            }
         }
         return "redirect:/film/detail/"+review.getFilm().getId();
     }

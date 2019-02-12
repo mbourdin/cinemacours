@@ -77,16 +77,15 @@ public class FilmController {
         Film film = filmManager.getById(id);
         Utilisateur user=(Utilisateur) session.getAttribute("user");
         boolean commentable=true;
-        if(
-                (user==null) ||
-                        (reviewDao.findByFilmAndUtilisateur(film,user)!=null)
+        if(     (user==null) ||
+                (reviewDao.findByFilmAndUtilisateur(film,user)!=null)
             )
         {   commentable=false;
-
         }
         film.setRoles(playDao.findAllByFilm_IdOrderByNumeroAsc(id));
         m.addAttribute("film", film);
         m.addAttribute("commentable",commentable);
+        m.addAttribute("reviews",reviewDao.findAllByFilmAndValideIsTrueOrderByDateDesc(film));
         return "film/detail";
     }
 

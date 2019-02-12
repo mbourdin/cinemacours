@@ -10,6 +10,7 @@ package mbourdin.cinema_cours.web;
         import org.springframework.stereotype.Controller;
         import org.springframework.ui.Model;
         import org.springframework.web.bind.annotation.*;
+        import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
         import javax.mail.internet.AddressException;
         import javax.mail.internet.InternetAddress;
@@ -66,7 +67,7 @@ public class LoginController {
         return "/login/recoverPW";
     }
     @PostMapping("/recover")
-    public String sendRecoverEmail(@RequestParam  String email,Model m)
+    public String sendRecoverEmail(@RequestParam  String email, RedirectAttributes attributes)
     {//TODO fonction qui envoie un mail contenant un lien de connection à usage unique
         //ne pas essayer de faire le getparameter dans le findbyemail,
         // cela conduit à un comportement des plus etranges,
@@ -81,14 +82,14 @@ public class LoginController {
             InternetAddress[] addresses=new InternetAddress[1];
             addresses[0]=adresse;
             Email mail=new Email(texte,"Recupération Mot de passe Les Nanars Sauvages",addresses);
-        mail.send();}catch (AddressException e)
-            {m.addAttribute("message","adresse email invalide");
+        mail.send();
+            attributes.addFlashAttribute("flashMessage", "Un mail de connection a été envoyé à l'adresse : "+email);
+        }catch (AddressException e)
+            {attributes.addFlashAttribute("flashMessage", "echec d'envoi du mail de récupération à l'adresse "+email);
                 e.printStackTrace();
-                return connection(m);
             }
-        m.addAttribute("message","Un mail de connection a été envoyé à l'adresse : "+email);
         //redirige vers la page de connexion, en affichant qu'un message a été envoyé
-        return connection(m);
+        return "redirect:/login/connection";
     }
     @PostMapping("/subscribe")
     public String sendConfirmationEmail(@ModelAttribute Utilisateur newuser,@RequestParam("password") String password)

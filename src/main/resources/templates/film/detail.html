@@ -44,6 +44,21 @@
                 <br>
 
                 <br><a class=centered th:href="@{/review/listeParFilm/{id} (id=${film.id})}">Liste des commentaires sur ce film</a>
+                    <ul class="sanspuce">
+                        <li th:each="review : ${reviews}">
+                            <div th:if="${(review.valide)} or ${session.admin!=null}">
+                                <a th:href="@{/film/detail/{Id} (Id=${review.film.id})}"
+                                   th:text="${'commentaire sur : '+review.film.titre} +' du ' + ${review.formattedDate()}"></a>
+                                <div th:text="'utilisateur: '+${review.utilisateur.nom}+' '+${review.utilisateur.prenom}"></div>
+                                <div th:text="'valide = '+${review.valide}" th:if="${session.admin!=null}"></div>
+                                <div th:text="${review.article}"></div>
+                                <br/><a class="ui red button" th:href="@{/review/delete/{Id} (Id=${review.id})}"
+                                        th:if="${session.admin!=null} or ( ${session.user!=null} and ${session.user.equals(review.utilisateur)})">Effacer</a>
+                            </div>
+                            <a class="ui green button" th:href="@{/review/valide/{Id} (Id=${review.id})}"
+                               th:if="${session.admin!=null} and !${(review.valide)}">valider</a>
+                        </li>
+                    </ul>
                 <br><a th:if="${commentable}" th:href="@{/review/create/{id} (id=${film.id})}">commenter ce film</a>
                 <br/><a class="ui red button" th:if="${session.admin!=null}" th:href="@{/film/delete/{Id} (Id=${film.id})}">Effacer</a>
                 <br/><a class="ui yellow button" th:if="${session.admin!=null}" th:href="@{/film/mod/{Id} (Id=${film.id})}">Editer</a>
