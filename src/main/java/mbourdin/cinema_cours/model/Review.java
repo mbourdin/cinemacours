@@ -1,7 +1,10 @@
 package mbourdin.cinema_cours.model;
 
+import mbourdin.cinema_cours.web.SeanceController;
+
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
@@ -11,13 +14,13 @@ public class Review {
     private Film film;
     private Utilisateur utilisateur;
     private String article;
-    private LocalDate date;
+    private LocalDateTime date;
     private Boolean valide;
 
     public Review(Film film, Utilisateur utilisateur) {
         this.film = film;
         this.utilisateur = utilisateur;
-        date=LocalDate.now();
+        date=LocalDateTime.now();
         valide=false;
     }
 
@@ -64,11 +67,11 @@ public class Review {
     }
     @Basic
     @Column(name = "datte", nullable = false)
-    public LocalDate getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 
@@ -93,5 +96,10 @@ public class Review {
     @Override
     public int hashCode() {
         return Objects.hash(getId());
+    }
+
+    public String formattedDate()
+    {
+        return date.format(SeanceController.formatter);
     }
 }
