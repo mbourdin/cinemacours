@@ -137,4 +137,8 @@ public class MainController {
         }catch (Exception e){e.printStackTrace();}
         return "/index";
     }
+    @GetMapping("/error/{id}")
+    public String error(@PathVariable Long id)
+    {   return "/error/"+id;
+    }
 }

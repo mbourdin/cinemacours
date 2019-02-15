@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.persistence.Basic;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Set;
@@ -30,7 +31,7 @@ public class ReviewController {
     public String listeParFilm(Model m, @PathVariable("filmId") Long id){
 
         Film film= filmDao.findById(id).get();
-        m.addAttribute("reviews",reviewDao.findAllByFilmAndValideIsTrue(film));
+        m.addAttribute("reviews",reviewDao.findAllByFilmAndEtat(film,Review.PUBLIE));
         return "review/liste";
     }
     @GetMapping("/listeParUtilisateur/{userId}")
@@ -47,11 +48,16 @@ public class ReviewController {
     }
     @GetMapping("/new")
     public String nouveaux(Model m,@SessionAttribute Utilisateur user){
-        Set<Review> reviews=reviewDao.findAllByValideIsFalse();
+        Set<Review> reviews=reviewDao.findAllByEtat(Review.NOUVEAU);
         m.addAttribute("reviews",reviews);
         return "review/liste";
     }
-
+    @GetMapping("/mesCommentaires")
+    public String mesCommentaires(Model m,@SessionAttribute Utilisateur user){
+        Set<Review> reviews=reviewDao.findAllByUtilisateur(user);
+        m.addAttribute("reviews",reviews);
+        return "review/liste";
+    }
     @GetMapping("/create/{filmId}")
     public String formCreer(Model m, @PathVariable("filmId") Long id, HttpSession session){
         Film film= filmDao.findById(id).get();
@@ -60,12 +66,16 @@ public class ReviewController {
         if(review==null) {
             review = new Review(film, utilisateur);
         }
+        else
+        {   return "/error/403";
+        }
+        m.addAttribute("action","create");
         m.addAttribute("review",review);
         return "review/create";
     }
     @PostMapping("/create")
     public String creer(@ModelAttribute Review review,@SessionAttribute Utilisateur user,RedirectAttributes attributes){
-        if (   (review.getUtilisateur().equals(user)||user.getType()==Utilisateur.admin)
+        if (   (review.getUtilisateur().equals(user))
                 && (!reviewDao.existsByFilmAndUtilisateur(review.getFilm(),user))
         )
         {
@@ -82,35 +92,103 @@ public class ReviewController {
         }
         return "redirect:/film/detail/"+review.getFilm().getId();
     }
-    @GetMapping("/{id}")
+    @PostMapping("/update")
+    public String updater(@ModelAttribute Review review,@SessionAttribute Utilisateur user,RedirectAttributes attributes){
+        if (   (review.getUtilisateur().equals(user))
+                &&(review.editable())
+        )
+        {
+            if (review.getArticle().length()==0 || review.getArticle().length()>1500)
+            {   attributes.addFlashAttribute("flashMessage", "votre commentaire est vide, ou trop long, ne dépassez pas 1500 caractères");
+                return "redirect:/review/mesCommentaires";
+            }
+            try{review.editer();
+                reviewDao.save(review);
+                attributes.addFlashAttribute("flashMessage", "l'edition de votre commentaire sur "+review.getFilm().getTitre()+" a réussi, il sera visible une fois validé par la modération");
+            }catch (Exception e)
+            {//e.printStackTrace();
+                attributes.addFlashAttribute("flashMessage", "l'edition de votre commentaire a échoué");
+            }
+            return "redirect:/review/mesCommentaires";
+        }
+        else
+        {   return "/error/403";
+        }
+    }
+
+    @GetMapping("/detail/{id}")
     public String reviewParId(Model m,@PathVariable("id") Long id){
         m.addAttribute("title","MAJ review");
         Review review=reviewDao.findById(id).get();
         m.addAttribute("review", review);
-        return "review/create";
+        return "review/detail";
     }
     @GetMapping("/update/{id}")
     public String updateReview(Model m,@PathVariable("id") Long id){
         m.addAttribute("title","MAJ review");
         Review review=reviewDao.findById(id).get();
         m.addAttribute("review", review);
+        m.addAttribute("action","update");
         return "review/create";
     }
-    @GetMapping("delete/{id}")
-    public String deleteReview(@PathVariable("id") Long id,HttpSession session){
-        Review review=reviewDao.findById(id).get();
-        Utilisateur utilisateur=(Utilisateur) session.getAttribute("user");
-        if (review.getUtilisateur().equals(utilisateur)||utilisateur.getType()==Utilisateur.admin) {
-            reviewDao.delete(review);
-        }
-        return "redirect:/review/liste";
-    }
+
     @GetMapping("/valide/{id}")
-    public String valideReview(Model m,@PathVariable("id") Long id){
-        m.addAttribute("title","MAJ review");
-        Review review=reviewDao.findById(id).get();
-        review.setValide(true);
-        reviewDao.save(review);
-        return "redirect:/review/new";
+    public String valideReview(@PathVariable("id") Long id,HttpSession session){
+        Boolean admin=(Boolean)session.getAttribute("admin");
+        if(admin==null) admin=Boolean.FALSE;
+        if(admin) {
+            Review review = reviewDao.findById(id).get();
+            review.publier();
+            reviewDao.save(review);
+            return "redirect:/review/new";
+        }
+        return "redirect:/error/403";
+    }
+    @GetMapping("/rejeter/{id}")
+    public String rejectReview(@PathVariable("id") Long id,HttpSession session){
+        Boolean admin=(Boolean)session.getAttribute("admin");
+        if(admin==null) admin=Boolean.FALSE;
+        if(admin) {
+            Review review = reviewDao.findById(id).get();
+            review.rejeter();
+            reviewDao.save(review);
+            return "redirect:/review/new";
+        }
+        return "redirect:/error/403";
+    }
+    @GetMapping("/retenir/{id}")
+    public String retenirReview(@PathVariable("id") Long id,HttpSession session){
+        Boolean admin=(Boolean)session.getAttribute("admin");
+        if(admin==null) admin=Boolean.FALSE;
+        if(admin) {
+            Review review = reviewDao.findById(id).get();
+            review.retenirPourModif();
+            reviewDao.save(review);
+            return "redirect:/review/new";
+        }
+        return "redirect:/error/403";
+    }
+
+    @GetMapping("/supprimer/{id}")
+    public String supprimerReview(@PathVariable("id") Long id,HttpSession session){
+        Utilisateur user=(Utilisateur) session.getAttribute("user");
+        Review review = reviewDao.findById(id).get();
+        if(user.equals(review.getUtilisateur())) {
+            review.supprimer();
+            reviewDao.save(review);
+            return "redirect:/review/mesCommentaires";
+        }
+        return "redirect:/error/403";
+    }
+    @GetMapping("/abandonner/{id}")
+    public String abandonnerReview(@PathVariable("id") Long id,HttpSession session){
+        Utilisateur user=(Utilisateur) session.getAttribute("user");
+        Review review = reviewDao.findById(id).get();
+        if(user.equals(review.getUtilisateur())) {
+            review.abandonner();
+            reviewDao.save(review);
+            return "redirect:/review/mesCommentaires";
+        }
+        return "redirect:/error/403";
     }
 }

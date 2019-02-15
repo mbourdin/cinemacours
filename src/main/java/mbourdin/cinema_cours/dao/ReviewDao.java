@@ -11,8 +11,10 @@ import java.util.Set;
 
 public interface ReviewDao extends CrudRepository<Review,Long> {
        Review findByFilmAndUtilisateur(Film film, Utilisateur utilisateur);
-       Set<Review> findAllByFilmAndValideIsTrue(Film film);
-       Set<Review> findAllByValideIsFalse();
+
+       Set<Review> findAllByFilmAndEtat(Film film,int etat);
+       Set<Review> findAllByEtat(int etat);
        Boolean existsByFilmAndUtilisateur(Film film,Utilisateur utilisateur);
-       List<Review> findAllByFilmAndValideIsTrueOrderByDateDesc(Film film);
+       List<Review> findAllByFilmAndEtatOrderByDateDesc(Film film,int etat);
+       Set<Review> findAllByUtilisateur(Utilisateur utilisateur);
 }

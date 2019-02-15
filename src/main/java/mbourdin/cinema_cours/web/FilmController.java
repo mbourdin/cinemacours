@@ -78,14 +78,14 @@ public class FilmController {
         Utilisateur user=(Utilisateur) session.getAttribute("user");
         boolean commentable=true;
         if(     (user==null) ||
-                (reviewDao.findByFilmAndUtilisateur(film,user)!=null)
+                (reviewDao.existsByFilmAndUtilisateur(film,user))
             )
         {   commentable=false;
         }
         film.setRoles(playDao.findAllByFilm_IdOrderByNumeroAsc(id));
         m.addAttribute("film", film);
         m.addAttribute("commentable",commentable);
-        m.addAttribute("reviews",reviewDao.findAllByFilmAndValideIsTrueOrderByDateDesc(film));
+        m.addAttribute("reviews",reviewDao.findAllByFilmAndEtatOrderByDateDesc(film,Review.PUBLIE));
         return "film/detail";
     }
 
@@ -103,7 +103,7 @@ public class FilmController {
         m.addAttribute("readonly", Boolean.TRUE);
         m.addAttribute("newrole", new Play());
         m.addAttribute("film", new Film());
-        return "film/create";
+        return "/film/create";
     }
 
     @PostMapping("/create")

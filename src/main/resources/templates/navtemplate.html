@@ -61,11 +61,12 @@
                                 <a class="item" href="/news/liste">liste</a>
                             </div>
                         </div>
-                        <div th:if="${session.admin!=null}" class="ui dropdown item">commentaires
+                        <div  class="ui dropdown item">commentaires
                             <i class="dropdown icon"></i>
                             <div class="menu">
-                                <a class="item" href="/review/new">nouveaux</a>
-                                <a class="item" href="/review/liste">tous</a>
+                                <a class="item" href="/review/new" th:if="${session.admin!=null}">nouveaux</a>
+                                <a class="item" href="/review/liste" th:if="${session.admin!=null}">tous</a>
+                                <a class="item" href="/review/mesCommentaires" th:if="${session.user!=null}">mesCommentaires</a>
                             </div>
                         </div>
 

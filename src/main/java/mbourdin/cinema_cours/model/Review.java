@@ -15,17 +15,29 @@ public class Review {
     private Utilisateur utilisateur;
     private String article;
     private LocalDateTime date;
-    private Boolean valide;
+    private int etat;
+    //etats possibles
+    public static final int NOUVEAU=0;
+    public static final int PUBLIE=1;
+    public static final int AMODIFIER=2;
+    public static final int ABANDONNE=3;
+    public static final int REJETE=4;
+    public static final int SUPPRIME=5;
+    private static final String[] etatStrings={"nouveau","publié","à modifier","abandonné","rejeté","supprimé"};
+
+    public String etatString()
+    {   return etatStrings[etat];
+    }
 
     public Review(Film film, Utilisateur utilisateur) {
         this.film = film;
         this.utilisateur = utilisateur;
         date=LocalDateTime.now();
-        valide=false;
+        etat=NOUVEAU;
     }
 
     public Review() {
-        valide=false;
+        etat=NOUVEAU;
     }
 
     @Id
@@ -76,13 +88,13 @@ public class Review {
     }
 
     @Basic
-    @Column(name="valide")
-    public Boolean getValide() {
-        return valide;
+    @Column(name="etat",nullable = false,columnDefinition="INTEGER default '0'")
+    public int getEtat() {
+        return etat;
     }
 
-    public void setValide(Boolean valide) {
-        this.valide = valide;
+    public void setEtat(int etat) {
+        this.etat = etat;
     }
 
     @Override
@@ -98,8 +110,43 @@ public class Review {
         return Objects.hash(getId());
     }
 
-    public String formattedDate()
-    {
+    public String formattedDate() {
         return date.format(SeanceController.formatter);
+    }
+
+    public void publier() {
+        if (etat == NOUVEAU) etat = PUBLIE;
+    }
+
+    public void supprimer() {
+        if (etat == PUBLIE) etat = SUPPRIME;
+    }
+
+    public void retenirPourModif() {
+        if (etat == NOUVEAU) etat = AMODIFIER;
+    }
+
+    public void rejeter() {
+        if (etat == NOUVEAU) etat = REJETE;
+    }
+
+    public void abandonner() {
+        if (etat == AMODIFIER) etat = ABANDONNE;
+    }
+
+    public void editer() {
+        if (editable()) etat = NOUVEAU;
+    }
+
+    public boolean editable() {
+        return (etat == NOUVEAU || etat == AMODIFIER || etat == PUBLIE);
+    }
+
+    public boolean nouveau() {
+        return etat == NOUVEAU;
+    }
+
+    public boolean publie() {
+        return etat == PUBLIE;
     }
 }

@@ -18,7 +18,7 @@
 
         <td id="mainContent" class="twelve wide">
 
-        <form action="/review/create" method="post">
+        <form th:action="'/review/'+${action}" action="/review/create" method="post">
             <input type="hidden" th:field="${review.id}"/>
             <input type="hidden" th:field="${review.film}"/>
             <input type="hidden" th:field="${review.utilisateur}"/>
