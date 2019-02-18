@@ -26,7 +26,7 @@
             <h2 th:if="${choix}" th:text="${choix}"></h2>
                 <table class="ui table">
         <tr  th:each="film : ${listefilms}">
-            <td class="two wide" th:text="${film.id}"></td>
+
             <td class="ten wide"><a th:href="@{/film/detail/{Id} (Id=${film.id})}"
                                       th:text="${film.titre}+' '+${film.note}"></a></td>
 
