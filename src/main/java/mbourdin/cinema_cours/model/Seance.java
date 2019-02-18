@@ -93,8 +93,7 @@ public class Seance {
         return Objects.hash(getId());
     }
 
-    @Override
-    public String toString()
+    public String formattedDate()
     {   return debut.format(DateTimeFormatter.ofPattern("EEEE dd MMMM yyyy HH:mm", Locale.FRANCE));
     }
 }

@@ -14,9 +14,18 @@
                     <div class="ui vertical inverted menu navbar teal">
 
                         <!--<a href="" class="active item">Link</a>-->
-                        <a class="item" href="/">Home</a>
-                        <a class="item" href="/user/selfupdate">Mon compte</a>
+
+
+
                         <a class="item" href="/planDAcces">plan d'acces</a>
+                        <div class="ui dropdown item" th:if="${session.user}">Mon compte
+                            <i class="dropdown icon"></i>
+                            <div class="menu">
+                                <a class="item" href="/user/selfupdate">Mettre a jour mes parametres de compte</a>
+                                <a class="item" href="/panier/detail">Mon panier</a>
+                                <a class="item" href="/panier/mesCommandes">Mes commandes</a>
+                            </div>
+                        </div>
                         <div class="ui dropdown item">Films
                             <i class="dropdown icon"></i>
                             <div class="menu">

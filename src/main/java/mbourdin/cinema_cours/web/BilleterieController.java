@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/panier")
@@ -24,12 +25,7 @@ public class BilleterieController {
     @Autowired
     CommandeDao commandeDao;
 
-    @GetMapping("/annuler")
-    String supprimerCmd(@SessionAttribute Utilisateur user)
-    {   Commande commande=commandeDao.findCommandeByPayeFalseAndUtilisateur(user);
-        commandeDao.delete(commande);
-        return "redirect:/panier/detail";
-    }
+
     @GetMapping("/payer")
     String payer(Model m,HttpSession session,@SessionAttribute Panier panier, @SessionAttribute Utilisateur user,@SessionAttribute Commande commande)
     {   if(commande.getId()==null)
@@ -49,6 +45,12 @@ public class BilleterieController {
 
         return "panier/commande";
     }
+    @GetMapping("/mesCommandes")
+    String listerCommandes(@SessionAttribute Utilisateur user,Model m)
+    {    Set<Commande> commandes= commandeDao.findAllByUtilisateur(user);
+        m.addAttribute("commandes",commandes);
+        return "/panier/listeCommandes";
+    }
     @GetMapping("/commande/{id}")
     String commander(@PathVariable Long id, Model m) {
         m.addAttribute("seance", seanceDao.findById(id).get());
@@ -56,7 +58,7 @@ public class BilleterieController {
     }
     @GetMapping("/enCours")
     String getCmd(@SessionAttribute Utilisateur user,HttpSession session)
-    {   Commande commande=commandeDao.findCommandeByPayeFalseAndUtilisateur(user);
+    {   Commande commande=commandeDao.findByPayeFalseAndUtilisateur(user);
         session.setAttribute("commande",commande);
         for(Billet billet : commande.getBillets())
         {
@@ -86,6 +88,7 @@ public class BilleterieController {
             billet.setPrix(Seance.prixdefaut);
         }
         session.setAttribute("strings",panier.toStrings());
+
         return "redirect:/panier/detail";
     }
     @GetMapping("/detail")

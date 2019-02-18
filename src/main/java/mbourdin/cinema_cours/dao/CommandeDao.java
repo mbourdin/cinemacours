@@ -9,5 +9,6 @@ import java.util.Optional;
 import java.util.Set;
 
 public interface CommandeDao extends CrudRepository<Commande,Long> {
-    Commande findCommandeByPayeFalseAndUtilisateur(Utilisateur utilisateur);
+    Commande findByPayeFalseAndUtilisateur(Utilisateur utilisateur);
+    Set<Commande> findAllByUtilisateur(Utilisateur utilisateur);
 }

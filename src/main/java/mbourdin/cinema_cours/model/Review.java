@@ -116,26 +116,32 @@ public class Review {
 
     public void publier() {
         if (etat == NOUVEAU) etat = PUBLIE;
+        else throw new IllegalStateException("error in review.publier() : transition interdite");
     }
 
     public void supprimer() {
         if (etat == PUBLIE) etat = SUPPRIME;
+        else throw new IllegalStateException("error in review.publier() : transition interdite");
     }
 
     public void retenirPourModif() {
         if (etat == NOUVEAU) etat = AMODIFIER;
+        else throw new IllegalStateException("error in review.publier() : transition interdite");
     }
 
     public void rejeter() {
         if (etat == NOUVEAU) etat = REJETE;
+        else throw new IllegalStateException("error in review.publier() : transition interdite");
     }
 
     public void abandonner() {
         if (etat == AMODIFIER) etat = ABANDONNE;
+        else throw new IllegalStateException("error in review.publier() : transition interdite");
     }
 
     public void editer() {
         if (editable()) etat = NOUVEAU;
+        else throw new IllegalStateException("error in review.publier() : transition interdite");
     }
 
     public boolean editable() {

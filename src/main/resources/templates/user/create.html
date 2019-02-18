@@ -42,7 +42,7 @@
                                 <td><label>Abonnement newsletter</label></td><td><input name="abonnement" type="checkbox" th:field="*{abonne}" th:checked="*{abonne}"/><td><td></td>
                             </tr>
                                 <tr>
-                                    <td><label>compte actif</label></td><td><input type="checkbox" name="actif" th:field="*{actif}" th:checked="*{actif}"/></td>
+                                    <td><label>compte actif</label></td><td><input type="checkbox" name="actif" th:field="*{actif}" th:checked="*{actif}" onclick="return false;"/></td>
                                 </tr>
                             <tr>
                             <td><input type="submit" value="Envoyer" /></td>

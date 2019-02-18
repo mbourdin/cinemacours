@@ -8,6 +8,7 @@ import mbourdin.cinema_cours.service.Panier;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Entity
@@ -116,5 +117,10 @@ public class Commande {
     @Override
     public int hashCode() {
         return Objects.hash(getId(), getBillets(), getDate(), getPaye(), getUtilisateur());
+    }
+
+    public String formattedDate()
+    {   return date.format(DateTimeFormatter.ofPattern("EEEE dd MMMM yyyy HH:mm", Locale.FRANCE));
+
     }
 }

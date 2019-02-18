@@ -87,6 +87,9 @@ public class Billet implements Comparable{
 
     @Override
     public String toString() {
-        return "seance "+seance.getId()+" salle "+seance.getSalle().getId()+" "+seance.getFilm().getTitre()+" date"+seance.getDebut().toString()+" prix:"+prix;
+        StringBuilder sb=new StringBuilder();
+        //sb.append("seance ").append(seance.getId());
+        sb.append(" salle ").append(seance.getSalle().getId()).append(" ").append(seance.getFilm().getTitre()).append(" date").append(seance.formattedDate()).append(" prix:").append(prix);
+        return sb.toString();
     }
 }
