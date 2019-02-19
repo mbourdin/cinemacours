@@ -5,11 +5,11 @@ package mbourdin.cinema_cours.service;
 
 import javax.mail.*;
 import javax.mail.internet.*;
-import java.util.Properties;
+
 public class Email {
     private static MailService mailService=new MailService();
     private static boolean inited=false;
-    private static Properties props=System.getProperties();
+
 
 
     public static final String recoveryEmailTexte="Vous avez demandé la recupération de votre mot de passe sur le site Les Nanars Sauvages" +
@@ -33,8 +33,8 @@ public class Email {
         }
     }
 
-            //TODO envoyer un mail pour de vrai
-            public void send() {   //TODO remplacer par un vrai email
+
+            public void send() {
             MimeMessage message=mailService.createMimeMessage();
                 try{
                     message.setRecipients(Message.RecipientType.TO, adresses);

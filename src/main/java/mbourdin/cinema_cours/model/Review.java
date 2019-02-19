@@ -3,7 +3,6 @@ package mbourdin.cinema_cours.model;
 import mbourdin.cinema_cours.web.SeanceController;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -17,15 +16,16 @@ public class Review {
     private LocalDateTime date;
     private int etat;
     //etats possibles
-    public static final int NOUVEAU=1;
-    public static final int PUBLIE=2;
-    public static final int AMODIFIER=3;
-    public static final int ABANDONNE=4;
-    public static final int REJETE=5;
-    public static final int SUPPRIME=6;
+    public static final int NEW =1;
+    public static final int PUBLISHED =2;
+    public static final int TO_BE_MODIFIED =3;
+    public static final int ABANDONNED =4;
+    public static final int REJECTED =5;
+    public static final int DELETED =6;
     private static final String[] etatStrings={"nouveau","publié","à modifier","abandonné","rejeté","supprimé"};
 
     public String etatString()
+
     {   return etatStrings[etat-1];
     }
 
@@ -33,11 +33,11 @@ public class Review {
         this.film = film;
         this.utilisateur = utilisateur;
         date=LocalDateTime.now();
-        etat=NOUVEAU;
+        etat= NEW;
     }
 
     public Review() {
-        etat=NOUVEAU;
+        etat= NEW;
     }
 
     @Id
@@ -114,45 +114,45 @@ public class Review {
         return date.format(SeanceController.formatter);
     }
 
-    public void publier() throws IllegalTransitionException{
-        if (etat == NOUVEAU) etat = PUBLIE;
-        else throw new IllegalTransitionException("error in review.publier() : transition interdite");
+    public void validByModerator() throws IllegalTransitionException{
+        if (etat == NEW) etat = PUBLISHED;
+        else throw new IllegalTransitionException("error in Review.validByModerator() : transition interdite");
     }
 
-    public void supprimer() throws IllegalTransitionException{
-        if (etat == PUBLIE) etat = SUPPRIME;
-        else throw new IllegalTransitionException("error in review.publier() : transition interdite");
+    public void deleteByUser() throws IllegalTransitionException{
+        if (etat == PUBLISHED) etat = DELETED;
+        else throw new IllegalTransitionException("error in Review.deleteByUser() : transition interdite");
     }
 
-    public void retenirPourModif() throws IllegalTransitionException{
-        if (etat == NOUVEAU) etat = AMODIFIER;
-        else throw new IllegalTransitionException("error in review.publier() : transition interdite");
+    public void keepForEdit() throws IllegalTransitionException{
+        if (etat == NEW) etat = TO_BE_MODIFIED;
+        else throw new IllegalTransitionException("error in Review.keepForEdit() : transition interdite");
     }
 
-    public void rejeter() throws IllegalTransitionException{
-        if (etat == NOUVEAU) etat = REJETE;
-        else throw new IllegalTransitionException("error in review.publier() : transition interdite");
+    public void reject() throws IllegalTransitionException{
+        if (etat == NEW) etat = REJECTED;
+        else throw new IllegalTransitionException("error in review.validByModerator() : transition interdite");
     }
 
-    public void abandonner() throws IllegalTransitionException{
-        if (etat == AMODIFIER) etat = ABANDONNE;
-        else throw new IllegalTransitionException("error in review.publier() : transition interdite");
+    public void abandon() throws IllegalTransitionException{
+        if (etat == TO_BE_MODIFIED) etat = ABANDONNED;
+        else throw new IllegalTransitionException("error in review.validByModerator() : transition interdite");
     }
 
-    public void editer() throws IllegalTransitionException{
-        if (editable()) etat = NOUVEAU;
-        else throw new IllegalTransitionException("error in review.publier() : transition interdite");
+    public void edit() throws IllegalTransitionException{
+        if (editable()) etat = NEW;
+        else throw new IllegalTransitionException("error in review.validByModerator() : transition interdite");
     }
 
     public boolean editable() {
-        return (etat == NOUVEAU || etat == AMODIFIER || etat == PUBLIE);
+        return (etat == NEW || etat == TO_BE_MODIFIED || etat == PUBLISHED);
     }
 
     public boolean nouveau() {
-        return etat == NOUVEAU;
+        return etat == NEW;
     }
 
     public boolean publie() {
-        return etat == PUBLIE;
+        return etat == PUBLISHED;
     }
 }

@@ -71,7 +71,7 @@ public class UserController {
         if((user.equals(newuser)&&user.getType()==newuser.getType())
             || (user.getType()==Utilisateur.admin)
         )
-        {   //empecher l'admin de se supprimer ses propres droits d'administration
+        {   //empecher l'admin de se deleteByUser ses propres droits d'administration
             if (user.getType()==Utilisateur.admin&&user.equals(newuser)) newuser.setType(Utilisateur.admin);
 
             userDao.save(newuser);
@@ -83,7 +83,7 @@ public class UserController {
         Utilisateur utilisateur=userDao.findById(id).get();
         System.out.println(user);
         System.out.println(utilisateur);
-        //empecher l'admin de se supprimer lui-même!
+        //empecher l'admin de se deleteByUser lui-même!
         if(!user.equals(utilisateur)){
             userDao.delete(utilisateur);
         }

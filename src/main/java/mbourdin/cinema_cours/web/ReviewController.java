@@ -13,8 +13,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.persistence.Basic;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Set;
 
@@ -32,7 +30,7 @@ public class ReviewController {
     public String listeParFilm(Model m, @PathVariable("filmId") Long id){
 
         Film film= filmDao.findById(id).get();
-        m.addAttribute("reviews",reviewDao.findAllByFilmAndEtat(film,Review.PUBLIE));
+        m.addAttribute("reviews",reviewDao.findAllByFilmAndEtat(film,Review.PUBLISHED));
         return "review/liste";
     }
     @GetMapping("/listeParUtilisateur/{userId}")
@@ -49,7 +47,7 @@ public class ReviewController {
     }
     @GetMapping("/new")
     public String nouveaux(Model m,@SessionAttribute Utilisateur user){
-        Set<Review> reviews=reviewDao.findAllByEtat(Review.NOUVEAU);
+        Set<Review> reviews=reviewDao.findAllByEtat(Review.NEW);
         m.addAttribute("reviews",reviews);
         return "review/liste";
     }
@@ -103,7 +101,7 @@ public class ReviewController {
             {   attributes.addFlashAttribute("flashMessage", "votre commentaire est vide, ou trop long, ne dépassez pas 1500 caractères");
                 return "redirect:/review/mesCommentaires";
             }
-            try{review.editer();
+            try{review.edit();
                 reviewDao.save(review);
                 attributes.addFlashAttribute("flashMessage", "l'edition de votre commentaire sur "+review.getFilm().getTitre()+" a réussi, il sera visible une fois validé par la modération");
             }catch (Exception e)
@@ -139,7 +137,7 @@ public class ReviewController {
         if(admin==null) admin=Boolean.FALSE;
         if(admin) {
             Review review = reviewDao.findById(id).get();
-            try{review.publier();}catch (IllegalTransitionException e){return "redirect:/error/403";}
+            try{review.validByModerator();}catch (IllegalTransitionException e){return "redirect:/error/403";}
             reviewDao.save(review);
             return "redirect:/review/new";
         }
@@ -151,7 +149,7 @@ public class ReviewController {
         if(admin==null) admin=Boolean.FALSE;
         if(admin) {
             Review review = reviewDao.findById(id).get();
-            try{review.rejeter();}catch (IllegalTransitionException e){return "redirect:/error/403";}
+            try{review.reject();}catch (IllegalTransitionException e){return "redirect:/error/403";}
             reviewDao.save(review);
             return "redirect:/review/new";
         }
@@ -163,7 +161,7 @@ public class ReviewController {
         if(admin==null) admin=Boolean.FALSE;
         if(admin) {
             Review review = reviewDao.findById(id).get();
-            try{review.retenirPourModif();}catch (IllegalTransitionException e){return "redirect:/error/403";}
+            try{review.keepForEdit();}catch (IllegalTransitionException e){return "redirect:/error/403";}
             reviewDao.save(review);
             return "redirect:/review/new";
         }
@@ -175,7 +173,7 @@ public class ReviewController {
         Utilisateur user=(Utilisateur) session.getAttribute("user");
         Review review = reviewDao.findById(id).get();
         if(user.equals(review.getUtilisateur())) {
-            try{review.supprimer();}catch (IllegalTransitionException e){return "redirect:/error/403";}
+            try{review.deleteByUser();}catch (IllegalTransitionException e){return "redirect:/error/403";}
             reviewDao.save(review);
             return "redirect:/review/mesCommentaires";
         }
@@ -186,7 +184,7 @@ public class ReviewController {
         Utilisateur user=(Utilisateur) session.getAttribute("user");
         Review review = reviewDao.findById(id).get();
         if(user.equals(review.getUtilisateur())) {
-            try{review.abandonner();}catch (IllegalTransitionException e){return "redirect:/error/403";}
+            try{review.abandon();}catch (IllegalTransitionException e){return "redirect:/error/403";}
             reviewDao.save(review);
             return "redirect:/review/mesCommentaires";
         }

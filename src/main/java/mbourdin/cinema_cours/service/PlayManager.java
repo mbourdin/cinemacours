@@ -60,7 +60,7 @@ public class PlayManager {
 
     /**
      * Supprime un genre de la base si et seulement si il existe et n'est lié à aucun film
-     * @param id identitiant du genre à supprimer
+     * @param id identitiant du genre à deleteByUser
      * @return le play détaché du système de persistance
      * @throws IllegalStateException si le genre est encore lié à au moins un film
      */

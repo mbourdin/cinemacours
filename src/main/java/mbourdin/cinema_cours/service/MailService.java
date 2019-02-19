@@ -10,20 +10,14 @@ import java.util.Properties;
 
 @Service
 public class MailService extends JavaMailSenderImpl {
-
     static private String fromEmail;
-
     static private String smtpServer;
-
     static private Integer smtpPort;
-
     static private String sslPort;
-
     static private String emailPassword;
-
     static private String user;
 
-    @Autowired
+
     public MailService()
     {
     }

@@ -25,7 +25,6 @@ import java.io.OutputStream;
 import java.net.URISyntaxException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Collections;
 import java.util.List;
 
 @Controller
@@ -85,7 +84,7 @@ public class FilmController {
         film.setRoles(playDao.findAllByFilm_IdOrderByNumeroAsc(id));
         m.addAttribute("film", film);
         m.addAttribute("commentable",commentable);
-        m.addAttribute("reviews",reviewDao.findAllByFilmAndEtatOrderByDateDesc(film,Review.PUBLIE));
+        m.addAttribute("reviews",reviewDao.findAllByFilmAndEtatOrderByDateDesc(film,Review.PUBLISHED));
         return "film/detail";
     }
 
