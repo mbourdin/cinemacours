@@ -4,6 +4,7 @@ import mbourdin.cinema_cours.dao.FilmDao;
 import mbourdin.cinema_cours.dao.ReviewDao;
 import mbourdin.cinema_cours.dao.UserDao;
 import mbourdin.cinema_cours.model.Film;
+import mbourdin.cinema_cours.model.IllegalTransitionException;
 import mbourdin.cinema_cours.model.Review;
 import mbourdin.cinema_cours.model.Utilisateur;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -138,7 +139,7 @@ public class ReviewController {
         if(admin==null) admin=Boolean.FALSE;
         if(admin) {
             Review review = reviewDao.findById(id).get();
-            review.publier();
+            try{review.publier();}catch (IllegalTransitionException e){return "redirect:/error/403";}
             reviewDao.save(review);
             return "redirect:/review/new";
         }
@@ -150,7 +151,7 @@ public class ReviewController {
         if(admin==null) admin=Boolean.FALSE;
         if(admin) {
             Review review = reviewDao.findById(id).get();
-            review.rejeter();
+            try{review.rejeter();}catch (IllegalTransitionException e){return "redirect:/error/403";}
             reviewDao.save(review);
             return "redirect:/review/new";
         }
@@ -162,7 +163,7 @@ public class ReviewController {
         if(admin==null) admin=Boolean.FALSE;
         if(admin) {
             Review review = reviewDao.findById(id).get();
-            review.retenirPourModif();
+            try{review.retenirPourModif();}catch (IllegalTransitionException e){return "redirect:/error/403";}
             reviewDao.save(review);
             return "redirect:/review/new";
         }
@@ -174,7 +175,7 @@ public class ReviewController {
         Utilisateur user=(Utilisateur) session.getAttribute("user");
         Review review = reviewDao.findById(id).get();
         if(user.equals(review.getUtilisateur())) {
-            review.supprimer();
+            try{review.supprimer();}catch (IllegalTransitionException e){return "redirect:/error/403";}
             reviewDao.save(review);
             return "redirect:/review/mesCommentaires";
         }
@@ -185,7 +186,7 @@ public class ReviewController {
         Utilisateur user=(Utilisateur) session.getAttribute("user");
         Review review = reviewDao.findById(id).get();
         if(user.equals(review.getUtilisateur())) {
-            review.abandonner();
+            try{review.abandonner();}catch (IllegalTransitionException e){return "redirect:/error/403";}
             reviewDao.save(review);
             return "redirect:/review/mesCommentaires";
         }
