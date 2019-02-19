@@ -2,7 +2,6 @@ package mbourdin.cinema_cours.model;
 
 import org.junit.Test;
 
-import javax.validation.constraints.AssertTrue;
 import java.time.LocalDateTime;
 
 import static org.junit.Assert.*;
@@ -17,7 +16,7 @@ public class ReviewTest {
         assertNull(review.getUtilisateur());
         assertNull(review.getArticle());
         assertNull(review.getDate());
-        assertEquals(Review.NOUVEAU,review.getEtat());
+        assertEquals(Review.NEW,review.getEtat());
 
     }
     @Test
@@ -30,140 +29,157 @@ public class ReviewTest {
         assertEquals(utilisateur,review.getUtilisateur());
         assertNull(review.getArticle());
         assertNotNull(review.getDate());
-        assertEquals(Review.NOUVEAU,review.getEtat());
+        assertEquals(Review.NEW,review.getEtat());
 
     }
     @Test
-    public void publierOkTest()
+    public void publishOkTest()
     {   review=new Review();
         try{
-        review.publier();
-        assertEquals(Review.PUBLIE,review.getEtat());}
+        review.validByModerator();
+        assertEquals(Review.PUBLISHED,review.getEtat());}
         catch (IllegalTransitionException e){fail("Transition attendue");}
     }
     @Test
-    public void publierKoTest()
+    public void publishKoTest()
     {   review=new Review();
         try{
-        review.publier();}
+        review.validByModerator();}
         catch (IllegalTransitionException e){fail("echec de premiere publication");}
         try{
-        review.publier();
+        review.validByModerator();
         fail("exception expected");
 
-        }catch (IllegalTransitionException e){assertTrue(true);}
+        }catch (IllegalTransitionException e){assertEquals(Review.PUBLISHED,review.getEtat());}
 
     }
     @Test
-    public void supprimerOkTest()
+    public void deleteOkTest()
     {   review=new Review();
         try{
-        review.publier();}catch (IllegalTransitionException e){fail("echec premiere publication");}
+        review.validByModerator();}catch (IllegalTransitionException e){fail("echec premiere publication");}
         try{
-        review.supprimer();}catch (IllegalTransitionException e){fail("echec de suppression");}
-        assertEquals(Review.SUPPRIME,review.getEtat());
+        review.deleteByUser();}catch (IllegalTransitionException e){fail("echec de suppression");}
+        assertEquals(Review.DELETED,review.getEtat());
     }
     @Test
-    public void supprimerKoTest()
+    public void deleteKoTest()
     {   review=new Review();
         try{
-            review.supprimer();
+            review.deleteByUser();
             fail("exception expected");
 
-        }catch (IllegalTransitionException e){assertTrue(true);}
+        }catch (IllegalTransitionException e){assertEquals(Review.NEW,review.getEtat());}
 
     }
 
     @Test
-    public void rejeterOkTest()
+    public void rejectOkTest()
     {   review=new Review();
         try{
-        review.rejeter();}catch (IllegalTransitionException e){fail("echec de rejet");}
-        assertEquals(Review.REJETE,review.getEtat());
+        review.reject();}catch (IllegalTransitionException e){fail("echec de rejet");}
+        assertEquals(Review.REJECTED,review.getEtat());
     }
 
     @Test
-    public void rejeterKoTest()
+    public void rejectKoTest()
     {   review=new Review();
         try{
-        review.publier();}catch(IllegalTransitionException e){fail("echec de publication");}
+        review.validByModerator();}catch(IllegalTransitionException e){fail("echec de publication");}
 
         try{
-            review.rejeter();
-            fail("exception expected in review.rejeter()");
+            review.reject();
+            fail("exception expected in review.reject()");
 
-        }catch (IllegalTransitionException e){assertEquals(Review.PUBLIE,review.getEtat());}
+        }catch (IllegalTransitionException e){assertEquals(Review.PUBLISHED,review.getEtat());}
 
     }
 
 
     @Test
-    public void editerOkTest()
-    {   review=new Review();
-    try{
-        review.editer();} catch (IllegalTransitionException e){fail("echec edition nouveau commentaire");}
-        assertEquals(Review.NOUVEAU,review.getEtat());
-    try{
-        review.publier();}catch (IllegalTransitionException e){fail("echec de publication");}
-    try{
-        review.editer();}catch (IllegalTransitionException e){fail("echec d'edition commentaire publié");}
-        assertEquals(Review.NOUVEAU,review.getEtat());
-    try{
-        review.retenirPourModif();}catch (IllegalTransitionException e){fail("echec de retenir_pour_modif");}
-    try{
-        review.editer();}catch (IllegalTransitionException e){fail("echec d'edition d'un commentaire à modifier");}
-        assertEquals(Review.NOUVEAU,review.getEtat());
+    public void editFromNewOkTest() {
+        review = new Review();
+        try {
+            review.edit();
+        } catch (IllegalTransitionException e) {
+            fail("echec edition nouveau commentaire");
+        }
+        assertEquals(Review.NEW, review.getEtat());
     }
     @Test
-    public void editerKoTest()
+    public void editFromPublishedOkTest() {
+        review = new Review();
+        try {
+            review.validByModerator();
+        } catch (IllegalTransitionException e) {
+            fail("echec de publication");
+        }
+        try {
+            review.edit();
+        } catch (IllegalTransitionException e) {
+            fail("echec d'edition commentaire publié");
+        }
+        assertEquals(Review.NEW, review.getEtat());
+    }
+    @Test
+    public void editFromKeepOkTest(){
+        review = new Review();
+    try{
+        review.keepForEdit();}catch (IllegalTransitionException e){fail("echec de retenir_pour_modif");}
+    try{
+        review.edit();}catch (IllegalTransitionException e){fail("echec d'edition d'un commentaire à modifier");}
+        assertEquals(Review.NEW,review.getEtat());
+    }
+    @Test
+    public void editerTest()
     {   review=new Review();
         try{
-        review.rejeter();}catch (IllegalTransitionException e){fail("echec de rejet d'un commentaire");}
+        review.reject();}catch (IllegalTransitionException e){fail("echec de rejet d'un commentaire");}
         try{
-            review.editer();
+            review.edit();
             fail("exception expected");
 
-        }catch (IllegalTransitionException e){assertTrue(true);}
+        }catch (IllegalTransitionException e){assertEquals(Review.REJECTED,review.getEtat());}
 
     }
     @Test
-    public void retenirPourModifOkTest()
+    public void keepOkTest()
     {   review=new Review();
         try{
-        review.retenirPourModif();}catch (IllegalTransitionException e){fail("echec de retetinr_pour_modif");}
-        assertEquals(Review.AMODIFIER, review.getEtat());
+        review.keepForEdit();}catch (IllegalTransitionException e){fail("echec de retetinr_pour_modif");}
+        assertEquals(Review.TO_BE_MODIFIED, review.getEtat());
     }
     @Test
-    public void retenirPourModifKoTest()
+    public void keepKoTest()
     {   review=new Review();
         try{
-        review.rejeter();}catch (IllegalTransitionException e){fail("echec de rejet d'un commentaire");}
+        review.reject();}catch (IllegalTransitionException e){fail("echec de rejet d'un commentaire");}
         try{
-            review.retenirPourModif();
+            review.keepForEdit();
             fail("exception expected");
 
-        }catch (IllegalTransitionException e){assertTrue(true);}
+        }catch (IllegalTransitionException e){assertEquals(Review.REJECTED,review.getEtat());}
 
     }
 
 
     @Test
-    public void abandonnerOkTest()
+    public void abandonOkTest()
     {   review=new Review();
         try{
-        review.retenirPourModif();}catch (IllegalTransitionException e){fail("echec de retenir pour modification");}
+        review.keepForEdit();}catch (IllegalTransitionException e){fail("echec de retenir pour modification");}
         try{
-        review.abandonner();}catch (IllegalTransitionException e){fail("echec d'abandon d'un commentaire" );}
-        assertEquals(Review.ABANDONNE, review.getEtat());
+        review.abandon();}catch (IllegalTransitionException e){fail("echec d'abandon d'un commentaire" );}
+        assertEquals(Review.ABANDONNED, review.getEtat());
     }
     @Test
-    public void abandonnerKoTest()
+    public void abandonKoTest()
     {   review=new Review();
         try{
-            review.abandonner();
+            review.abandon();
             fail("exception expected");
 
-        }catch (IllegalTransitionException e){assertTrue(true);}
+        }catch (IllegalTransitionException e){assertEquals(Review.NEW,review.getEtat());}
 
     }
 
@@ -183,4 +199,5 @@ public class ReviewTest {
         assertTrue(test);
 
     }
+
 }
