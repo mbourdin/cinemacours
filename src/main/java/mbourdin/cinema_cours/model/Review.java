@@ -17,16 +17,16 @@ public class Review {
     private LocalDateTime date;
     private int etat;
     //etats possibles
-    public static final int NOUVEAU=0;
-    public static final int PUBLIE=1;
-    public static final int AMODIFIER=2;
-    public static final int ABANDONNE=3;
-    public static final int REJETE=4;
-    public static final int SUPPRIME=5;
+    public static final int NOUVEAU=1;
+    public static final int PUBLIE=2;
+    public static final int AMODIFIER=3;
+    public static final int ABANDONNE=4;
+    public static final int REJETE=5;
+    public static final int SUPPRIME=6;
     private static final String[] etatStrings={"nouveau","publié","à modifier","abandonné","rejeté","supprimé"};
 
     public String etatString()
-    {   return etatStrings[etat];
+    {   return etatStrings[etat-1];
     }
 
     public Review(Film film, Utilisateur utilisateur) {
@@ -114,34 +114,34 @@ public class Review {
         return date.format(SeanceController.formatter);
     }
 
-    public void publier() {
+    public void publier() throws IllegalTransitionException{
         if (etat == NOUVEAU) etat = PUBLIE;
-        else throw new IllegalStateException("error in review.publier() : transition interdite");
+        else throw new IllegalTransitionException("error in review.publier() : transition interdite");
     }
 
-    public void supprimer() {
+    public void supprimer() throws IllegalTransitionException{
         if (etat == PUBLIE) etat = SUPPRIME;
-        else throw new IllegalStateException("error in review.publier() : transition interdite");
+        else throw new IllegalTransitionException("error in review.publier() : transition interdite");
     }
 
-    public void retenirPourModif() {
+    public void retenirPourModif() throws IllegalTransitionException{
         if (etat == NOUVEAU) etat = AMODIFIER;
-        else throw new IllegalStateException("error in review.publier() : transition interdite");
+        else throw new IllegalTransitionException("error in review.publier() : transition interdite");
     }
 
-    public void rejeter() {
+    public void rejeter() throws IllegalTransitionException{
         if (etat == NOUVEAU) etat = REJETE;
-        else throw new IllegalStateException("error in review.publier() : transition interdite");
+        else throw new IllegalTransitionException("error in review.publier() : transition interdite");
     }
 
-    public void abandonner() {
+    public void abandonner() throws IllegalTransitionException{
         if (etat == AMODIFIER) etat = ABANDONNE;
-        else throw new IllegalStateException("error in review.publier() : transition interdite");
+        else throw new IllegalTransitionException("error in review.publier() : transition interdite");
     }
 
-    public void editer() {
+    public void editer() throws IllegalTransitionException{
         if (editable()) etat = NOUVEAU;
-        else throw new IllegalStateException("error in review.publier() : transition interdite");
+        else throw new IllegalTransitionException("error in review.publier() : transition interdite");
     }
 
     public boolean editable() {
