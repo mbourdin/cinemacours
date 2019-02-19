@@ -78,7 +78,7 @@ public class GenreRestController {
 
     /**
      *
-     * @param genre le Genre à supprimer
+     * @param genre le Genre à deleteByUser
      * @return l'objet Genre qui a été supprimé de la base
      */
     @DeleteMapping("/crud")
@@ -88,7 +88,7 @@ public class GenreRestController {
 
     /**
      *
-     * @param id l'identifiant du Genre a supprimer
+     * @param id l'identifiant du Genre a deleteByUser
      * @return l'objet Genre qui a été supprimé de la base
      */
     @GetMapping("/rm/{id}")

@@ -83,7 +83,7 @@ public class PlayRestController {
 
     /**
      *
-     * @param playChamp le Play à supprimer
+     * @param playChamp le Play à deleteByUser
      * @return l'objet Play qui a été supprimé (ou non) de la base
      */
     @DeleteMapping("")
@@ -98,7 +98,7 @@ public class PlayRestController {
 
     /**
      *
-     * @param id l'identifiant du play a supprimer
+     * @param id l'identifiant du play a deleteByUser
      * @return l'objet Genre qui a été supprimé de la base
      */
     @GetMapping("/rm/{id}")
