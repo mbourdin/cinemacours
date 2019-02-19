@@ -411,7 +411,7 @@
         playChampVal = {
             "id": document.getElementById('id_play').value
         };
-        //console.log("Ecrire la méthode permettant de supprimer un genre");
+        //console.log("Ecrire la méthode permettant de deleteByUser un genre");
         console.log(playChampVal);
         $.ajax({
             url: '/api/play',
@@ -430,7 +430,7 @@
         genreVal = {
             "id": genreId
         };
-        //console.log("Ecrire la méthode permettant de supprimer un genre");
+        //console.log("Ecrire la méthode permettant de deleteByUser un genre");
         console.log(genreVal);
         $.ajax({
             url: '/api/genre/film/'+filmId,
