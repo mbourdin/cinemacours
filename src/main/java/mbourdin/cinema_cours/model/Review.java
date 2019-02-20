@@ -4,7 +4,7 @@ import mbourdin.cinema_cours.web.SeanceController;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Table(name="review")
@@ -22,6 +22,50 @@ public class Review {
     public static final int ABANDONNED =4;
     public static final int REJECTED =5;
     public static final int DELETED =6;
+
+    private static final Map<Integer, List<Integer>> transitionsTo;
+
+    static {
+        transitionsTo = new HashMap<>();
+        transitionsTo.put(Review.NEW,
+                Arrays.asList(new Integer[]{
+                        Review.PUBLISHED,
+                        Review.NEW,
+                        Review.TO_BE_MODIFIED,
+                        Review.REJECTED
+                }));
+        transitionsTo.put(Review.PUBLISHED,
+                Arrays.asList(new Integer[]{
+                        Review.NEW,
+                        Review.DELETED
+                }));
+
+        transitionsTo.put(Review.TO_BE_MODIFIED,
+                Arrays.asList(new Integer[]{
+                        Review.NEW,
+                        Review.ABANDONNED
+                }));
+        transitionsTo.put(Review.ABANDONNED, new ArrayList<>());
+        transitionsTo.put(Review.DELETED, new ArrayList<>());
+        transitionsTo.put(Review.REJECTED, new ArrayList<>());
+
+    }
+
+    private boolean canTransitTo(int targetState) {
+
+        //return Review.transitions.get(targetState).contains(this.getState());
+
+        return Review.transitionsTo.get(etat).contains(targetState);
+    }
+
+    private void transitTo(int target) throws IllegalTransitionException {
+        if (canTransitTo(target)) {
+            etat = target;
+        } else {
+            throw new IllegalTransitionException("Transition non autorisée");
+        }
+    }
+
     private static final String[] etatStrings={"nouveau","publié","à modifier","abandonné","rejeté","supprimé"};
 
     public String etatString()
@@ -115,33 +159,29 @@ public class Review {
     }
 
     public void validByModerator() throws IllegalTransitionException{
-        if (etat == NEW) etat = PUBLISHED;
-        else throw new IllegalTransitionException("error in Review.validByModerator() : transition interdite");
+        transitTo(PUBLISHED);
+
     }
 
     public void deleteByUser() throws IllegalTransitionException{
-        if (etat == PUBLISHED) etat = DELETED;
-        else throw new IllegalTransitionException("error in Review.deleteByUser() : transition interdite");
+        transitTo(DELETED);
     }
 
     public void keepForEdit() throws IllegalTransitionException{
-        if (etat == NEW) etat = TO_BE_MODIFIED;
-        else throw new IllegalTransitionException("error in Review.keepForEdit() : transition interdite");
+        transitTo(TO_BE_MODIFIED);
+
     }
 
     public void reject() throws IllegalTransitionException{
-        if (etat == NEW) etat = REJECTED;
-        else throw new IllegalTransitionException("error in review.validByModerator() : transition interdite");
+        transitTo(REJECTED);
     }
 
     public void abandon() throws IllegalTransitionException{
-        if (etat == TO_BE_MODIFIED) etat = ABANDONNED;
-        else throw new IllegalTransitionException("error in review.validByModerator() : transition interdite");
+        transitTo(ABANDONNED);
     }
 
     public void edit() throws IllegalTransitionException{
-        if (editable()) etat = NEW;
-        else throw new IllegalTransitionException("error in review.validByModerator() : transition interdite");
+        transitTo(NEW);
     }
 
     public boolean editable() {
