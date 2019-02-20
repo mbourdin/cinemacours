@@ -2,6 +2,7 @@ package mbourdin.cinema_cours.model;
 
 import org.junit.Test;
 
+import javax.validation.constraints.AssertTrue;
 import java.time.LocalDateTime;
 
 import static org.junit.Assert.*;
@@ -32,6 +33,7 @@ public class ReviewTest {
         assertEquals(Review.NEW,review.getEtat());
 
     }
+
     @Test
     public void publishOkTest()
     {   review=new Review();
