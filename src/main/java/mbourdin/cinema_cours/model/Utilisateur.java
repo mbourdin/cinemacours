@@ -4,6 +4,8 @@ package mbourdin.cinema_cours.model;
 import mbourdin.cinema_cours.service.Utilities;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
@@ -19,7 +21,9 @@ public class Utilisateur {
     private long id;
     private String nom;
     private String prenom;
+    @NotBlank
     private String login;
+    @Email
     private String email;
     private String link;
     private String hpw;
