@@ -31,10 +31,10 @@
                                       th:text="${film.titre}+' '+${film.note}"></a></td>
 
             <td class="two wide">
-                <a class="ui red button" th:if="${session.admin!=null}" th:href="@{/film/delete/{Id} (Id=${film.id})}">Effacer</a>
+                <a class="ui red button" th:if="${session.admin!=null}" th:text="#{delete}" th:href="@{/film/delete/{Id} (Id=${film.id})}">Effacer</a>
             </td>
             <td class="two wide">
-                <a class="ui yellow button" th:if="${session.admin!=null}" th:href="@{/film/mod/{Id} (Id=${film.id})}">Editer</a></td>
+                <a class="ui yellow button" th:if="${session.admin!=null}" th:text="#{edit}" th:href="@{/film/mod/{Id} (Id=${film.id})}">Editer</a></td>
         </tr>
                 </table>
             </form></td></tr></tbody></table>

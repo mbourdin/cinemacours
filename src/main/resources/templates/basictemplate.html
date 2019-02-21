@@ -7,7 +7,6 @@
             <title th:text="${title}">Title</title>
             <meta name="viewport" content="width=device-width, initial-scale=1">
             <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1">
             <meta name="mobile-web-app-capable" content="yes">
             <link rel="stylesheet" href="webjars/Semantic-UI/2.4.1/semantic.min.css"
                   th:href="@{/webjars/Semantic-UI/2.4.1/semantic.min.css}"/>
@@ -20,11 +19,13 @@
             <table class="ui inverted green table">
                 <tbody>
                 <tr>
-                <td class="twelve wide"><h1>Les Nanars Sauvages</h1></td>
-                <td class="four wide hidden" id="loginarea"><a href="/">page d'accueil</a><br>
+                <td class="eleven wide"><h1>Les Nanars Sauvages</h1></td>
+                    <td class="one wide" onclick="setLang('Fr')"><img src="/drapeau/1"></td>
+                    <td class="one wide" onclick="setLang('En')"><img src="/drapeau/2"></td>
+                <td class="three wide hidden" id="loginarea"><a href="/" th:text="#{homePage}">page d'accueil</a><br>
 
                     <th:block th:if="${session.user != null}" th:text="${session.user.login}"></th:block>
-                    <a th:if="${session.user != null}" th:href="@{/login/logout}"><br>logout</a>
+                    <a th:if="${session.user != null}" th:href="@{/login/logout}" th:utext="'<br>'+#{logout}">logout</a>
                     <a th:if="${session.user == null}" th:href="@{/login/connection}">se connecter</a><br>
                     <a th:if="${session.user == null}" th:href="@{/login/inscription}">s'inscrire</a>
 
@@ -49,8 +50,31 @@
                 $('.ui.dropdown.item')
                     .dropdown();
             </script>
+            <script type="application/javascript">
+                function setLang(lang) {
+                    var currentUrl=window.location.toString();
+                    //console.log("currentUrl="+currentUrl);
+                    if(currentUrl.includes("lang="))
+                    {   //console.log("includes 1 true")
+                        currentUrl=currentUrl.substring(0,currentUrl.length-2);
+                        //console.log("currentUrl="+currentUrl);
+                    }
+                    else if(!currentUrl.includes("?"))
+                    {   //console.log("includes 2 true")
+                        currentUrl=currentUrl+"?lang=";
+                        //console.log("currentUrl="+currentUrl);
+                    }
+                    else
+                    {
+                        //console.log("includes 3 ")
+                        currentUrl=currentUrl+"&lang=";
+                        //console.log("currentUrl="+currentUrl);
+                    }
+                    currentUrl=currentUrl+lang;
+                    //console.log(currentUrl);
+                    window.location=currentUrl;
+                }
+            </script>
         </footer>
     </body>
-
-
 </html>

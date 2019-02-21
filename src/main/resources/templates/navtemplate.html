@@ -17,65 +17,65 @@
 
 
 
-                        <a class="item" href="/planDAcces">plan d'acces</a>
-                        <div class="ui dropdown item" th:if="${session.user}">Mon compte
+                        <a class="item" href="/planDAcces" th:text="#{locateUs}">plan d'acces</a>
+                        <div class="ui dropdown item" th:if="${session.user}"><th:block th:text="#{myAccount}">Mon compte</th:block>
                             <i class="dropdown icon"></i>
                             <div class="menu">
-                                <a class="item" href="/user/selfupdate">Mettre a jour mes parametres de compte</a>
-                                <a class="item" href="/panier/detail">Mon panier</a>
-                                <a class="item" href="/panier/mesCommandes">Mes commandes</a>
+                                <a class="item" href="/user/selfupdate" th:text="#{accountSettings}">Mettre a jour mes parametres de compte</a>
+                                <a class="item" href="/panier/detail" th:text="#{myCart}" >Mon panier</a>
+                                <a class="item" href="/panier/mesCommandes" th:text="#{commandHistory}">Mes commandes</a>
                             </div>
                         </div>
                         <div class="ui dropdown item">Films
                             <i class="dropdown icon"></i>
                             <div class="menu">
-                                <a class="item" href="/film/liste">liste</a>
-                                <a th:if="${session.admin!=null}" class="item" href="/film/add">creer</a>
-                                <a th:if="${session.admin!=null}" class="item" href="/film/import?str=">importer</a>
+                                <a class="item" href="/film/liste" th:text="#{list}">liste</a>
+                                <a th:if="${session.admin!=null}" class="item" href="/film/add" th:text="#{create}">creer</a>
+                                <a th:if="${session.admin!=null}" class="item" href="/film/import?str=" th:text="#{import}">importer</a>
                             </div>
                         </div>
-                        <div class="ui dropdown item">Personnes
+                        <div class="ui dropdown item"><th:block th:text="#{persons}">Personnes</th:block>
                             <i class="dropdown icon"></i>
                             <div class="menu">
-                                <a class="item" href="/personne/liste">liste</a>
-                                <a th:if="${session.admin!=null}" class="item" href="/personne/create">creer</a>
+                                <a class="item" href="/personne/liste" th:text="#{list}">liste</a>
+                                <a th:if="${session.admin!=null}" class="item" href="/personne/create" th:text="#{create}">creer</a>
                             </div>
                         </div>
-                        <div th:if="${session.admin!=null}" class="ui dropdown item">Utilisateurs
+                        <div th:if="${session.admin!=null}" class="ui dropdown item"><th:block th:text="#{users}">Utilisateurs</th:block>
                             <i class="dropdown icon"></i>
                             <div class="menu">
-                                <a class="item" href="/user/liste">liste</a>
-                                <a class="item" href="/user/create">creer</a>
+                                <a class="item" href="/user/liste" th:text="#{list}">liste</a>
+                                <a class="item" href="/user/create" th:text="#{create}">creer</a>
                             </div>
                         </div>
-                        <div class="ui dropdown item">seances
+                        <div class="ui dropdown item"><th:block th:text="#{projections}">seances</th:block>
                             <i class="dropdown icon"></i>
                             <div class="menu">
-                                <a class="item" href="/seance/semaine">cette semaine</a>
-                                <a class="item" href="/seance/all">toutes</a>
-                                <a th:if="${session.admin!=null}" class="item" href="/seance/create?n=1">creer</a>
+                                <a class="item" href="/seance/semaine" th:text="#{thisWeek}">cette semaine</a>
+                                <a class="item" href="/seance/all" th:text="#{all}">toutes</a>
+                                <a th:if="${session.admin!=null}" class="item" href="/seance/create?n=1" th:text="#{create}">creer</a>
                             </div>
                         </div>
-                        <div th:if="${session.admin!=null}" class="ui dropdown item">messages Admin
+                        <div th:if="${session.admin!=null}" class="ui dropdown item"><th:block th:text="#{messagesToAdmin}">messages Admin</th:block>
                             <i class="dropdown icon"></i>
                             <div class="menu">
-                                <a class="item" href="/msgliste/all">tous</a>
-                                <a class="item" href="/msgliste/nonlus">non lus</a>
+                                <a class="item" href="/msgliste/all" th:text="#{allM}">tous</a>
+                                <a class="item" href="/msgliste/nonlus" th:text="#{unRead}">non lus</a>
                             </div>
                         </div>
-                        <div th:if="${session.admin!=null}" class="ui dropdown item">newsletter
+                        <div th:if="${session.admin!=null}" class="ui dropdown item"><th:block th:text="#{newsletter}">newsletter</th:block>
                             <i class="dropdown icon"></i>
                             <div class="menu">
-                                <a class="item" href="/news/create">creer</a>
-                                <a class="item" href="/news/liste">liste</a>
+                                <a class="item" href="/news/create" th:text="#{create}">creer</a>
+                                <a class="item" href="/news/liste" th:text="#{list}">liste</a>
                             </div>
                         </div>
-                        <div  class="ui dropdown item">commentaires
+                        <div  class="ui dropdown item"><th:block th:text="#{reviews}">commentaires</th:block>
                             <i class="dropdown icon"></i>
                             <div class="menu">
-                                <a class="item" href="/review/new" th:if="${session.admin!=null}">nouveaux</a>
-                                <a class="item" href="/review/liste" th:if="${session.admin!=null}">tous</a>
-                                <a class="item" href="/review/mesCommentaires" th:if="${session.user!=null}">mesCommentaires</a>
+                                <a class="item" href="/review/new" th:if="${session.admin!=null}" th:text="#{NEW}">nouveaux</a>
+                                <a class="item" href="/review/liste" th:if="${session.admin!=null}" th:text="#{allM}">tous</a>
+                                <a class="item" href="/review/mesCommentaires" th:if="${session.user!=null}" th:text="#{myReviews}">mesCommentaires</a>
                             </div>
                         </div>
 
