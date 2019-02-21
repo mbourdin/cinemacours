@@ -26,8 +26,8 @@
 
                     <th:block th:if="${session.user != null}" th:text="${session.user.login}"></th:block>
                     <a th:if="${session.user != null}" th:href="@{/login/logout}" th:utext="'<br>'+#{logout}">logout</a>
-                    <a th:if="${session.user == null}" th:href="@{/login/connection}">se connecter</a><br>
-                    <a th:if="${session.user == null}" th:href="@{/login/inscription}">s'inscrire</a>
+                    <a th:if="${session.user == null}" th:href="@{/login/connection}" th:text="#{login}">se connecter</a><br>
+                    <a th:if="${session.user == null}" th:href="@{/login/inscription}"th:text="#{register}">s'inscrire</a>
 
                 </td>
                 </tr>
@@ -38,7 +38,8 @@
         </header>
         <section>Contenu de la section</section>
         <footer th:fragment="footer">
-            <a href="/contact">nous contacter</a> Mentions legales ...
+            <a href="/contact" th:text="#{contactUs}">nous contacter</a>
+
             <script src="webjars/jquery/3.3.1-1/jquery.js"
                     th:src="@{/webjars/jquery/3.3.1-1/jquery.js}"></script>
 
