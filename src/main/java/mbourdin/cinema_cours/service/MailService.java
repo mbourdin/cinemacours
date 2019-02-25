@@ -1,6 +1,4 @@
 package mbourdin.cinema_cours.service;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Service;
