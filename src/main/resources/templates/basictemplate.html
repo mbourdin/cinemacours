@@ -55,23 +55,15 @@
                 function setLang(lang) {
                     var currentUrl=window.location.toString();
                     if(currentUrl.includes("lang="))
-                    {   //console.log("includes 1 true")
-                        currentUrl=currentUrl.substring(0,currentUrl.length-2);
-                        //console.log("currentUrl="+currentUrl);
+                    {   currentUrl=currentUrl.substring(0,currentUrl.length-2);
                     }
                     else if(!currentUrl.includes("?"))
-                    {   //console.log("includes 2 true")
-                        currentUrl=currentUrl+"?lang=";
-                        //console.log("currentUrl="+currentUrl);
+                    {   currentUrl=currentUrl+"?lang=";
                     }
                     else
-                    {
-                        //console.log("includes 3 ")
-                        currentUrl=currentUrl+"&lang=";
-                        //console.log("currentUrl="+currentUrl);
+                    {   currentUrl=currentUrl+"&lang=";
                     }
                     currentUrl=currentUrl+lang;
-                    //console.log(currentUrl);
                     window.location=currentUrl;
                 }
             </script>
