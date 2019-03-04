@@ -88,17 +88,23 @@ public class UserController {
 
     @PostMapping("/create")
     public String doCreateUser(@ModelAttribute Utilisateur newuser,@RequestParam("password2") String password,@SessionAttribute("user") Utilisateur user)
-    {   if(!password.equalsIgnoreCase("")) {
+    {   boolean modifypassword=false;
+        if(!password.equalsIgnoreCase("")) {
             newuser.setPassword(password);
+            modifypassword = true;
         }
         if((user.equals(newuser)&&user.getType()==newuser.getType())
             || (user.getType()==Utilisateur.admin)
         )
         {   //empecher l'admin de se supprimer ses propres droits d'administration
-            if (user.getType()==Utilisateur.admin&&user.equals(newuser)) newuser.setType(Utilisateur.admin);
+            if (user.getType()==Utilisateur.admin&&user.equals(newuser))
+            {
+                newuser.setType(Utilisateur.admin);
+                newuser.setActif(true);
+            }
 
 
-            if(!bCryptPasswordEncoder.matches(newuser.getPassword(),user.getPassword()))
+            if(modifypassword)
             {
             cinemaUserService.saveWithNewPass(newuser);
             }
