@@ -7,7 +7,6 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.util.Calendar;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -15,9 +14,12 @@ import java.util.Set;
 @Table(name="users")
 public class Utilisateur {
     static public final int admin=1;
+    static public final String ADMIN_RIGHTS="ADMIN";
     static public final int vendeur=2;
+    static public final String VENDEUR_RIGHTS="VENDEUR";
     static public final int normal=3;
-    static public final int visiteur=0;
+    static public final String USER_RIGHTS="USER";
+
     private long id;
     private String nom;
     private String prenom;
@@ -26,7 +28,7 @@ public class Utilisateur {
     @Email
     private String email;
     private String link;
-    private String hpw;
+    private String password;
     private int type;//1 = admin ; 2 = vendeur ; 3 = normal
     private Boolean abonne;
     private Set<Review> reviews;
@@ -37,19 +39,19 @@ public class Utilisateur {
     public Utilisateur()
     {   type=Utilisateur.normal;
         link=null;
-        hpw="";
+        password ="";
         abonne=Boolean.FALSE;
     }
     public Utilisateur(int type)
     {
         this.type=type;
         link=null;
-        hpw="";
+        password ="";
         abonne=Boolean.FALSE;
     }
-    public void generateLink()
-    {   link= Utilities.get_SHA_256_SecurePassword(Calendar.getInstance().getTimeInMillis()+"",id+"");
-    }
+
+
+
     @Basic
     @Column(name="actif")
     public boolean isActif() {
@@ -81,12 +83,12 @@ public class Utilisateur {
 
     @Basic
     @Column(name="password")
-    public String getHpw() {
-        return hpw;
+    public String getPassword() {
+        return password;
     }
 
-    public void setHpw(String hpw) {
-        this.hpw = hpw;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
 

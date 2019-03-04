@@ -20,13 +20,13 @@
                         <form action="/login/subscribe" method="post" >
                             <table class="ui table">
                                 <tr><td><input type="hidden" th:field="${user.id}"/></td></tr>
-                            <tr><td><input type="hidden" th:field="${user.hpw}"/></td></tr>
+
                             <tr><td><input type="hidden" th:field="${user.link}"/></td></tr>
 
                             <tr>
                                 <td><label>Identifiant *</label></td><td><input name="login" type="text" th:field="${user.login}"/></td>
                             </tr><tr>
-                            <td><label>Mot de passe *</label></td><td><input name="password" type="password"/></td>
+                            <td><label>Mot de passe *</label></td><td><input name="password2" type="password"/></td>
                         </tr><tr>
                             <td><label>email *</label></td><td><input name="email" type="text" th:field="${user.email}"/><td>
                         </tr><tr>

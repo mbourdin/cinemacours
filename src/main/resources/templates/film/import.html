@@ -20,6 +20,10 @@
             <table class="ui table">
                 <tr><td>
             <form action="/film/detailImport"  method="get">
+                <input
+                        type="hidden"
+                        th:name="${_csrf.parameterName}"
+                        th:value="${_csrf.token}" />
                 <label>importer par Id tmdb</label><input type="text" name="id"><input type="submit" value="importer">
             </form>
                 </td></tr>

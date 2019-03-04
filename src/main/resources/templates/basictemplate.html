@@ -20,15 +20,25 @@
                 <tbody>
                 <tr>
                 <td class="eleven wide"><h1>Les Nanars Sauvages</h1></td>
-                    <td class="one wide" onclick="setLang('Fr')"><img src="/drapeau/1"></td>
-                    <td class="one wide" onclick="setLang('En')"><img src="/drapeau/2"></td>
-                <td class="three wide hidden" id="loginarea"><a href="/" th:text="#{homePage}">page d'accueil</a><br>
-
-                    <th:block th:if="${session.user != null}" th:text="${session.user.login}"></th:block>
-                    <a th:if="${session.user != null}" th:href="@{/login/logout}" th:utext="'<br>'+#{logout}">logout</a>
-                    <a th:if="${session.user == null}" th:href="@{/login/connection}" th:text="#{login}">se connecter</a><br>
-                    <a th:if="${session.user == null}" th:href="@{/login/inscription}"th:text="#{register}">s'inscrire</a>
-
+                    <td>
+                    <div class="one wide" onclick="setLang('Fr')"><img src="/drapeau/1" class="flag"></div>
+                    <div class="one wide" onclick="setLang('En')"><img src="/drapeau/2" class="flag"></div>
+                    </td>
+                <td class="three wide" id="loginarea">
+                    <div class="ui vertical three buttons">
+                    <a href="/" class="ui grey button" th:text="#{homePage}">page d'accueil</a><br>
+                    <th:block th:if="${session.user != null}">
+                    <span class="ui blue button" th:utext="${session.user.login}"></span>
+                    <br>
+                    <a th:href="@{/login/logout}" class="ui red button" th:utext="#{logout}">logout</a>
+                    </th:block>
+                    <th:block th:if="${session.user == null}">
+                    <!-- <a th:if="${session.user == null}" th:href="@{/login}" th:text="#{oldlogin}">se connecter(ancienne methode)</a><br> -->
+                    <a th:href="@{/login/connect}" class="ui teal button" th:text="#{login}">se connecter</a>
+                        <br>
+                    <a th:href="@{/login/inscription}" class="ui green button" th:text="#{register}">s'inscrire</a>
+                    </th:block>
+                    </div>
                 </td>
                 </tr>
                 </tbody>
@@ -38,7 +48,7 @@
         </header>
         <section>Contenu de la section</section>
         <footer th:fragment="footer">
-            <a href="/contact" th:text="#{contactUs}">nous contacter</a>
+            <a href="/contact" class="ui grey button" th:text="#{contactUs}">nous contacter</a>
 
             <script src="webjars/jquery/3.3.1-1/jquery.js"
                     th:src="@{/webjars/jquery/3.3.1-1/jquery.js}"></script>

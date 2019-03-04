@@ -20,7 +20,7 @@
             <ul th:each="string : ${strings}">
                 <li th:text="${string}"></li>
             </ul>
-            <a class="ui green button" href="/panier/payer" th:if="${strings.size()!=0}" >payer</a>
+            <a class="ui green button" href="/user/panier/payer" th:if="${strings.size()!=0}" >payer</a>
 
         </td></tr></tbody></table>
 

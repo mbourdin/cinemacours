@@ -24,6 +24,7 @@
                         <li th:text="${billet.toString()}"></li>
                     </ul>
                 </li>
+                <th:block th:if="${commandes.size()==0}" th:text="#{neverbought}"></th:block>
             </ul>
 
         </td></tr></tbody></table>

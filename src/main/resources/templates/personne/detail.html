@@ -29,9 +29,9 @@
                 <li th:each="film : ${personne.realise}"><a th:href="@{/film/detail/{Id} (Id=${film.id})}" th:text="${film.titre}"></a></li>
             </ul>
             <br/>
-            <a class="ui red button" th:if="${session.admin!=null}" th:href="@{/personne/delete/{Id} (Id=${personne.id})}">Effacer</a>
+            <a class="ui red button" th:if="${session.admin}" th:href="@{/personne/delete/{Id} (Id=${personne.id})}">Effacer</a>
             <br/>
-            <a class="ui yellow button" th:if="${session.admin!=null}" th:href="@{/personne/update/{Id} (Id=${personne.id})}">Editer</a>
+            <a class="ui yellow button" th:if="${session.admin}" th:href="@{/personne/update/{Id} (Id=${personne.id})}">Editer</a>
             </td></tr></tbody></table>
         <footer th:replace="basictemplate :: footer"></footer>
     </body>

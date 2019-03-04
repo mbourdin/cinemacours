@@ -1,14 +1,26 @@
 package mbourdin.cinema_cours.web;
 
+import mbourdin.cinema_cours.dao.BilletDao;
+import mbourdin.cinema_cours.dao.CommandeDao;
+import mbourdin.cinema_cours.dao.SeanceDao;
 import mbourdin.cinema_cours.dao.UserDao;
+import mbourdin.cinema_cours.model.Billet;
+import mbourdin.cinema_cours.model.Commande;
+import mbourdin.cinema_cours.model.Seance;
 import mbourdin.cinema_cours.model.Utilisateur;
+import mbourdin.cinema_cours.service.CinemaUserService;
+import mbourdin.cinema_cours.service.Panier;
 import mbourdin.cinema_cours.service.Utilities;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpSession;
+import java.util.Set;
 
 
 /* L'utilisateur connecté peut acceder
@@ -19,6 +31,17 @@ au détail et la mise a jour concernant
 @Controller
 @RequestMapping("/user")
 public class UserController {
+    @Autowired
+    CinemaUserService cinemaUserService;
+    @Autowired
+    BCryptPasswordEncoder bCryptPasswordEncoder;
+    @Autowired
+    BilletDao billetDao;
+    @Autowired
+    SeanceDao seanceDao;
+    @Autowired
+    CommandeDao commandeDao;
+
     @Autowired
     UserDao userDao;
     @Value("${pwprefix}")
@@ -64,17 +87,25 @@ public class UserController {
     }
 
     @PostMapping("/create")
-    public String doCreateUser(@ModelAttribute Utilisateur newuser,@RequestParam("password") String password,@SessionAttribute("user") Utilisateur user)
+    public String doCreateUser(@ModelAttribute Utilisateur newuser,@RequestParam("password2") String password,@SessionAttribute("user") Utilisateur user)
     {   if(!password.equalsIgnoreCase("")) {
-            Utilities.setHPW(newuser, password, prefix, suffix, salt);
+            newuser.setPassword(password);
         }
         if((user.equals(newuser)&&user.getType()==newuser.getType())
             || (user.getType()==Utilisateur.admin)
         )
-        {   //empecher l'admin de se deleteByUser ses propres droits d'administration
+        {   //empecher l'admin de se supprimer ses propres droits d'administration
             if (user.getType()==Utilisateur.admin&&user.equals(newuser)) newuser.setType(Utilisateur.admin);
 
-            userDao.save(newuser);
+
+            if(!bCryptPasswordEncoder.matches(newuser.getPassword(),user.getPassword()))
+            {
+            cinemaUserService.saveWithNewPass(newuser);
+            }
+            else
+            {
+                cinemaUserService.saveWithSamePass(newuser);
+            }
         }
         return "redirect:/user/liste";
     }
@@ -90,5 +121,76 @@ public class UserController {
 
 
         return "redirect:/user/liste";
+    }
+
+    @GetMapping("/panier/payer")
+    String payer(Model m, HttpSession session, @SessionAttribute Panier panier, @SessionAttribute Utilisateur user, @SessionAttribute Commande commande)
+    {   if(commande.getId()==null)
+    {   commande=new Commande(panier,user);
+        commandeDao.save(commande);
+        for(Billet billet : commande.getBillets())
+        {
+            billetDao.save(billet);
+
+             /*  billet.getSeance().getSalle().getId();
+               billet.getSeance().getFilm().getTitre();
+               billet.getSeance().getDebut();*/
+        }
+        session.setAttribute("commande",commande);
+        session.setAttribute("panier",new Panier());
+    }
+
+        return "panier/commande";
+    }
+    @GetMapping("/mesCommandes")
+    String listerCommandes(@SessionAttribute Utilisateur user,Model m)
+    {    Set<Commande> commandes= commandeDao.findAllByUtilisateur(user);
+        m.addAttribute("commandes",commandes);
+        return "/panier/listeCommandes";
+    }
+    @GetMapping("/commande/{id}")
+    String commander(@PathVariable Long id, Model m) {
+        m.addAttribute("seance", seanceDao.findById(id).get());
+        return "/panier/create";
+    }
+    @GetMapping("/panier/enCours")
+    String getCmd(@SessionAttribute Utilisateur user,HttpSession session)
+    {   Commande commande=commandeDao.findByPayeFalseAndUtilisateur(user);
+        session.setAttribute("commande",commande);
+        for(Billet billet : commande.getBillets())
+        {
+            billetDao.save(billet);
+
+            /*billet.getSeance().getSalle().getId();
+            billet.getSeance().getFilm().getTitre();
+            billet.getSeance().getDebut();*/
+        }
+        return "panier/commande";
+    }
+
+
+    @PostMapping("/commande")
+    String ajouterACommande(@RequestParam Integer places, @SessionAttribute Panier panier, @RequestParam Long id, HttpSession session) {
+        // Les appels suivants sont nécessaires pour initialiser completement l'objet panier
+        Seance seance=seanceDao.findById(id).get();
+        //seance.getDebut();
+        //Film film=seance.getFilm();
+        //film.getTitre();
+
+        for (int i = 0; i < places; i++) {
+            Billet billet = new Billet();
+            billet.setSeance(seance);
+            panier.add(billet);
+            billet.setCommande(null);
+            billet.setPrix(Seance.prixdefaut);
+        }
+        session.setAttribute("strings",panier.toStrings());
+
+        return "redirect:/panier/detail";
+    }
+    @GetMapping("/panier/detail")
+    String detailPanier(Model m,@SessionAttribute Panier panier)
+    {   m.addAttribute("strings",panier.toStrings());
+        return "/panier/detail";
     }
 }

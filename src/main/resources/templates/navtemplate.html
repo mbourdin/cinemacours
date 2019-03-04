@@ -22,26 +22,26 @@
                             <i class="dropdown icon"></i>
                             <div class="menu">
                                 <a class="item" href="/user/selfupdate" th:text="#{accountSettings}">Mettre a jour mes parametres de compte</a>
-                                <a class="item" href="/panier/detail" th:text="#{myCart}" >Mon panier</a>
-                                <a class="item" href="/panier/mesCommandes" th:text="#{commandHistory}">Mes commandes</a>
+                                <a class="item" href="/user/panier/detail" th:text="#{myCart}" >Mon panier</a>
+                                <a class="item" href="/user/mesCommandes" th:text="#{commandHistory}">Mes commandes</a>
                             </div>
                         </div>
                         <div class="ui dropdown item">Films
                             <i class="dropdown icon"></i>
                             <div class="menu">
                                 <a class="item" href="/film/liste" th:text="#{list}">liste</a>
-                                <a th:if="${session.admin!=null}" class="item" href="/film/add" th:text="#{create}">creer</a>
-                                <a th:if="${session.admin!=null}" class="item" href="/film/import?str=" th:text="#{import}">importer</a>
+                                <a th:if="${session.admin}" class="item" href="/film/add" th:text="#{create}">creer</a>
+                                <a th:if="${session.admin}" class="item" href="/film/import?str=" th:text="#{import}">importer</a>
                             </div>
                         </div>
                         <div class="ui dropdown item"><th:block th:text="#{persons}">Personnes</th:block>
                             <i class="dropdown icon"></i>
                             <div class="menu">
                                 <a class="item" href="/personne/liste" th:text="#{list}">liste</a>
-                                <a th:if="${session.admin!=null}" class="item" href="/personne/create" th:text="#{create}">creer</a>
+                                <a th:if="${session.admin}" class="item" href="/personne/create" th:text="#{create}">creer</a>
                             </div>
                         </div>
-                        <div th:if="${session.admin!=null}" class="ui dropdown item"><th:block th:text="#{users}">Utilisateurs</th:block>
+                        <div th:if="${session.admin}" class="ui dropdown item"><th:block th:text="#{users}">Utilisateurs</th:block>
                             <i class="dropdown icon"></i>
                             <div class="menu">
                                 <a class="item" href="/user/liste" th:text="#{list}">liste</a>
@@ -53,29 +53,29 @@
                             <div class="menu">
                                 <a class="item" href="/seance/semaine" th:text="#{thisWeek}">cette semaine</a>
                                 <a class="item" href="/seance/all" th:text="#{all}">toutes</a>
-                                <a th:if="${session.admin!=null}" class="item" href="/seance/create?n=1" th:text="#{create}">creer</a>
+                                <a th:if="${session.admin}" class="item" href="/seance/create?n=1" th:text="#{create}">creer</a>
                             </div>
                         </div>
-                        <div th:if="${session.admin!=null}" class="ui dropdown item"><th:block th:text="#{messagesToAdmin}">messages Admin</th:block>
+                        <div th:if="${session.admin}" class="ui dropdown item"><th:block th:text="#{messagesToAdmin}">messages Admin</th:block>
                             <i class="dropdown icon"></i>
                             <div class="menu">
-                                <a class="item" href="/msgliste/all" th:text="#{allM}">tous</a>
-                                <a class="item" href="/msgliste/nonlus" th:text="#{unRead}">non lus</a>
+                                <a class="item" href="/admin/msgliste/all" th:text="#{allM}">tous</a>
+                                <a class="item" href="/admin/msgliste/nonlus" th:text="#{unRead}">non lus</a>
                             </div>
                         </div>
-                        <div th:if="${session.admin!=null}" class="ui dropdown item"><th:block th:text="#{newsletter}">newsletter</th:block>
+                        <div th:if="${session.admin}" class="ui dropdown item"><th:block th:text="#{newsletter}">newsletter</th:block>
                             <i class="dropdown icon"></i>
                             <div class="menu">
                                 <a class="item" href="/news/create" th:text="#{create}">creer</a>
                                 <a class="item" href="/news/liste" th:text="#{list}">liste</a>
                             </div>
                         </div>
-                        <div  class="ui dropdown item"><th:block th:text="#{reviews}">commentaires</th:block>
+                        <div  class="ui dropdown item" th:if="${session.user!=null}"><th:block th:text="#{reviews}" >commentaires</th:block>
                             <i class="dropdown icon"></i>
                             <div class="menu">
-                                <a class="item" href="/review/new" th:if="${session.admin!=null}" th:text="#{NEW}">nouveaux</a>
-                                <a class="item" href="/review/liste" th:if="${session.admin!=null}" th:text="#{allM}">tous</a>
-                                <a class="item" href="/review/mesCommentaires" th:if="${session.user!=null}" th:text="#{myReviews}">mesCommentaires</a>
+                                <a class="item" href="/review/new" th:if="${session.admin}" th:text="#{NEW}">nouveaux</a>
+                                <a class="item" href="/review/liste" th:if="${session.admin}" th:text="#{allM}">tous</a>
+                                <a class="item" href="/review/mesCommentaires"  th:text="#{myReviews}">mesCommentaires</a>
                             </div>
                         </div>
 
@@ -119,12 +119,6 @@
         </td>
     </tr>
 </table>
-<div class="nav flex-column nav-pills">
-    <a class="navbar-brand show" href="#">Navbar</a>
-    <button aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation"
-            class="navbar-toggler" data-target="#navbarsExampleDefault" data-toggle="collapse" type="button">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-</div>
+
 </body>
 </html>

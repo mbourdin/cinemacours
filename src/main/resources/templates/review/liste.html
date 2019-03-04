@@ -18,12 +18,12 @@
             <H1 th:if="${reviews.isEmpty()}">Liste des commentaires VIDE</H1>
             <ul class="sanspuce">
                 <li th:each="review : ${reviews}">
-                    <div th:if="${(review.publie())} or ${session.admin!=null} or (${session.user!=null} and ${session.user.equals(review.utilisateur)   })">
+                    <div th:if="${(review.publie())} or ${session.admin} or (${session.user!=null} and ${session.user.equals(review.utilisateur)   })">
                         <a th:href="@{/review/detail/{Id} (Id=${review.id})}">commentaire sur </a>
                         <a th:href="@{/film/detail/{Id} (Id=${review.film.id})}"
                            th:text="${' '+review.film.titre}+' du ' + ${review.formattedDate()}"></a>
                         <div th:text="'utilisateur: '+${review.utilisateur.nom}+' '+${review.utilisateur.prenom}"></div>
-                        <div th:text="'etat = '+${review.etatString()}" th:if="${session.admin!=null}"></div>
+                        <div th:text="'etat = '+${review.etatString()}" th:if="${session.admin}"></div>
                         <div th:text="${review.article}"></div>
                         <br>
                         <th:block th:if="${session.user!=null} and  ${session.user.equals(review.utilisateur)}">
@@ -31,9 +31,9 @@
                                th:if="${review.editable()}">Editer</a>
 
                             <a class="ui red button" th:href="@{/review/supprimer/{Id} (Id=${review.id})}"
-                               th:if="(${session.user!=null} and  ${session.user.equals(review.utilisateur)} and ${review.publie()})">Effacer</a>
+                               th:if="(${session.user} and  ${session.user.equals(review.utilisateur)} and ${review.publie()})">Effacer</a>
                         </th:block>
-                        <th:block th:if="${session.admin!=null} and ${review.nouveau()}">
+                        <th:block th:if="${session.admin} and ${review.nouveau()}">
                             <a class="ui green button" th:href="@{/review/valide/{Id} (Id=${review.id})}">valider</a>
                             <a class="ui blue button" th:href="@{/review/retenir/{Id} (Id=${review.id})}">retenir pour
                                 modification</a>

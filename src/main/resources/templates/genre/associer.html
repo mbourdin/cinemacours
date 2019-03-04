@@ -18,12 +18,15 @@
 
                 <td class="twelve wide" id="mainContent">
 
-                    <form action="/film/create" enctype="multipart/form-data" method="post">
+
         <h2>associer un genre a un film</h2>
 
 
                         <form action="/genre/associer" method="post">
-
+                            <input
+                                    type="hidden"
+                                    th:name="${_csrf.parameterName}"
+                                    th:value="${_csrf.token}" />
                             <table>
                            <tr><td><label>genre</label></td><td><label>film</label></td></tr>
                            <tr>
@@ -44,8 +47,7 @@
                             </table>
                         </form>
 
-
-                    </form></td></tr></tbody></table>
+                  </td></tr></tbody></table>
 
 
     <footer th:replace="basictemplate :: footer"></footer>

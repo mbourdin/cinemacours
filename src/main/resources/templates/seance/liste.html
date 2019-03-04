@@ -20,7 +20,7 @@
                     <td class="six wide"><a th:href="@{/film/detail/{Id} (Id=${seance.film.id})}" th:text="${seance.film.titre}"></a></td>
                     <td class="two wide"><a class="ui green button"
                                             th:if="${session.panier}" th:href="@{/panier/commande/{Id} (Id=${seance.id})}">commander</a></td>
-                    <th:block th:if="${session.admin!=null}">
+                    <th:block th:if="${session.admin}">
                     <td class="two wide"><a class="ui red button"
                                             th:href="@{/seance/delete/{Id} (Id=${seance.id})}">Effacer</a></td>
                     <td class="two wide"><a class="ui yellow button"
@@ -28,7 +28,7 @@
                     </th:block>
                 </tr>
             </table>
-            <a th:if="${session.admin!=null}" href="/seance/create" method="get">creer séances</a>
+            <a th:if="${session.admin}" href="/seance/create" method="get">creer séances</a>
         </td>
     </tr>
     </tbody>

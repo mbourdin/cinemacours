@@ -16,11 +16,15 @@
             <td id="mainContent" class="twelve wide">
             <p th:if="${message != null}" th:text="${message}"></p>
                 <h2>Entrez vos Identifiants</h2>
-
-                    <form action="/login/connect" method="post">
+                    <div th:if="${old}">
+                    <form th:action="@{/login}" method="post">
+                        <input
+                                type="hidden"
+                                th:name="${_csrf.parameterName}"
+                                th:value="${_csrf.token}" />
                         <table class="ui table">
                             <tr>
-                                <td><label>Identifiant *</label></td><td> <input name="login" type="text"/></td>
+                                <td><label>Identifiant *</label></td><td> <input name="username" type="text"/></td>
                             </tr><tr>
                             <td><label>Mot de passe *</label></td><td> <input name="password" type="password"/></td>
                         </tr><tr>
@@ -29,6 +33,26 @@
                         </tr>
                         </table>
                     </form>
+                    </div>
+                <div th:unless="${old}">
+                    <form th:action="@{/login/connect}" method="post">
+                        <input
+                                type="hidden"
+                                th:name="${_csrf.parameterName}"
+                                th:value="${_csrf.token}" />
+                        <table class="ui table">
+                            <tr>
+                                <td><label>Identifiant *</label></td><td> <input name="username" type="text"/></td>
+                            </tr><tr>
+                            <td><label>Mot de passe *</label></td><td> <input name="password" type="password"/></td>
+                        </tr><tr>
+                            <td><input type="submit" value="Envoyer" /></td>
+                            <td><a href="/login/recoverPW" >mot de passe oublié?</a> </td>
+                        </tr>
+                        </table>
+                    </form>
+                </div>
+
                     <form action="/login/useLink" method="post">
                     <table class="ui table">
                         <tr>

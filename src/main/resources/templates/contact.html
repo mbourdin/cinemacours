@@ -20,6 +20,10 @@
             <td id="mainContent" class="twelve column wide">
                 <h2>Saisissez votre message</h2>
                 <form action="sendMsgToAdmin" method="post">
+                    <input
+                            type="hidden"
+                            th:name="${_csrf.parameterName}"
+                            th:value="${_csrf.token}" />
 
             <label>email *</label>
             <input th:if="${session.user}" class="fullwidth" name="email" readonly th:value="${session.user.email}"

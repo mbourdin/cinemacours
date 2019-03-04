@@ -24,10 +24,10 @@
             <td class="ten wide"><a th:href="@{/film/listParGenre/{Id} (Id=${genre.id})}" th:text="${genre.name}"></a></td>
 
             <td class="two wide">
-                <a class="ui red button" th:if="${session.admin!=null}" th:href="@{/genre/delete/{Id} (Id=${genre.id})}">Effacer</a>
+                <a class="ui red button" th:if="${session.admin}" th:href="@{/genre/delete/{Id} (Id=${genre.id})}">Effacer</a>
             </td>
             <td class="two wide">
-                <a class="ui yellow button" th:if="${session.admin!=null}" th:href="@{/genre/update/{Id} (Id=${genre.id})}">Editer</a></td>
+                <a class="ui yellow button" th:if="${session.admin}" th:href="@{/genre/update/{Id} (Id=${genre.id})}">Editer</a></td>
         </tr>
             </table>
         </td></tr></tbody></table>

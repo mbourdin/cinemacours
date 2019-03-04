@@ -109,7 +109,7 @@ public class PesonneController {
         Set<Personne> personnes=daoPersonne.findAll();
         for(Personne personne: personnes)
         {   personne.setName(personne.getPrenom()+" "+personne.getNom());
-            daoPersonne.save(personne);
+            daoPersonne.saveWithNewPass(personne);
         }
         return "/index";
     }

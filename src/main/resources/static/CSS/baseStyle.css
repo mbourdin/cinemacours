@@ -62,7 +62,10 @@ a{
 .fullwidth {
     width: 100%;
 }
+.flag{
+    height: 20px;
 
+}
 #mainContent{
     text-align: center;
     background: aqua;

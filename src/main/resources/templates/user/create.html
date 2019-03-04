@@ -18,16 +18,20 @@
                     <h2>Créez vos Identifiants</h2>
 
                         <form action="/user/create" method="post" th:object="${newuser}" autocomplete="off">
+                            <input
+                                    type="hidden"
+                                    th:name="${_csrf.parameterName}"
+                                    th:value="${_csrf.token}" />
                             <table class="table ui">
                                 <tr>
 
 
                                 <td> <input type="hidden" th:field="*{id}"/>
-                                    <input type="hidden" th:field="*{hpw}"/>
+                                    <input type="hidden" th:field="*{password}"/>
                                     <input type="hidden" th:field="*{link}"/>
                                     <label>Identifiant *</label></td><td><input name="login" type="text" th:field="*{login}"/></td>
                             </tr><tr>
-                            <td><label>Mot de passe *</label></td><td><input name="password" type="password"/></td>
+                            <td><label>Mot de passe *</label></td><td><input name="password2" type="password"/></td>
                         </tr><tr>
                             <td><label>email *</label></td><td><input name="email" type="text" th:field="*{email}"/><td>
                         </tr><tr>

@@ -20,7 +20,7 @@
                 <th class="two wide">id</th>
                 <th class="ten wide">detail</th>
 
-                <th:block th:if="${session.admin!=null}">
+                <th:block th:if="${session.admin}">
                     <th class="two wide">effacer</th>
                     <th class="two wide">editer</th>
                 </th:block>
@@ -30,9 +30,9 @@
                 <tr>
                 <td><span th:text="${user.id}"></span></td>
                 <td th:text="${user.toString()}"></td>
-                <td><a class="ui  red button" th:if="${session.admin!=null}"
+                <td><a class="ui  red button" th:if="${session.admin}"
                        th:href="@{/user/delete/{Id} (Id=${user.id})}">Effacer</a></td>
-                <td><a class="ui  yellow button" th:if="${session.admin!=null}"
+                <td><a class="ui  yellow button" th:if="${session.admin}"
                        th:href="@{/user/update/{Id} (Id=${user.id})}">Editer</a></td>
                 </tr>
                 </tbody>

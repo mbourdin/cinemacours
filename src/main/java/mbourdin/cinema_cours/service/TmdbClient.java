@@ -170,7 +170,7 @@ public class TmdbClient {
                  try{realisateur=getPersonByTmdbId(job.getLong("id"));}catch (Exception e){e.printStackTrace();}
                     getImage(realisateur);
                     importedFilm.setRealisateur(realisateur);
-                    //personneDao.save(realisateur); l'appel a la fonction précedente declanche déja une sauvegarde
+                    //personneDao.saveWithNewPass(realisateur); l'appel a la fonction précedente declanche déja une sauvegarde
 
                 importedFilm.setRealisateur(realisateur);
             }
@@ -291,7 +291,7 @@ public class TmdbClient {
                     getImage(realisateur);
                     importedFilm.setRealisateur(realisateur);
                     filmDao.save(importedFilm);
-                //personneDao.save(realisateur); l'appel a la fonction précedente declanche déja une sauvegarde
+                //personneDao.saveWithNewPass(realisateur); l'appel a la fonction précedente declanche déja une sauvegarde
                 }
                 importedFilm.setRealisateur(realisateur);
                 filmDao.save(importedFilm);

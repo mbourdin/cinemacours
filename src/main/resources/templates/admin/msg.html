@@ -15,7 +15,7 @@
                 <td th:replace="navtemplate :: barrenav"></td>
                 <td class="twelve wide" id="mainContent">
                 <p th:text="${msg.texte}"></p>
-                <br/><a class="ui red button" th:if="${session.admin!=null}" th:href="@{/msg/delete/{Id} (Id=${msg.id})}">Effacer</a>
+                <br/><a class="ui red button" th:if="${session.admin}" th:href="@{/admin/msg/delete/{Id} (Id=${msg.id})}">Effacer</a>
                 </td></tr></tbody></table>
         <footer th:replace="basictemplate :: footer"></footer>
 

@@ -73,6 +73,10 @@
                     method="post"
                     th:object="${film}"
             >
+                <input
+                        type="hidden"
+                        th:name="${_csrf.parameterName}"
+                        th:value="${_csrf.token}" />
                 <input th:field="${film.id}" type="hidden">
                 <input th:field="${film.afficheNom}" type="hidden">
                 <table class="ui blue inverted table">

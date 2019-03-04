@@ -46,11 +46,11 @@
                 <br><a class=centered th:href="@{/review/listeParFilm/{id} (id=${film.id})}">Liste des commentaires sur ce film</a>
                     <ul class="sanspuce">
                         <li th:each="review : ${reviews}">
-                            <div th:if="${review.publie()} or ${session.admin!=null}">
+                            <div th:if="${review.publie()} or ${session.admin}">
                                 <a th:href="@{/film/detail/{Id} (Id=${review.film.id})}"
                                    th:text="${'commentaire sur : '+review.film.titre} +' du ' + ${review.formattedDate()}"></a>
                                 <div th:text="'utilisateur: '+${review.utilisateur.nom}+' '+${review.utilisateur.prenom}"></div>
-                                <div th:text="'etat = '+${review.etatString()}" th:if="${session.admin!=null}"></div>
+                                <div th:text="'etat = '+${review.etatString()}" th:if="${session.admin}"></div>
                                 <div th:text="${review.article}"></div>
                             </div>
                         </li>

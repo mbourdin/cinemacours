@@ -45,10 +45,8 @@ public class MainController {
 
     @Autowired
     MsgDao msgDao;
-    @Autowired
-    TmdbFilmDao tmdbFilmDao;
-    @Autowired
-    FilmIdImport filmIdImport;
+
+
 /*
     @PostMapping("/search")
     public String search(Model m, HttpServletRequest request)
@@ -83,69 +81,18 @@ public class MainController {
         return "planDAcces";
     }
     @PostMapping("sendMsgToAdmin")
-    public String sendMsg(@RequestParam String texte,@RequestParam String email,Model m)
+    public String sendMsg(@RequestParam String texte,@RequestParam String email)
     {
         MsgToAdmin msg=new MsgToAdmin();
         msg.setDate(LocalDate.now());
         msg.setTexte(texte);
         msg.setEmail(email);
         msgDao.save(msg);
-        m.addAttribute("message","votre message a l'admin a bien été envoyé");
+        //m.addAttribute("message","votre message a l'admin a bien été envoyé");
         return "redirect:/";
     }
-    @GetMapping("msgliste/nonlus")
-    public String listeMsgNonLus(Model m,@SessionAttribute Boolean admin)
-    {   if(admin!=null&&admin.equals(Boolean.TRUE)) {
-        m.addAttribute("msgs", msgDao.findAllByLuFalse());
-        }
-        return ("/msgliste");
-    }
-    @GetMapping("msgliste/all")
-    public String listeMsg(Model m,@SessionAttribute Boolean admin)
-    {   if(admin!=null&&admin.equals(Boolean.TRUE)) {
-        m.addAttribute("msgs", msgDao.findAll());
-    }
-        return ("/msgliste");
-    }
-    @GetMapping("/msg/detail/{id}")
-    public String msg(Model m,@SessionAttribute Boolean admin,@PathVariable Integer id)
-    {     if(admin!=null&&admin.equals(Boolean.TRUE)) {
-            MsgToAdmin msg= msgDao.findById(id).get();
-            m.addAttribute("msg",msg);
-            msg.setLu(Boolean.TRUE);
-            msgDao.save(msg);
-        }
-        return "/msg";
-    }
-    @GetMapping("/msg/delete/{id}")
-    public String msgDelete(Model m,@SessionAttribute Boolean admin,@PathVariable Integer id)
-    {     if(admin!=null&&admin.equals(Boolean.TRUE)) {
-        msgDao.deleteById(id);
-    }
-        return "redirect:/msgliste/nonlus";
-    }
-    @GetMapping("/importFilms")
-    public String testfilmstream()
-    {
 
-        FilmStream fs=new FilmStream();
 
-        BufferedReader br=fs.getBr();
-        TmdbFilm film;
-        try{    String ligne=br.readLine();
-                while(ligne!=null)
-                {   film=filmIdImport.importedFilm(ligne);
-                    if(film!=null) {
-                        tmdbFilmDao.save(film);
-
-                    }
-                    ligne=br.readLine();
-
-                }
-            System.out.println(filmIdImport.importedFilm(ligne));
-        }catch (Exception e){e.printStackTrace();}
-        return "/index";
-    }
     @GetMapping("/error/{id}")
     public String error(@PathVariable Long id)
     {   return "/error/"+id;
