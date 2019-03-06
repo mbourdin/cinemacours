@@ -17,8 +17,8 @@
 
 
 
-                        <a class="item" href="/planDAcces" th:text="#{locateUs}">plan d'acces</a>
-                        <div class="ui dropdown item" th:if="${session.user}"><th:block th:text="#{myAccount}">Mon compte</th:block>
+                        <a class="item" href="/planDAcces" th:text="#{locateUs}" th:unless="${session.vendeur}">plan d'acces</a>
+                        <div class="ui dropdown item" th:if="${session.normalUser}"><th:block th:text="#{myAccount}">Mon compte</th:block>
                             <i class="dropdown icon"></i>
                             <div class="menu">
                                 <a class="item" href="/user/selfupdate" th:text="#{accountSettings}">Mettre a jour mes parametres de compte</a>
@@ -26,7 +26,7 @@
                                 <a class="item" href="/user/mesCommandes" th:text="#{commandHistory}">Mes commandes</a>
                             </div>
                         </div>
-                        <div class="ui dropdown item">Films
+                        <div class="ui dropdown item" th:if="${session.normalUser}">Films
                             <i class="dropdown icon"></i>
                             <div class="menu">
                                 <a class="item" href="/film/liste" th:text="#{list}">liste</a>
@@ -34,7 +34,7 @@
                                 <a th:if="${session.admin}" class="item" href="/film/import?str=" th:text="#{import}">importer</a>
                             </div>
                         </div>
-                        <div class="ui dropdown item"><th:block th:text="#{persons}">Personnes</th:block>
+                        <div class="ui dropdown item" th:if="${session.normalUser}"><th:block th:text="#{persons}">Personnes</th:block>
                             <i class="dropdown icon"></i>
                             <div class="menu">
                                 <a class="item" href="/personne/liste" th:text="#{list}">liste</a>
@@ -51,8 +51,11 @@
                         <div class="ui dropdown item"><th:block th:text="#{projections}">seances</th:block>
                             <i class="dropdown icon"></i>
                             <div class="menu">
+                                <a class="item" href="/seance/today" th:text="#{today}">aujourd'hui</a>
+                                <th:block th:unless="${session.vendeur}">
                                 <a class="item" href="/seance/semaine" th:text="#{thisWeek}">cette semaine</a>
                                 <a class="item" href="/seance/all" th:text="#{all}">toutes</a>
+                                </th:block>
                                 <a th:if="${session.admin}" class="item" href="/seance/create?n=1" th:text="#{create}">creer</a>
                             </div>
                         </div>
@@ -70,7 +73,7 @@
                                 <a class="item" href="/news/liste" th:text="#{list}">liste</a>
                             </div>
                         </div>
-                        <div  class="ui dropdown item" th:if="${session.user!=null}"><th:block th:text="#{reviews}" >commentaires</th:block>
+                        <div  class="ui dropdown item" th:if="${session.normalUser}"><th:block th:text="#{reviews}" >commentaires</th:block>
                             <i class="dropdown icon"></i>
                             <div class="menu">
                                 <a class="item" href="/review/new" th:if="${session.admin}" th:text="#{NEW}">nouveaux</a>

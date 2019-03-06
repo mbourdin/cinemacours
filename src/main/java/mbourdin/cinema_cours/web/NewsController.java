@@ -7,6 +7,7 @@ import mbourdin.cinema_cours.model.Utilisateur;
 import mbourdin.cinema_cours.service.Email;
 import mbourdin.cinema_cours.service.NewsThread;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,7 @@ import java.util.Set;
 
 
 @Controller
+@PreAuthorize("hasAuthority('ADMIN')")
 @RequestMapping("/news")
 public class NewsController{
     @Autowired
@@ -50,9 +52,8 @@ public class NewsController{
     }
     @PostMapping("/create")
     public String doCreateNewsletter(@ModelAttribute NewsLetter news,@SessionAttribute Boolean admin)
-    {   if(admin!=null&&admin.equals(Boolean.TRUE))
-        {   newsDao.save(news);
-        }
+    {
+        newsDao.save(news);
         return "redirect:/news/liste";
     }
     @GetMapping("liste")
@@ -61,15 +62,13 @@ public class NewsController{
         return "/news/liste";
     }
     @GetMapping("/send/{id}")
-    public String sendNL(@PathVariable Integer id,@SessionAttribute Boolean admin,Model m)
-    {   if(admin!=null&&admin.equals(Boolean.TRUE))
-        {   //TODO lancer cette fonction dans un thread séparé! , limiter son utilisation CPU
+    public String sendNL(@PathVariable Integer id,Model m)
+    {   //TODO lancer cette fonction dans un thread séparé! , limiter son utilisation CPU
             NewsLetter news=newsDao.findById(id).get();
             Set<Utilisateur> utilisateurs=userDao.findAllByAbonneIsTrue();
             NewsThread newsThread=new NewsThread(news,utilisateurs);
             newsThread.start();
             System.out.println("thread lancé?");
-        }
         m.addAttribute("message","newsletter envoyée");
         m.addAttribute("newslist",newsDao.findAll());
         return "/news/liste";

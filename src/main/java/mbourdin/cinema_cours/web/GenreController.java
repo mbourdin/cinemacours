@@ -6,6 +6,7 @@ import mbourdin.cinema_cours.model.Film;
 import mbourdin.cinema_cours.model.Genre;
 import mbourdin.cinema_cours.service.GenreManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.Set;
 
 @Controller
+@PreAuthorize("hasAuthority('ADMIN')")
 @RequestMapping("/genre")
 public class GenreController {
 
@@ -41,16 +43,13 @@ public class GenreController {
     }
     @PostMapping("/create")
     public String doCreateGenre(@ModelAttribute Genre genre, @SessionAttribute Boolean admin)
-    {   if(admin==Boolean.TRUE)
-        {   genreManager.save(genre);
-        }
+    {   genreManager.save(genre);
         return "redirect:/genre/liste";
     }
     @GetMapping("/delete/{id}")
     public String deletegenre(@SessionAttribute Boolean admin,@PathVariable Long id)
-    {   if(admin==Boolean.TRUE)
-        {   genreManager.delete(id);
-        }
+    {
+        genreManager.delete(id);
         return "redirect:/genre/liste";
     }
     @GetMapping("creerAssociation")
@@ -63,12 +62,11 @@ public class GenreController {
     }
     @PostMapping("/associer")
     public String associerGenreFilm(@RequestParam Long genreId,@RequestParam Long filmId,@SessionAttribute Boolean admin)
-    {   if(admin==Boolean.TRUE) {
+    {
         Genre genre = genreManager.getById(genreId);
         Film film = filmDao.findById(filmId).get();
         genre.addFilm(film);
         genreManager.save(genre);
-        }
         return "redirect:/genre/liste";
     }
     @GetMapping("dissoudreAssociation")
@@ -81,12 +79,11 @@ public class GenreController {
     }
     @PostMapping("/dissocier")
     public String dissocierGenreFilm(@RequestParam Long genreId,@RequestParam Long filmId,@SessionAttribute Boolean admin)
-    {   if(admin==Boolean.TRUE) {
+    {
         Genre genre = genreManager.getById(genreId);
         Film film = filmDao.findById(filmId).get();
         genre.removeFilm(film);
         genreManager.save(genre);
-        }
         return "redirect:/genre/liste";
     }
     /**

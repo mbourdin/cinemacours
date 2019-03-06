@@ -9,6 +9,7 @@ import mbourdin.cinema_cours.service.ImageManager;
 import mbourdin.cinema_cours.service.TmdbClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -94,7 +95,7 @@ public class FilmController {
         m.addAttribute("listefilms", filmManager.getAll());
         return "film/liste";
     }
-
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/create")
     public String createFilm(Model m) {
         m.addAttribute("title", "creation film");
@@ -104,10 +105,9 @@ public class FilmController {
         m.addAttribute("film", new Film());
         return "/film/create";
     }
-
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/create")
     public String createFilm(@ModelAttribute Film film, @RequestParam("image") MultipartFile file, @RequestParam String titre, @RequestParam String resume, @RequestParam Long realisateur, @RequestParam double note) {
-        String filename = "";
         if (file.getContentType().equalsIgnoreCase("image/jpeg")) {
             try {
                 imm.savePoster(film, file.getInputStream());
@@ -122,7 +122,7 @@ public class FilmController {
         }
         return "redirect:/film/liste";
     }
-
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/update/{id}")
     public String updateFilm(Model m, @PathVariable("id") long id) {
         Film film = filmManager.getById(id);
@@ -133,14 +133,14 @@ public class FilmController {
         m.addAttribute("newrole", new Play());
         return "/film/create";
     }
-
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("delete/{id}")
     public String deleteFilm(@PathVariable("id") Long id) {
 
         filmManager.delete(filmManager.getById(id));
         return "redirect:/film/liste";
     }
-
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/add")
     public String add(Model model) {
         Film film = new Film();
@@ -154,7 +154,7 @@ public class FilmController {
 
         return "film/form";
     }
-
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/mod/{id}")
     public String mod(@PathVariable("id") long id, Model model) {
         Film film = filmManager.getById(id);
@@ -168,7 +168,7 @@ public class FilmController {
         return "film/form";
     }
 
-
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/add")
     public String submit(@ModelAttribute Film film, @RequestParam String dateString, @RequestParam("image") MultipartFile file) {
         if (file.getContentType().equalsIgnoreCase("image/jpeg")) {
@@ -186,14 +186,14 @@ public class FilmController {
 
         return "redirect:/film/liste";
     }
-
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/rmrole/{role_id}")
     public String rmRole(@PathVariable("role_id") Long roleId) {
         long filmId = filmManager.removeRole(roleId);
 
         return "redirect:/film/mod/" + filmId;
     }
-
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/addrole")
     public String addRole(@ModelAttribute Play role) {
         long filmId = role.getFilm().getId();
@@ -201,7 +201,7 @@ public class FilmController {
         filmManager.addRole(filmId, role);
         return "redirect:/film/mod/" + filmId;
     }
-
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/modrole/{id}")
     public String modRole(@PathVariable("id") long roleId, @ModelAttribute Play role) {
         filmManager.saveRole(role);
@@ -211,7 +211,6 @@ public class FilmController {
     @RequestMapping(value = "/image/{id}", method = RequestMethod.GET)
     public @ResponseBody
     void getImage0(HttpServletResponse response, @PathVariable("id") Long id) throws IOException, URISyntaxException {
-
 
         String imagename = filmManager.getById(id).getAfficheNom();
         BufferedImage image = ImageIO.read(new File(affichesPath + imagename));
@@ -223,17 +222,16 @@ public class FilmController {
         ImageIO.write(image, "jpg", out);
 
     }
-
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/smallDetail/{id}")
     public String smallDetail(Model m,@PathVariable Long id)
     {   Film film=tmdbClient.getMovieSmallDetail(id);
         m.addAttribute("film",film);
         return "/film/smalldetail";
     }
-
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/detailImport")
     public String importFilm(@RequestParam Long id,RedirectAttributes attributes) {
-        Film film;
 
         try {
             tmdbClient.getMovieByTmdbId(id);
@@ -243,13 +241,13 @@ public class FilmController {
         attributes.addFlashAttribute("flashMessage", "le film "+filmManager.getByTmdbId(id).getTitre()+" a bien été ajouté");
         return "redirect:/film/liste";
     }
-
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/detailImport/{id}")
     public String importerFilm(@PathVariable Long id,RedirectAttributes attributes)
     {
         return importFilm(id,attributes);
     }
-
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/import")
     public String importer(Model m,@RequestParam String str)
     {   if(str.length()>=3)

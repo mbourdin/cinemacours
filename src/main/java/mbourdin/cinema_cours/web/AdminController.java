@@ -7,6 +7,7 @@ import mbourdin.cinema_cours.model.TmdbFilm;
 import mbourdin.cinema_cours.service.FilmIdImport;
 import mbourdin.cinema_cours.service.FilmStream;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import java.io.BufferedReader;
 
 @Controller
+@PreAuthorize("hasAuthority('ADMIN')")
 @RequestMapping("/admin")
 public class AdminController {
     @Autowired
@@ -52,33 +54,29 @@ public class AdminController {
 
     @GetMapping("/msgliste/nonlus")
     public String listeMsgNonLus(Model m, @SessionAttribute Boolean admin)
-    {   if(admin!=null&&admin.equals(Boolean.TRUE)) {
+    {
         m.addAttribute("msgs", msgDao.findAllByLuFalse());
-    }
         return ("/admin/msgliste");
     }
     @GetMapping("msgliste/all")
     public String listeMsg(Model m,@SessionAttribute Boolean admin)
-    {   if(admin!=null&&admin.equals(Boolean.TRUE)) {
+    {
         m.addAttribute("msgs", msgDao.findAll());
-    }
         return ("/admin/msgliste");
     }
     @GetMapping("/msg/detail/{id}")
     public String msg(Model m,@SessionAttribute Boolean admin,@PathVariable Integer id)
-    {     if(admin!=null&&admin.equals(Boolean.TRUE)) {
+    {
         MsgToAdmin msg= msgDao.findById(id).get();
         m.addAttribute("msg",msg);
         msg.setLu(Boolean.TRUE);
         msgDao.save(msg);
-    }
         return "/admin/msg";
     }
     @GetMapping("/msg/delete/{id}")
     public String msgDelete(Model m,@SessionAttribute Boolean admin,@PathVariable Integer id)
-    {     if(admin!=null&&admin.equals(Boolean.TRUE)) {
+    {
         msgDao.deleteById(id);
-    }
         return "redirect:/admin/msgliste/nonlus";
     }
 }

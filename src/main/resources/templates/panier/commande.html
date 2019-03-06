@@ -21,6 +21,8 @@
                 <li th:text="${billet.toString()}"></li>
             </ul>
         <h2 th:text="'prix total'+${session.commande.prix()}"></h2>
+
+            <a th:text="#{pay}" href="/user/pay" class="ui green button">finaliser paiement</a>
         </td></tr></tbody></table>
 </div>
 <footer th:replace="basictemplate :: footer"></footer>

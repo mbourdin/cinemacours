@@ -6,12 +6,14 @@ import mbourdin.cinema_cours.model.Personne;
 import mbourdin.cinema_cours.service.FilmManager;
 import mbourdin.cinema_cours.service.PersonneManager;
 import mbourdin.cinema_cours.service.PlayManager;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 @RestController
+@PreAuthorize("hasAuthority('ADMIN')")
 @RequestMapping("/api/film")
 public class FilmRestController {
     private FilmManager filmManager;

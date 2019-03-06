@@ -5,6 +5,7 @@ import mbourdin.cinema_cours.model.Film;
 import mbourdin.cinema_cours.model.Genre;
 import mbourdin.cinema_cours.service.FilmManager;
 import mbourdin.cinema_cours.service.GenreManager;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +16,7 @@ import java.util.List;
  */
 @Validated
 @RestController
+@PreAuthorize("hasAuthority('ADMIN')")
 @RequestMapping("/api/genre")
 public class GenreRestController {
 

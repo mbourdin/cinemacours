@@ -20,7 +20,7 @@
                 <h2>ajouter des places au panier</h2>
 
 
-                        <form action="/panier/commande" method="post"  autocomplete="off">
+                        <form th:action="${action}" method="post"  autocomplete="off">
                             <input
                                     type="hidden"
                                     th:name="${_csrf.parameterName}"

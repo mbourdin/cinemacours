@@ -6,6 +6,7 @@ import mbourdin.cinema_cours.dao.SeanceDao;
 import mbourdin.cinema_cours.model.Seance;
 import mbourdin.cinema_cours.auxiliaire.SeanceChamp;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -29,8 +30,9 @@ public class SeanceController {
     public String seancesdujour(Model m)
     {
         List<Seance> seances=
-                seanceDao.getAllByDebutIsGreaterThanEqualAndDebutIsLessThanEqual(LocalDateTime.now(),LocalDateTime.now().plusDays(1));
+                seanceDao.getAllByDebutIsGreaterThanEqualAndDebutIsLessThanEqual(LocalDateTime.now().minusMinutes(15),LocalDateTime.now().plusDays(2));
         m.addAttribute("seances",seances);
+        m.addAttribute("formatter",formatter);
         return "seance/liste";
     }
     @GetMapping("/semaine")
@@ -49,14 +51,10 @@ public class SeanceController {
     }
 
     @PostMapping("create")
-    public String doCreerSeance(@ModelAttribute SeanceChamp seanceChamp,@SessionAttribute Boolean admin)
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public String doCreerSeance(@ModelAttribute SeanceChamp seanceChamp)
     {
-
-        if(admin!=null&&admin.equals(Boolean.TRUE))
-        {
             Seance seance;
-
-
              Optional<Seance> seanceOptional=seanceDao.findById(seanceChamp.getSeanceId());
                 if(seanceOptional.isPresent())
                 {seance = seanceOptional.get();}
@@ -68,10 +66,9 @@ public class SeanceController {
 
                 //TODO assurer l'absence de collision entre seances, niveau applicatif ou niveau  BDD?
                 seanceDao.save(seance);
-        }
         return "redirect:/seance/all";
     }
-
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/create")
     public String creerSeance(Model m)
     {   SeanceChamp seanceChamp=new SeanceChamp();
@@ -79,15 +76,14 @@ public class SeanceController {
         m.addAttribute("films",filmDao.findAll());
         return "/seance/create";
     }
-
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/delete/{id}")
-    public String deleteSeance(@PathVariable long id,@SessionAttribute Boolean admin)
+    public String deleteSeance(@PathVariable long id)
     {
-        if(admin!=null&&admin.equals(Boolean.TRUE))
-        {   seanceDao.delete(seanceDao.findById(id).get());
-        }
+        seanceDao.delete(seanceDao.findById(id).get());
         return "redirect:/seance/all";
     }
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/update/{id}")
     public String deleteSeance(@PathVariable long id,Model m)
     {   Seance seance=seanceDao.findById(id).get();

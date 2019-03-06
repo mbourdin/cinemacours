@@ -20,8 +20,12 @@
             <ul th:each="string : ${strings}">
                 <li th:text="${string}"></li>
             </ul>
-            <a class="ui green button" href="/user/panier/payer" th:if="${strings.size()!=0}" >payer</a>
-
+            <th:block th:unless="${session.vendeur}">
+            <a class="ui green button" href="/user/panier/valider" th:if="${strings.size()!=0}" th:text="#{validCommand}">valider commande</a>
+            </th:block>
+            <th:block th:if="${session.vendeur}">
+                <a class="ui green button" href="/vendeur/pay" th:if="${strings.size()!=0}" th:text="#{pay}">valider commande</a>
+            </th:block>
         </td></tr></tbody></table>
 
 <footer th:replace="basictemplate :: footer"></footer>

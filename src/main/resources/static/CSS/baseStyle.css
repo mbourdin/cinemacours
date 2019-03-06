@@ -72,7 +72,10 @@ a{
 }
 .greenbackground{
     background-color: green;
-
+}
+.blacktext
+{
+    color: black;
 }
 #mainContent{
     text-align: center;

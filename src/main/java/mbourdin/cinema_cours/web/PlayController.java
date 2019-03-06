@@ -5,6 +5,7 @@ import mbourdin.cinema_cours.dao.PersonneDao;
 import mbourdin.cinema_cours.dao.PlayDao;
 import mbourdin.cinema_cours.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Set;
 
 @Controller
+@PreAuthorize("hasAuthority('ADMIN')")
 @RequestMapping("/play")
 public class PlayController {
     @Autowired
@@ -62,7 +64,7 @@ public class PlayController {
     {   Play play=playDao.findById(id).get();
 
         Film film=filmDao.findById(play.getFilm().getId()).get();
-        deleteRole(id,admin);
+        deleteRole(id);
         film.setRoles(playDao.findAllByFilm_IdOrderByNumeroAsc(film.getId()));
 
         m.addAttribute("title","creation film");
@@ -85,14 +87,12 @@ public class PlayController {
         return "/play/create";
     }
     @GetMapping("delete/{id}")
-    public String deleteRole(@PathVariable Long id,@SessionAttribute Boolean admin){
+    public String deleteRole(@PathVariable Long id){
 
-        if (admin==Boolean.TRUE) {
             Play play=playDao.findById(id).get();
             play.getFilm().deletePlay(play);
             play.getPersonne().deletePlay(play);
             playDao.deleteById(id);
-        }
         return "redirect:/play/liste";
     }
 }

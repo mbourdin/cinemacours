@@ -12,11 +12,10 @@ import mbourdin.cinema_cours.service.CinemaUserService;
 import mbourdin.cinema_cours.service.Panier;
 import mbourdin.cinema_cours.service.Utilities;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -30,6 +29,7 @@ au détail et la mise a jour concernant
 
 @Controller
 @RequestMapping("/user")
+@PreAuthorize("hasAuthority('USER')")
 public class UserController {
     @Autowired
     CinemaUserService cinemaUserService;
@@ -81,7 +81,7 @@ public class UserController {
     }
 
     @PostMapping("/create")
-    public String doCreateUser(@ModelAttribute Utilisateur newuser,@RequestParam("password2") String password,@SessionAttribute("user") Utilisateur user)
+    public String doCreateUser(@ModelAttribute Utilisateur newuser,@RequestParam("password2") String password,@SessionAttribute Utilisateur user)
     {   boolean modifypassword=false;
         if(!password.equalsIgnoreCase("")) {
             newuser.setPassword(password);
@@ -110,11 +110,11 @@ public class UserController {
         return "redirect:/user/liste";
     }
     @GetMapping("delete/{id}")
-    public String deleteFilm(@PathVariable("id") Long id,@SessionAttribute("user") Utilisateur user){
+    public String deleteFilm(@PathVariable("id") Long id,@SessionAttribute Utilisateur user){
         Utilisateur utilisateur=userDao.findById(id).get();
         System.out.println(user);
         System.out.println(utilisateur);
-        //empecher l'admin de se deleteByUser lui-même!
+        //empecher l'admin de se supprimer lui-même!
         if(!user.equals(utilisateur)){
             userDao.delete(utilisateur);
         }
@@ -123,8 +123,8 @@ public class UserController {
         return "redirect:/user/liste";
     }
 
-    @GetMapping("/panier/payer")
-    String payer(Model m, HttpSession session, @SessionAttribute Panier panier, @SessionAttribute Utilisateur user, @SessionAttribute Commande commande)
+    @GetMapping("/panier/valider")
+    String payer( HttpSession session, @SessionAttribute Panier panier, @SessionAttribute Utilisateur user, @SessionAttribute Commande commande)
     {   if(commande.getId()==null)
     {   commande=new Commande(panier,user);
         commandeDao.save(commande);
@@ -142,6 +142,7 @@ public class UserController {
 
         return "panier/commande";
     }
+
     @GetMapping("/mesCommandes")
     String listerCommandes(@SessionAttribute Utilisateur user,Model m)
     {    Set<Commande> commandes= commandeDao.findAllByUtilisateur(user);
@@ -151,6 +152,7 @@ public class UserController {
     @GetMapping("/commande/{id}")
     String commander(@PathVariable Long id, Model m) {
         m.addAttribute("seance", seanceDao.findById(id).get());
+        m.addAttribute("action","/user/commande");
         return "/panier/create";
     }
     @GetMapping("/panier/enCours")
@@ -171,26 +173,19 @@ public class UserController {
 
     @PostMapping("/commande")
     String ajouterACommande(@RequestParam Integer places, @SessionAttribute Panier panier, @RequestParam Long id, HttpSession session) {
-        // Les appels suivants sont nécessaires pour initialiser completement l'objet panier
         Seance seance=seanceDao.findById(id).get();
-        //seance.getDebut();
-        //Film film=seance.getFilm();
-        //film.getTitre();
-
-        for (int i = 0; i < places; i++) {
-            Billet billet = new Billet();
-            billet.setSeance(seance);
-            panier.add(billet);
-            billet.setCommande(null);
-            billet.setPrix(Seance.prixdefaut);
-        }
-        session.setAttribute("strings",panier.toStrings());
-
-        return "redirect:/panier/detail";
+        //L'appel a une methode externe a la classe est justifiee par la necessite qu'a le vendeur de pouvoir lui aussi commander des places pour une seances mais depuis un autre point d'accès
+        return Utilities.ajouterACommande(places,panier,session,seance);
     }
     @GetMapping("/panier/detail")
     String detailPanier(Model m,@SessionAttribute Panier panier)
     {   m.addAttribute("strings",panier.toStrings());
         return "/panier/detail";
+    }
+    @GetMapping("/pay")
+    String payerCommande(@SessionAttribute Commande commande)
+    {   commande.setPaye(true);
+        commandeDao.save(commande);
+        return "redirect:/seance/today";
     }
 }

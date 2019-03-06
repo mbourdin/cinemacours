@@ -9,11 +9,13 @@ import mbourdin.cinema_cours.model.Play;
 import mbourdin.cinema_cours.service.FilmManager;
 import mbourdin.cinema_cours.service.PersonneManager;
 import mbourdin.cinema_cours.service.PlayManager;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@PreAuthorize("hasAuthority('ADMIN')")
 @RequestMapping("/api/play")
 public class PlayRestController {
     private PlayManager playManager;

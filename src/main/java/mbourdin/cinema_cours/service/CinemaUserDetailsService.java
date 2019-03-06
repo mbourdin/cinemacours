@@ -59,7 +59,6 @@ public class CinemaUserDetailsService implements UserDetailsService {
                     break;
                 case Utilisateur.admin:
                     System.out.println("admin");
-                    authorities.add(new SimpleGrantedAuthority  (Utilisateur.VENDEUR_RIGHTS));
                     authorities.add(new SimpleGrantedAuthority(Utilisateur.ADMIN_RIGHTS));
                     authorities.add(new SimpleGrantedAuthority(Utilisateur.USER_RIGHTS));
                     break;

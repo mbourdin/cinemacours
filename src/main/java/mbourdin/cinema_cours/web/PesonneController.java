@@ -2,34 +2,29 @@ package mbourdin.cinema_cours.web;
 
 import mbourdin.cinema_cours.dao.FilmDao;
 import mbourdin.cinema_cours.dao.PersonneDao;
-import mbourdin.cinema_cours.model.Film;
 import mbourdin.cinema_cours.model.Personne;
 import mbourdin.cinema_cours.service.ImageManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URISyntaxException;
-import java.util.Set;
 
 @Controller
 @RequestMapping("/personne")
 public class PesonneController {
     @Autowired
     PersonneDao daoPersonne;
-
-    @Autowired
-    FilmDao daoFilm;
 
     @Autowired
     ImageManager imm;
@@ -50,14 +45,14 @@ public class PesonneController {
         m.addAttribute("personnes",daoPersonne.findAll());
         return "/personne/liste";
     }
-
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/create")
     public String createPersone(Model m){
         m.addAttribute("title","creation personne");
         m.addAttribute("personne",new Personne());
         return "/personne/create";
     }
-
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/create")
     public String createPerson(@ModelAttribute Personne p,@RequestParam("image") MultipartFile file)
     {       if(file.getContentType().equalsIgnoreCase("image/jpeg")){
@@ -72,7 +67,7 @@ public class PesonneController {
 
     }
 
-
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/update/{id}")
     public String updatePersone(Model m,@PathVariable("id") String id){
         Long idPersonne=Long.parseLong(id);
@@ -80,7 +75,7 @@ public class PesonneController {
         m.addAttribute("personne", daoPersonne.findById(idPersonne).get());
         return "/personne/create";
     }
-
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("delete/{id}")
     public String deletePersonne(@PathVariable("id") String id){
         Long idPersonne=Long.parseLong(id);
@@ -102,16 +97,5 @@ public class PesonneController {
 
     }
 
-    /*
-    @GetMapping("refitpersons")
-    public String refit()
-    {
-        Set<Personne> personnes=daoPersonne.findAll();
-        for(Personne personne: personnes)
-        {   personne.setName(personne.getPrenom()+" "+personne.getNom());
-            daoPersonne.saveWithNewPass(personne);
-        }
-        return "/index";
-    }
-    */
+
 }
