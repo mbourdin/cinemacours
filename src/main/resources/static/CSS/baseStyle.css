@@ -66,6 +66,14 @@ a{
     height: 20px;
 
 }
+.redbackground{
+    background-color: crimson;
+
+}
+.greenbackground{
+    background-color: green;
+
+}
 #mainContent{
     text-align: center;
     background: aqua;

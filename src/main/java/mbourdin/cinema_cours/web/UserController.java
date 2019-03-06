@@ -44,12 +44,6 @@ public class UserController {
 
     @Autowired
     UserDao userDao;
-    @Value("${pwprefix}")
-    String prefix;
-    @Value("${pwsuffix}")
-    String suffix;
-    @Value("${salt}")
-    String salt;
     @GetMapping("/detail/{id}")
     public String detail(Model m, @PathVariable("id") Long id){
         Utilisateur user= userDao.findById(id).get();

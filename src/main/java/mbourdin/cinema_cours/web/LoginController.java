@@ -24,12 +24,6 @@ package mbourdin.cinema_cours.web;
 public class LoginController {
     @Autowired
     CinemaUserService cinemaUserService;
-    @Value("${pwprefix}")
-    String prefix;
-    @Value("${pwsuffix}")
-    String suffix;
-    @Value("${salt}")
-    String salt;
     @GetMapping("/inscription")
     public String inscription(Model m){
         Utilisateur user=new Utilisateur();
