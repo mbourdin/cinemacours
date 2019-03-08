@@ -4,16 +4,14 @@ import mbourdin.cinema_cours.dao.NewsDao;
 import mbourdin.cinema_cours.dao.UserDao;
 import mbourdin.cinema_cours.model.NewsLetter;
 import mbourdin.cinema_cours.model.Utilisateur;
-import mbourdin.cinema_cours.service.Email;
 import mbourdin.cinema_cours.service.NewsThread;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -26,8 +24,14 @@ public class NewsController{
     NewsDao newsDao;
     @Autowired
     UserDao userDao;
+    @Autowired
+    JavaMailSender sender;
 
-
+    @GetMapping("testMail")
+    public String testMail()
+    {   System.out.println(sender);
+        return "redirect:/";
+    }
     @GetMapping("/create")
     public String  createewsLetter(Model m)
     {
@@ -66,7 +70,7 @@ public class NewsController{
     {   //TODO lancer cette fonction dans un thread séparé! , limiter son utilisation CPU
             NewsLetter news=newsDao.findById(id).get();
             Set<Utilisateur> utilisateurs=userDao.findAllByAbonneIsTrue();
-            NewsThread newsThread=new NewsThread(news,utilisateurs);
+            NewsThread newsThread=new NewsThread(news,utilisateurs,sender);
             newsThread.start();
             System.out.println("thread lancé?");
         m.addAttribute("message","newsletter envoyée");

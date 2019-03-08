@@ -46,6 +46,8 @@ public class MainController {
     @Autowired
     MsgDao msgDao;
 
+    @Autowired
+    TmdbFilmDao tmdbFilmDao;
 
 /*
     @PostMapping("/search")
@@ -66,6 +68,8 @@ public class MainController {
     public String main(Model m, HttpSession session){
         m.addAttribute("title","Accueil");
         Utilisateur user=(Utilisateur) session.getAttribute("user");
+        boolean empty=tmdbFilmDao.countAllBy()==0;
+        m.addAttribute("empty",empty);
         return "index";
     }
 

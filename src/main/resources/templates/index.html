@@ -14,7 +14,15 @@
         <td th:replace="navtemplate :: barrenav"></td>
         <td id="mainContent" class="twelve wide">
             <h1>Bienvenue sur le site des Nanars Sauvages</h1>
+            <div th:if="${empty}">
+                Bonjour admin!<br>
+                Votre application fonctionne.<br>
+                Dans un premier temps veuillez changer de mot de passe  ou créer votre propre compte.<br>
 
+                Pour faire fonctionner l'importation de film, veuillez cliquier sur ce lien.<br>
+                <a href="/admin/importFilms">Importer Id des films TMDB</a>
+
+            </div>
 
         </td>
     </tr>

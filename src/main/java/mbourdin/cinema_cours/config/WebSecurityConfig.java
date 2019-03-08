@@ -13,6 +13,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.util.matcher.AndRequestMatcher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import javax.annotation.Resource;
+
 /**
  * Projet thyme-security
  * Pour LAERCE SAS
@@ -24,11 +26,18 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-    private CinemaUserDetailsService cinemaUserDetailsService;
 
-    @Autowired
+    private CinemaUserDetailsService cinemaUserDetailsService;
+    /*
+    @Resource
     public void setUserDetailsService(CinemaUserDetailsService cinemaUserDetailsService){
         this.cinemaUserDetailsService = cinemaUserDetailsService;
+    }
+    */
+    @Autowired
+    public WebSecurityConfig(CinemaUserDetailsService cinemaUserDetailsService)
+    {   this.cinemaUserDetailsService = cinemaUserDetailsService;
+
     }
 
     @Bean

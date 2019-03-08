@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <th:block th:replace="basictemplate :: header_css">
+    </th:block>
+</head>
+<body>
+<header th:replace="basictemplate :: header"></header>
+<table class="table ui">
+
+    <tbody>
+    <tr>
+
+        <td th:replace="navtemplate :: barrenav"></td>
+
+        <td id="mainContent" class="twelve wide">
+            <h1>Liste des salles</h1>
+            <ul class="sanspuce">
+                <li th:each="salle : ${salles}">
+                <a th:href="@{/admin/salle/mod/{Id} (Id=${salle.id})}"  th:text="${salle.id}+' '+${salle.nom}"></a>
+                </li>
+            </ul>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<footer th:replace="basictemplate :: footer"></footer>
+</body>
+</html>

@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface TmdbFilmDao extends CrudRepository<TmdbFilm,Long> {
     List<TmdbFilm> findAllByTitleContainingIgnoreCase(String str);
+    Long countAllBy();
 }

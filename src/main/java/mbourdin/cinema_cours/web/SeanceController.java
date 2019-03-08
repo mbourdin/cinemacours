@@ -73,6 +73,7 @@ public class SeanceController {
     public String creerSeance(Model m)
     {   SeanceChamp seanceChamp=new SeanceChamp();
         m.addAttribute("seanceChamp",seanceChamp);
+        m.addAttribute("salles",salleDao.findAllByActiveTrue());
         m.addAttribute("films",filmDao.findAll());
         return "/seance/create";
     }

@@ -1,7 +1,7 @@
 package mbourdin.cinema_cours.model;
 
+
 import javax.persistence.*;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -10,26 +10,59 @@ import java.util.Set;
 public class Salle {
     public class TailleNegativeException extends RuntimeException{}
 
-    private int id;
-    private int taille;
+    private Integer id;
+    private Integer taille;
+    private Boolean active;
     private Set<Seance> seances;
+    private String nom;
+
+    public Salle() {
+        active=Boolean.FALSE;
+    }
+    @Basic
+    @Column(name="active",nullable = false)
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
+
+
+    @Basic
+    @Column(name="nom")
+
+    public String getNom() {
+        return nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+
+
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
     @Basic
     @Column(name="taille")
-    public int getTaille() {
+    public Integer getTaille() {
         return taille;
     }
 
-    public void setTaille(int taille) {
+    public void setTaille(Integer taille) {
         if (taille<0){
             throw new TailleNegativeException();
         }

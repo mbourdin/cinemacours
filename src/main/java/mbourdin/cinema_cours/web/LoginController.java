@@ -2,21 +2,12 @@ package mbourdin.cinema_cours.web;
 
 
         import mbourdin.cinema_cours.service.CinemaUserService;
-        import mbourdin.cinema_cours.service.Email;
         import mbourdin.cinema_cours.model.Utilisateur;
-        import mbourdin.cinema_cours.service.Utilities;
         import org.springframework.beans.factory.annotation.Autowired;
-        import org.springframework.beans.factory.annotation.Value;
         import org.springframework.stereotype.Controller;
         import org.springframework.ui.Model;
         import org.springframework.validation.annotation.Validated;
         import org.springframework.web.bind.annotation.*;
-        import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-        import javax.mail.internet.AddressException;
-        import javax.mail.internet.InternetAddress;
-        import javax.servlet.http.HttpServletRequest;
-        import javax.servlet.http.HttpSession;
-        import javax.validation.constraints.NotBlank;
 
 @Validated
 @Controller
@@ -29,20 +20,20 @@ public class LoginController {
         Utilisateur user=new Utilisateur();
         m.addAttribute("user",user);
         m.addAttribute("title","inscription");
-        return "/login/inscription";
+        return "/inscription";
     }
 
     @GetMapping("")
     public String oldConnection(Model m)
     {   m.addAttribute("title","connection");
         m.addAttribute("old",true);
-        return "/login/connection";
+        return "/connection";
     }
     @GetMapping("/connect")
     public String connection(Model m)
     {   m.addAttribute("title","connection");
         m.addAttribute("old",false);
-        return "/login/connection";
+        return "/connection";
     }
 
 
@@ -50,7 +41,7 @@ public class LoginController {
     @GetMapping("/recoverPW")
     public String recoverPW(Model m){
         m.addAttribute("title","récupération MDP");
-        return "/login/recoverPW";
+        return "/recoverPW";
     }
 
 //    @PostMapping("/recover")
