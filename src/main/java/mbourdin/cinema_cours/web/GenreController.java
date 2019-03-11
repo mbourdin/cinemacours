@@ -27,13 +27,13 @@ public class GenreController {
     @GetMapping("/liste")
     public String listeGenres(Model m)
     {   m.addAttribute("genres",genreManager.getAll());
-        return "/genre/liste";
+        return "genre/liste";
     }
 
     @GetMapping("/create")
     public String createGenre(Model m)
     {   m.addAttribute("genre",new Genre());
-        return "/genre/create";
+        return "genre/create";
     }
     @GetMapping("/update/{id}")
     String updateGenre(Model m,@PathVariable Long id)
@@ -58,7 +58,7 @@ public class GenreController {
         List<Genre> genres=genreManager.getAll();
         m.addAttribute("films",films);
         m.addAttribute("genres",genres);
-        return "/genre/associer";
+        return "genre/associer";
     }
     @PostMapping("/associer")
     public String associerGenreFilm(@RequestParam Long genreId,@RequestParam Long filmId,@SessionAttribute Boolean admin)
@@ -75,7 +75,7 @@ public class GenreController {
         List<Genre> genres=genreManager.getAll();
         m.addAttribute("films",films);
         m.addAttribute("genres",genres);
-        return "/genre/dissocier";
+        return "genre/dissocier";
     }
     @PostMapping("/dissocier")
     public String dissocierGenreFilm(@RequestParam Long genreId,@RequestParam Long filmId,@SessionAttribute Boolean admin)

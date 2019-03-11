@@ -63,13 +63,13 @@ public class UserController {
     public String updateUser(Model m,@PathVariable("id") Long id){
         m.addAttribute("title","MAJ User");
         m.addAttribute("newuser", userDao.findById(id).get());
-        return "/user/create";
+        return "user/create";
     }
     @GetMapping("selfupdate")
     public String selfUpdateUser(Model m,@SessionAttribute("user") Utilisateur user){
         m.addAttribute("title","MAJ User");
         m.addAttribute("newuser", user);
-        return "/user/create";
+        return "user/create";
     }
     @GetMapping("/create")
     public String createUser(Model m)
@@ -77,7 +77,7 @@ public class UserController {
         Utilisateur newuser=new Utilisateur();
         System.out.println(newuser);
         m.addAttribute("newuser",newuser);
-        return "/user/create";
+        return "user/create";
     }
 
     @PostMapping("/create")
@@ -147,13 +147,13 @@ public class UserController {
     String listerCommandes(@SessionAttribute Utilisateur user,Model m)
     {    Set<Commande> commandes= commandeDao.findAllByUtilisateur(user);
         m.addAttribute("commandes",commandes);
-        return "/panier/listeCommandes";
+        return "panier/listeCommandes";
     }
     @GetMapping("/commande/{id}")
     String commander(@PathVariable Long id, Model m) {
         m.addAttribute("seance", seanceDao.findById(id).get());
         m.addAttribute("action","/user/commande");
-        return "/panier/create";
+        return "panier/create";
     }
     @GetMapping("/panier/enCours")
     String getCmd(@SessionAttribute Utilisateur user,HttpSession session)
@@ -180,7 +180,7 @@ public class UserController {
     @GetMapping("/panier/detail")
     String detailPanier(Model m,@SessionAttribute Panier panier)
     {   m.addAttribute("strings",panier.toStrings());
-        return "/panier/detail";
+        return "panier/detail";
     }
     @GetMapping("/pay")
     String payerCommande(@SessionAttribute Commande commande)

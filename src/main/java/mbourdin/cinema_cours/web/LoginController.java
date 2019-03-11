@@ -1,6 +1,4 @@
 package mbourdin.cinema_cours.web;
-
-
         import mbourdin.cinema_cours.service.CinemaUserService;
         import mbourdin.cinema_cours.model.Utilisateur;
         import org.springframework.beans.factory.annotation.Autowired;
@@ -8,42 +6,31 @@ package mbourdin.cinema_cours.web;
         import org.springframework.ui.Model;
         import org.springframework.validation.annotation.Validated;
         import org.springframework.web.bind.annotation.*;
-
-@Validated
 @Controller
-@RequestMapping("/login")
+@Validated
+@RequestMapping("login")
 public class LoginController {
     @Autowired
     CinemaUserService cinemaUserService;
-    @GetMapping("/inscription")
+    @GetMapping("inscription")
     public String inscription(Model m){
         Utilisateur user=new Utilisateur();
         m.addAttribute("user",user);
         m.addAttribute("title","inscription");
-        return "/inscription";
+        return "inscription";
     }
 
-    @GetMapping("")
-    public String oldConnection(Model m)
-    {   m.addAttribute("title","connection");
-        m.addAttribute("old",true);
-        return "/connection";
-    }
     @GetMapping("/connect")
     public String connection(Model m)
     {   m.addAttribute("title","connection");
         m.addAttribute("old",false);
-        return "/connection";
+        return "connection";
     }
-
-
-
     @GetMapping("/recoverPW")
     public String recoverPW(Model m){
         m.addAttribute("title","récupération MDP");
-        return "/recoverPW";
+        return "recoverPW";
     }
-
 //    @PostMapping("/recover")
 //    public String sendRecoverEmail(@javax.validation.constraints.Email @RequestParam  String email, RedirectAttributes attributes)
 //    {

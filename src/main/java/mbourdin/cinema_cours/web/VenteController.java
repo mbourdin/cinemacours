@@ -30,13 +30,13 @@ public class VenteController {
     @GetMapping("/panier/detail")
     String detailPanier(Model m, @SessionAttribute Panier panier)
     {   m.addAttribute("strings",panier.toStrings());
-        return "/panier/detail";
+        return "panier/detail";
     }
     @GetMapping("/commande/{id}")
     String commander(@PathVariable Long id, Model m) {
         m.addAttribute("seance", seanceDao.findById(id).get());
         m.addAttribute("action","/vendeur/commande");
-        return "/panier/create";
+        return "panier/create";
     }
 
     @PostMapping("/commande")

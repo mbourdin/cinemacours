@@ -33,7 +33,7 @@ public class PlayController {
         m.addAttribute("films",films);
         m.addAttribute("acteurs",acteurs);
 
-        return "/play/create";
+        return "play/create";
     }
 
     @PostMapping("/create")
@@ -57,7 +57,7 @@ public class PlayController {
         m.addAttribute("readonly",Boolean.TRUE);
         m.addAttribute("newrole",new Play());
         m.addAttribute("film",film);
-        return "/film/create";
+        return "film/create";
     }
     @GetMapping("delfromfilm/{id}")
     public String deleteRoleFromFilm(Model m,@PathVariable Long id,@SessionAttribute Boolean admin)
@@ -72,7 +72,7 @@ public class PlayController {
         m.addAttribute("readonly",Boolean.TRUE);
         m.addAttribute("newrole",new Play());
         m.addAttribute("film",film);
-        return "/film/create";
+        return "film/create";
     }
     @GetMapping("/liste")
     public String listeRoles(Model m){
@@ -84,7 +84,7 @@ public class PlayController {
     {
         m.addAttribute("play",playDao.findById(id).get());
         m.addAttribute("readonly",Boolean.TRUE);
-        return "/play/create";
+        return "play/create";
     }
     @GetMapping("delete/{id}")
     public String deleteRole(@PathVariable Long id){

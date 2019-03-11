@@ -75,7 +75,7 @@ public class SeanceController {
         m.addAttribute("seanceChamp",seanceChamp);
         m.addAttribute("salles",salleDao.findAllByActiveTrue());
         m.addAttribute("films",filmDao.findAll());
-        return "/seance/create";
+        return "seance/create";
     }
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/delete/{id}")
@@ -91,6 +91,6 @@ public class SeanceController {
         SeanceChamp seanceChamp=seance.toSeanceChamp();
         m.addAttribute("seanceChamp",seanceChamp);
         m.addAttribute("films",filmDao.findAll());
-        return "/seance/create";
+        return "seance/create";
     }
 }

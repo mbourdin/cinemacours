@@ -37,20 +37,20 @@ public class PesonneController {
         Long idPersonne=Long.parseLong(id);
 
         m.addAttribute("personne",daoPersonne.findById(idPersonne).get());
-        return "/personne/detail";
+        return "personne/detail";
     }
     @GetMapping("/liste")
     public String personne(Model m){
         m.addAttribute("title","liste des personne");
         m.addAttribute("personnes",daoPersonne.findAll());
-        return "/personne/liste";
+        return "personne/liste";
     }
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/create")
     public String createPersone(Model m){
         m.addAttribute("title","creation personne");
         m.addAttribute("personne",new Personne());
-        return "/personne/create";
+        return "personne/create";
     }
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/create")
@@ -73,7 +73,7 @@ public class PesonneController {
         Long idPersonne=Long.parseLong(id);
         m.addAttribute("title","MAJ personne");
         m.addAttribute("personne", daoPersonne.findById(idPersonne).get());
-        return "/personne/create";
+        return "personne/create";
     }
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("delete/{id}")

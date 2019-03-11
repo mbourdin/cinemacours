@@ -99,7 +99,7 @@ public class MainController {
 
     @GetMapping("/error/{id}")
     public String error(@PathVariable Long id)
-    {   return "/error/"+id;
+    {   return "error/"+id;
     }
 
     @RequestMapping(value = "/drapeau/{id}", method = RequestMethod.GET)

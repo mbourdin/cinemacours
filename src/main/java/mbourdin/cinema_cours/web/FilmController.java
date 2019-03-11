@@ -131,7 +131,7 @@ public class FilmController {
         m.addAttribute("personnes", daoPersonne.findAll());
         m.addAttribute("film", film);
         m.addAttribute("newrole", new Play());
-        return "/film/create";
+        return "film/create";
     }
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("delete/{id}")
@@ -227,7 +227,7 @@ public class FilmController {
     public String smallDetail(Model m,@PathVariable Long id)
     {   Film film=tmdbClient.getMovieSmallDetail(id);
         m.addAttribute("film",film);
-        return "/film/smalldetail";
+        return "film/smalldetail";
     }
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/detailImport")
@@ -255,6 +255,6 @@ public class FilmController {
             List<TmdbFilm> films=tmdbFilmDao.findAllByTitleContainingIgnoreCase(str);
             m.addAttribute("films",films);
         }
-        return "/film/import";
+        return "film/import";
     }
 }

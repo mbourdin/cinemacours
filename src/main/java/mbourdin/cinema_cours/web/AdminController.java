@@ -51,20 +51,20 @@ public class AdminController {
             }
             System.out.println(filmIdImport.importedFilm(ligne));
         }catch (Exception e){e.printStackTrace();}
-        return "/index";
+        return "index";
     }
 
     @GetMapping("/msgliste/nonlus")
     public String listeMsgNonLus(Model m, @SessionAttribute Boolean admin)
     {
         m.addAttribute("msgs", msgDao.findAllByLuFalse());
-        return ("/admin/msgliste");
+        return ("admin/msgliste");
     }
     @GetMapping("msgliste/all")
     public String listeMsg(Model m,@SessionAttribute Boolean admin)
     {
         m.addAttribute("msgs", msgDao.findAll());
-        return ("/admin/msgliste");
+        return ("admin/msgliste");
     }
     @GetMapping("/msg/detail/{id}")
     public String msg(Model m,@PathVariable Integer id)
@@ -73,7 +73,7 @@ public class AdminController {
         m.addAttribute("msg",msg);
         msg.setLu(Boolean.TRUE);
         msgDao.save(msg);
-        return "/admin/msg";
+        return "admin/msg";
     }
     @GetMapping("/msg/delete/{id}")
     public String msgDelete(@PathVariable Integer id)
@@ -86,14 +86,14 @@ public class AdminController {
     {
         Salle salle=new Salle();
         m.addAttribute("salle",salle);
-        return  "/salle/form";
+        return  "salle/form";
     }
     @GetMapping("/salle/mod/{id}")
     public String modSalle(Model m,@PathVariable Integer id)
     {
         Salle salle=salleDao.findById(id).get();
         m.addAttribute("salle",salle);
-        return  "/salle/form";
+        return  "salle/form";
     }
     @PostMapping("/salle/create")
     public String createSalle(@ModelAttribute Salle salle)
@@ -104,6 +104,6 @@ public class AdminController {
     public String listeSalles(Model m)
     {   List<Salle> salles = salleDao.findAll();
         m.addAttribute("salles",salles);
-        return "/salle/liste";
+        return "salle/liste";
     }
 }

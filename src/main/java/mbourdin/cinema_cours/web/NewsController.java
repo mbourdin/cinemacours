@@ -38,20 +38,20 @@ public class NewsController{
         NewsLetter news=new NewsLetter();
         news.setDate(LocalDate.now());
         m.addAttribute("news",news);
-        return "/news/create";
+        return "news/create";
 
     }
     @GetMapping("/update/{id}")
     public String updateNewsLetter(Model m, @PathVariable Integer id)
     {   NewsLetter news=newsDao.findById(id).get();
         m.addAttribute("news",news);
-        return "/news/create";
+        return "news/create";
 
     }
     @GetMapping("/delete/{id}")
     public String deleteNewsLetter(Model m, @PathVariable Integer id)
     {   newsDao.deleteById(id);
-        return "/news/liste";
+        return "news/liste";
 
     }
     @PostMapping("/create")
@@ -63,7 +63,7 @@ public class NewsController{
     @GetMapping("liste")
     public String listeNews(Model m)
     {   m.addAttribute("newslist",newsDao.findAll());
-        return "/news/liste";
+        return "news/liste";
     }
     @GetMapping("/send/{id}")
     public String sendNL(@PathVariable Integer id,Model m)
@@ -75,6 +75,6 @@ public class NewsController{
             System.out.println("thread lancé?");
         m.addAttribute("message","newsletter envoyée");
         m.addAttribute("newslist",newsDao.findAll());
-        return "/news/liste";
+        return "news/liste";
     }
 }

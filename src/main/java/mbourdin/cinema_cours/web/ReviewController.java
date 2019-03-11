@@ -117,7 +117,7 @@ public class ReviewController {
             return "redirect:/review/mesCommentaires";
         }
         else
-        {   return "/error/403";
+        {   return "error/403";
         }
     }
 
