@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <th:block th:replace="basictemplate :: header_css">
+    </th:block>
+</head>
+<body>
+<header th:replace="basictemplate.html :: header"></header>
+
+<table class="table ui">
+    <tbody>
+    <tr>
+        <td th:replace="navtemplate :: barrenav"></td>
+        <td id="mainContent" class="twelve wide">
+            <h1 th:text="#{ERROR500}">ERREUR 500<br>Erreur interne du serveur</h1>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<footer th:replace="basictemplate :: footer"></footer>
+
+</body>
+</html>

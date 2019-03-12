@@ -40,10 +40,10 @@ public class VenteController {
     }
 
     @PostMapping("/commande")
-    String ajouterACommande(@RequestParam Integer places, @SessionAttribute Panier panier, @RequestParam Long id, HttpSession session) {
+    String ajouterACommande(@RequestParam Integer placesNorm,@RequestParam Integer placesReduit, @SessionAttribute Panier panier, @RequestParam Long id, HttpSession session) {
         Seance seance=seanceDao.findById(id).get();
         //L'appel a une methode externe a la classe est justifiee par la necessite qu'a un utilisateur normal de pouvoir lui aussi commander des places pour une seances mais depuis un autre point d'accès
-        return Utilities.ajouterACommande(places,panier,session,seance);
+        return Utilities.ajouterACommande(placesNorm,placesReduit,panier,session,seance);
     }
     @GetMapping("/pay")
     String payer(Model m, HttpSession session, @SessionAttribute Panier panier, @SessionAttribute Utilisateur user, @SessionAttribute Commande commande)

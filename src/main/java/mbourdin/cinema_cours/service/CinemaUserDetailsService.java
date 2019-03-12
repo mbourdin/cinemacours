@@ -48,25 +48,24 @@ public class CinemaUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("Utilisateur introuvable : |"+username+"|");
         }
         Set<GrantedAuthority> authorities = new HashSet<>();
+        if(user.getType()<=0|| user.getType()>=16)
+        {   throw new RuntimeException("Illegal user status :"+username);
+
+        }
         if (user.isActif())
         {   System.out.println("tests");
             System.out.println("type="+user.getType());
-
-            switch (user.getType()) {
-                case Utilisateur.vendeur:
-                    System.out.println("vendeur");
-                    authorities.add(new SimpleGrantedAuthority(Utilisateur.VENDEUR_RIGHTS));
-                    break;
-                case Utilisateur.admin:
-                    System.out.println("admin");
-                    authorities.add(new SimpleGrantedAuthority(Utilisateur.ADMIN_RIGHTS));
-                    authorities.add(new SimpleGrantedAuthority(Utilisateur.USER_RIGHTS));
-                    break;
-                case Utilisateur.normal:
-                    System.out.println("normal");
-                    authorities.add(new SimpleGrantedAuthority(Utilisateur.USER_RIGHTS));
-                    break;
-                default: throw new UsernameNotFoundException("Utilisateur sans droit : |"+username+"|");
+            if(user.hasType(Utilisateur.admin))
+            {   authorities.add(new SimpleGrantedAuthority(Utilisateur.ADMIN_RIGHTS));
+            }
+            if(user.hasType(Utilisateur.vendeur))
+            {   authorities.add(new SimpleGrantedAuthority(Utilisateur.VENDEUR_RIGHTS));
+            }
+            if (user.hasType(Utilisateur.normal))
+            {   authorities.add(new SimpleGrantedAuthority(Utilisateur.USER_RIGHTS));
+            }
+            if (user.hasType(Utilisateur.moderateur))
+            {   authorities.add(new SimpleGrantedAuthority(Utilisateur.MODERATEUR_RIGHTS));
             }
         }
         //System.out.println("actif="+user.isActif());

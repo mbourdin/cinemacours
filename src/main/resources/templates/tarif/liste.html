@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <th:block th:replace="basictemplate :: header_css">
+    </th:block>
+</head>
+<body>
+<header th:replace="basictemplate :: header"></header>
+<table class="table ui">
+
+    <tbody>
+    <tr>
+        <td th:replace="navtemplate :: barrenav"></td>
+        <td id="mainContent" class="twelve wide">
+            <h1>liste des tarifs</h1>
+            <table class="ui table" >
+                <th>nom</th>
+                <th>normal</th>
+                <th>reduit</th>
+                <th>actif</th>
+                <tr th:each="tarif : ${tarifs}" >
+
+                    <td><a th:text="${tarif.nom}" th:href="@{/admin/tarif/mod/{id} (id=${tarif.id})}"></a></td></td><td th:text="${tarif.normal}"></td><td th:text="${tarif.reduit}"></td><td th:text="${tarif.actif}"></td>
+                </tr>
+            </table>
+
+        </td>
+    </tr>
+    </tbody>
+</table>
+<footer th:replace="basictemplate :: footer"></footer>
+</body>
+</html>

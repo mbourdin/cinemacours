@@ -6,7 +6,6 @@ import mbourdin.cinema_cours.service.Utilities;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import java.util.Calendar;
 import java.util.Objects;
 import java.util.Set;
 
@@ -17,8 +16,10 @@ public class Utilisateur {
     static public final String ADMIN_RIGHTS="ADMIN";
     static public final int vendeur=2;
     static public final String VENDEUR_RIGHTS="VENDEUR";
-    static public final int normal=3;
+    static public final int normal=4;
     static public final String USER_RIGHTS="USER";
+    static public final int moderateur=8;
+    static public final String MODERATEUR_RIGHTS="MODERATEUR";
 
     private long id;
     private String nom;
@@ -29,13 +30,17 @@ public class Utilisateur {
     private String email;
     private String link;
     private String password;
-    private int type;//1 = admin ; 2 = vendeur ; 3 = normal
+    private int type;//1 = admin ; 2 = vendeur ; 4 = normal;8 = modérateur;
     private Boolean abonne;
     private Set<Review> reviews;
     private Set<Commande> commandes;
     private Set<NewsLetter> newsLetters;
     private boolean actif;
 
+    public boolean hasType(int statut)
+    {   if (!Utilities.isPowerOfTwo(statut)) throw new IllegalArgumentException("status invalide en entree de utilisateur.hasStatut");
+        else return( (this.type/statut)%2 ==1);
+    }
     public Utilisateur()
     {   type=Utilisateur.normal;
         link=null;

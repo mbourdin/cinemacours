@@ -1,11 +1,9 @@
 package mbourdin.cinema_cours.web;
 
-import mbourdin.cinema_cours.dao.MsgDao;
-import mbourdin.cinema_cours.dao.SalleDao;
-import mbourdin.cinema_cours.dao.SeanceDao;
-import mbourdin.cinema_cours.dao.TmdbFilmDao;
+import mbourdin.cinema_cours.dao.*;
 import mbourdin.cinema_cours.model.MsgToAdmin;
 import mbourdin.cinema_cours.model.Salle;
+import mbourdin.cinema_cours.model.Tarif;
 import mbourdin.cinema_cours.model.TmdbFilm;
 import mbourdin.cinema_cours.service.FilmIdImport;
 import mbourdin.cinema_cours.service.FilmStream;
@@ -14,6 +12,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.BufferedReader;
 import java.util.List;
@@ -31,6 +30,8 @@ public class AdminController {
     @Autowired
     SalleDao salleDao;
 
+    @Autowired
+    TarifDao tarifDao;
     @GetMapping("/importFilms")
     public String testfilmstream()
     {
@@ -105,5 +106,36 @@ public class AdminController {
     {   List<Salle> salles = salleDao.findAll();
         m.addAttribute("salles",salles);
         return "salle/liste";
+    }
+    @GetMapping("/tarif/create")
+    public String creerTarif(Model m)
+    {   Tarif tarif=new Tarif();
+        m.addAttribute("tarif",tarif);
+        return "tarif/form";
+    }
+    @GetMapping("/tarif/mod/{id}")
+    public String modifierTarif(Model m,@PathVariable Integer id)
+    {   Tarif tarif=tarifDao.findById(id).get();
+        m.addAttribute("tarif",tarif);
+        return "tarif/form";
+    }
+    @PostMapping("/tarif/create")
+    public String enregistrerTarif(@ModelAttribute Tarif tarif, RedirectAttributes attributes)
+    {
+        if(tarif.getReduit()>tarif.getNormal())
+        {   attributes.addFlashAttribute("flashMessage", "veuillez entrer un prix reduit inférieur ou egal au prix normal");
+            return "redirect:/admin/tarif/create";
+
+        }
+        tarifDao.save(tarif);
+        attributes.addFlashAttribute("flashMessage", "nouveau tarif ajouté : "+tarif.getNom());
+
+        return "redirect:/";
+    }
+    @GetMapping("/tarif/liste")
+    public String listeTarifs(Model m)
+    {   List<Tarif> tarifs=tarifDao.findAll();
+        m.addAttribute("tarifs",tarifs);
+        return "tarif/liste";
     }
 }

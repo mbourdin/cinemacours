@@ -3,6 +3,9 @@ package mbourdin.cinema_cours.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import mbourdin.cinema_cours.auxiliaire.SeanceChamp;
+import mbourdin.cinema_cours.dao.TarifDao;
+import org.checkerframework.checker.units.qual.A;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -15,13 +18,13 @@ import java.util.Set;
 @Entity
 @Table(name="seance")
 public class Seance {
-
     public static final double prixdefaut=9.00;
     private Long id;
     private Film film;
     private Salle salle;
     private LocalDateTime debut;
     private Set<Billet> billets;
+    private Tarif tarif;
 
 
 
@@ -77,7 +80,7 @@ public class Seance {
     }
 
     public SeanceChamp toSeanceChamp()
-    {   return new SeanceChamp(id,salle,film,debut);
+    {   return new SeanceChamp(id,salle,film,debut,tarif);
     }
 
     @Override
@@ -95,5 +98,15 @@ public class Seance {
 
     public String formattedDate()
     {   return debut.format(DateTimeFormatter.ofPattern("EEEE dd MMMM yyyy HH:mm", Locale.FRANCE));
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "tarif_id")
+    public Tarif getTarif() {
+        return tarif;
+    }
+
+    public void setTarif(Tarif tarif) {
+        this.tarif = tarif;
     }
 }

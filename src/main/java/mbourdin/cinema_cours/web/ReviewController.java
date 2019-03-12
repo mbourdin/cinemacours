@@ -137,7 +137,7 @@ public class ReviewController {
         m.addAttribute("action","update");
         return "review/create";
     }
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('MODERATEUR')")
     @GetMapping("/valide/{id}")
     public String valideReview(@PathVariable("id") Long id){
             Review review = reviewDao.findById(id).get();
@@ -145,7 +145,7 @@ public class ReviewController {
             reviewDao.save(review);
             return "redirect:/review/new";
     }
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('MODERATEUR')")
     @GetMapping("/rejeter/{id}")
     public String rejectReview(@PathVariable("id") Long id){
             Review review = reviewDao.findById(id).get();
@@ -153,7 +153,7 @@ public class ReviewController {
             reviewDao.save(review);
             return "redirect:/review/new";
     }
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('MODERATEUR')")
     @GetMapping("/retenir/{id}")
     public String retenirReview(@PathVariable("id") Long id){
 

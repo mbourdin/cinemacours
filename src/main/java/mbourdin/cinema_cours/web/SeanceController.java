@@ -3,6 +3,7 @@ package mbourdin.cinema_cours.web;
 import mbourdin.cinema_cours.dao.FilmDao;
 import mbourdin.cinema_cours.dao.SalleDao;
 import mbourdin.cinema_cours.dao.SeanceDao;
+import mbourdin.cinema_cours.dao.TarifDao;
 import mbourdin.cinema_cours.model.Seance;
 import mbourdin.cinema_cours.auxiliaire.SeanceChamp;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,9 @@ public class SeanceController {
     FilmDao filmDao;
     @Autowired
     SalleDao salleDao;
+    @Autowired
+    TarifDao tarifDao;
+
     @GetMapping("/today")
     public String seancesdujour(Model m)
     {
@@ -63,6 +67,7 @@ public class SeanceController {
                 seance.setFilm(filmDao.findById(seanceChamp.getFilmId()).get());
                 seance.setSalle(salleDao.findById(seanceChamp.getSalleId()).get());
                 seance.setDebut(LocalDateTime.parse(seanceChamp.getDebut(),formatter));
+                seance.setTarif(tarifDao.findById(1).get());
 
                 //TODO assurer l'absence de collision entre seances, niveau applicatif ou niveau  BDD?
                 seanceDao.save(seance);
@@ -75,6 +80,7 @@ public class SeanceController {
         m.addAttribute("seanceChamp",seanceChamp);
         m.addAttribute("salles",salleDao.findAllByActiveTrue());
         m.addAttribute("films",filmDao.findAll());
+        m.addAttribute("tarifs",tarifDao.findAllByActifIsTrue());
         return "seance/create";
     }
     @PreAuthorize("hasAuthority('ADMIN')")
@@ -91,6 +97,7 @@ public class SeanceController {
         SeanceChamp seanceChamp=seance.toSeanceChamp();
         m.addAttribute("seanceChamp",seanceChamp);
         m.addAttribute("films",filmDao.findAll());
+        m.addAttribute("tarifs",tarifDao.findAllByActifIsTrue());
         return "seance/create";
     }
 }
