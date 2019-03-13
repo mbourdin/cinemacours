@@ -21,7 +21,7 @@
                 <th>actif</th>
                 <tr th:each="tarif : ${tarifs}" >
 
-                    <td><a th:text="${tarif.nom}" th:href="@{/admin/tarif/mod/{id} (id=${tarif.id})}"></a></td></td><td th:text="${tarif.normal}"></td><td th:text="${tarif.reduit}"></td><td th:text="${tarif.actif}"></td>
+                    <td><a class="ui blue button" th:text="${tarif.nom}" th:href="@{/admin/tarif/mod/{id} (id=${tarif.id})}"></a></td></td><td th:text="${tarif.normal}"></td><td th:text="${tarif.reduit}"></td><td th:text="${tarif.actif}"></td>
                 </tr>
             </table>
 

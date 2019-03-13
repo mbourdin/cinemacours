@@ -38,7 +38,7 @@ public class Utilisateur {
     private boolean actif;
 
     public boolean hasType(int statut)
-    {   if (!Utilities.isPowerOfTwo(statut)) throw new IllegalArgumentException("status invalide en entree de utilisateur.hasStatut");
+    {   if (statut<=0 || !Utilities.isPowerOfTwo(statut)) throw new IllegalArgumentException("status invalide en entree de utilisateur.hasStatut");
         else return( (this.type/statut)%2 ==1);
     }
     public Utilisateur()

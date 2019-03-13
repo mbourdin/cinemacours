@@ -67,12 +67,11 @@ public class NewsController{
     }
     @GetMapping("/send/{id}")
     public String sendNL(@PathVariable Integer id,Model m)
-    {   //TODO lancer cette fonction dans un thread séparé! , limiter son utilisation CPU
-            NewsLetter news=newsDao.findById(id).get();
-            Set<Utilisateur> utilisateurs=userDao.findAllByAbonneIsTrue();
-            NewsThread newsThread=new NewsThread(news,utilisateurs,sender);
-            newsThread.start();
-            System.out.println("thread lancé?");
+    {   NewsLetter news=newsDao.findById(id).get();
+        Set<Utilisateur> utilisateurs=userDao.findAllByAbonneIsTrue();
+        NewsThread newsThread=new NewsThread(news,utilisateurs,sender);
+        newsThread.start();
+        System.out.println("thread lancé?");
         m.addAttribute("message","newsletter envoyée");
         m.addAttribute("newslist",newsDao.findAll());
         return "news/liste";

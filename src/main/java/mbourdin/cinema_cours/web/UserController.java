@@ -172,10 +172,12 @@ public class UserController {
 
 
     @PostMapping("/commande")
-    String ajouterACommande(@RequestParam Integer places, @SessionAttribute Panier panier, @RequestParam Long id, HttpSession session) {
+    String ajouterACommande(@RequestParam Integer placesNorm,@RequestParam Integer placesReduit, @SessionAttribute Panier panier, @RequestParam Long id, HttpSession session) {
         Seance seance=seanceDao.findById(id).get();
+        System.out.println("seance="+seance);
+
         //L'appel a une methode externe a la classe est justifiee par la necessite qu'a le vendeur de pouvoir lui aussi commander des places pour une seances mais depuis un autre point d'accès
-        return Utilities.ajouterACommande(places,panier,session,seance);
+        return Utilities.ajouterACommande(placesNorm,placesReduit,panier,session,seance);
     }
     @GetMapping("/panier/detail")
     String detailPanier(Model m,@SessionAttribute Panier panier)

@@ -54,7 +54,7 @@ public class GenreController {
     }
     @GetMapping("creerAssociation")
     public String associer(Model m)
-    {   Set<Film> films=filmDao.findAll();
+    {   List<Film> films=filmDao.findAll();
         List<Genre> genres=genreManager.getAll();
         m.addAttribute("films",films);
         m.addAttribute("genres",genres);
@@ -71,7 +71,7 @@ public class GenreController {
     }
     @GetMapping("dissoudreAssociation")
     public String dissocier(Model m)
-    {   Set<Film> films=filmDao.findAll();
+    {   List<Film> films=filmDao.findAll();
         List<Genre> genres=genreManager.getAll();
         m.addAttribute("films",films);
         m.addAttribute("genres",genres);

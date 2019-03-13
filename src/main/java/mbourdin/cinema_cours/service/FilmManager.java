@@ -9,8 +9,11 @@ import mbourdin.cinema_cours.model.Genre;
 import mbourdin.cinema_cours.model.Personne;
 import mbourdin.cinema_cours.model.Play;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -43,7 +46,7 @@ public class FilmManager {
         return filmDao.findByTmdbId(id).get();
     }
 
-    public List<Film> getAll(){
+    public ArrayList<Film> getAll(){
         return filmDao.findAllByOrderByTitreAsc();
     }
 
@@ -128,5 +131,8 @@ public class FilmManager {
     public long saveRole(Play play){
         roleDao.save(play);
         return play.getId();
+    }
+    public Page<Film> listByPage(Pageable pageable) {
+        return filmDao.findAll(pageable);
     }
 }

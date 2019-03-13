@@ -51,7 +51,7 @@
                     <td><input type="text" list="films" th:field="${seanceChamp.filmId}" autocomplete="off"><datalist id="films">
                         <option th:each="film : ${films}" th:value="${film.id}" th:label="${film.id}+' '+${film.titre}"></option>
                     </datalist></td>
-                    <td><input type="text" list="tarifs" th:field="${seanceChamp.filmId}" autocomplete="off"><datalist id="tarifs">
+                    <td><input type="text" list="tarifs" th:field="${seanceChamp.tarifId}" autocomplete="off"><datalist id="tarifs">
                         <option th:each="tarif : ${tarifs}" th:value="${tarif.id}" th:label="${tarif.id}+' '+${tarif.nom}+'('+${tarif.normal}+' ; '+${tarif.reduit}+')'"></option>
                     </datalist></td>
                     <td><input type="hidden" th:field="${seanceChamp.seanceId}"></td>

@@ -16,7 +16,7 @@ public class SeanceChamp {
     private Integer salleId;
     private Long filmId;
     private String debut;
-    private Tarif tarif;
+    private Integer tarifId;
 
     public SeanceChamp() {
         seanceId=new Long(-1);
@@ -28,7 +28,7 @@ public class SeanceChamp {
         if (salle!=null) this.salleId = salle.getId(); else this.salleId=new Integer(-1);
         if (film!=null) this.filmId = film.getId(); else this.filmId=new Long(-1);
         if (debut!=null) this.debut = debut.toString(); else this.debut=LocalDateTime.now().format(SeanceController.formatter);
-        if (tarif!=null) this.tarif = tarif; else this.tarif=new Tarif();
+        if (tarif!=null) this.tarifId = tarif.getId(); else this.tarifId=new Integer(-1);
     }
     public Long getSeanceId() {
         return seanceId;
@@ -60,11 +60,11 @@ public class SeanceChamp {
             this.debut = debut;
         }
 
-    public Tarif getTarif() {
-        return tarif;
+    public Integer getTarifId() {
+        return tarifId;
     }
 
-    public void setTarif(Tarif tarif) {
-        this.tarif = tarif;
+    public void setTarifId(Integer tarifId) {
+        this.tarifId = tarifId;
     }
 }

@@ -8,6 +8,7 @@ import mbourdin.cinema_cours.model.TmdbFilm;
 import mbourdin.cinema_cours.service.FilmIdImport;
 import mbourdin.cinema_cours.service.FilmStream;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,6 +33,8 @@ public class AdminController {
 
     @Autowired
     TarifDao tarifDao;
+
+    @Async
     @GetMapping("/importFilms")
     public String testfilmstream()
     {

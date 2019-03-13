@@ -92,7 +92,7 @@ public class FilmController {
     @GetMapping("/liste")
     public String listefilms(Model m) {
         m.addAttribute("title", "liste des films");
-        m.addAttribute("listefilms", filmManager.getAll());
+        m.addAttribute("listefilms", filmManager.getAll().subList(0,1));
         return "film/liste";
     }
     @PreAuthorize("hasAuthority('ADMIN')")

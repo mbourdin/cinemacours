@@ -67,7 +67,7 @@ public class SeanceController {
                 seance.setFilm(filmDao.findById(seanceChamp.getFilmId()).get());
                 seance.setSalle(salleDao.findById(seanceChamp.getSalleId()).get());
                 seance.setDebut(LocalDateTime.parse(seanceChamp.getDebut(),formatter));
-                seance.setTarif(tarifDao.findById(1).get());
+                seance.setTarif(tarifDao.findById(seanceChamp.getTarifId()).get());
 
                 //TODO assurer l'absence de collision entre seances, niveau applicatif ou niveau  BDD?
                 seanceDao.save(seance);

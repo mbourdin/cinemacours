@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Set;
 
 @Controller
@@ -25,7 +26,7 @@ public class PlayController {
 
     @GetMapping("/create")
     public String createPlay(Model m)
-    {   Set<Film> films=filmDao.findAll();
+    {   List<Film> films=filmDao.findAll();
 
         Set<Personne> acteurs=personneDao.findAll();
         Play play=new Play();
