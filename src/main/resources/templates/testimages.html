@@ -8,28 +8,23 @@
 <body>
 <header th:replace="basictemplate.html :: header"></header>
 
-<table class="table ui" id="maintable">
+<table class="table ui">
     <tbody>
     <tr>
         <td th:replace="navtemplate :: barrenav"></td>
         <td id="mainContent" class="twelve wide">
-            <h1>Bienvenue sur le site des Nanars Sauvages</h1>
-            <div th:if="${empty}">
-                Bonjour admin!<br>
-                Votre application fonctionne.<br>
-                Dans un premier temps veuillez changer de mot de passe  ou créer votre propre compte.<br>
-
-                Pour faire fonctionner l'importation de film, veuillez cliquier sur ce lien.<br>
-                <a href="/admin/importFilms">Importer Id des films TMDB</a>
-
+            <div class="container">
+            <div class="row">
+            <div id="album"></div>
             </div>
-
+            </div>
+            <h1>Test images</h1>
         </td>
     </tr>
     </tbody>
 </table>
 
 <footer th:replace="basictemplate :: footer"></footer>
-
+<script src="/js/testimages.js"></script>
 </body>
 </html>

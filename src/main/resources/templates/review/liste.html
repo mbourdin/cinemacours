@@ -7,7 +7,7 @@
 </head>
 <body>
 <header th:replace="basictemplate :: header"></header>
-<table class="table ui">
+<table class="table ui" id="maintable">
 
     <tbody>
     <tr>
@@ -17,7 +17,7 @@
         <td id="mainContent" class="twelve wide">
             <H1 th:if="${reviews.isEmpty()}">Liste des commentaires VIDE</H1>
             <ul class="sanspuce">
-                <li th:each="review : ${reviews}">
+                <li class="marge" th:each="review : ${reviews}">
                     <div th:if="${(review.publie())} or ${session.admin} or (${session.user!=null} and ${session.user.equals(review.utilisateur)   })">
                         <a th:href="@{/review/detail/{Id} (Id=${review.id})}">commentaire sur </a>
                         <a th:href="@{/film/detail/{Id} (Id=${review.film.id})}"

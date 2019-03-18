@@ -23,7 +23,6 @@ $("#valider").click
             $(".saisie").removeClass("redbackground").addClass("greenbackground");
 
         }
-        ;
     }
 );
 //clic sur un des éléments de saisie

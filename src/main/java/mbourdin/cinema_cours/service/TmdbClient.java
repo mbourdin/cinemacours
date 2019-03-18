@@ -115,7 +115,7 @@ public class TmdbClient {
         return importedPerson;
     }
     public Film getMovieSmallDetail(Long id)
-    {    RestTemplate template = new RestTemplate();
+    {   RestTemplate template = new RestTemplate();
         ResponseEntity<String> response;
         Long reset;
 
@@ -134,12 +134,29 @@ public class TmdbClient {
 
         Film importedFilm=new Film();
         Long tmdbId=film.getLong("id");
-        String imagepath=film.getString("poster_path");
-        String titreOriginal=film.getString("original_title");
-        Double note=film.getDouble("vote_average")/2;
-        LocalDate annee=LocalDate.parse(film.getString("release_date"));
-        String titre=film.getString("title");
-        String resume=film.getString("overview");
+        String imagepath=null;
+        if(!film.isNull("poster_path")) {
+            imagepath= film.getString("poster_path");
+        }
+        String titreOriginal=null;
+        if(!film.isNull("original_title")) {
+        titreOriginal=film.getString("original_title");
+        }
+        Double note=null;
+        if(!film.isNull("vote_average")){
+            note=film.getDouble("vote_average")/2;}
+        LocalDate annee=null;
+        if(!film.isNull("release_date")) {
+            annee = LocalDate.parse(film.getString("release_date"));
+        }
+        String titre=null;
+        if (!film.isNull("title")) {
+            titre = film.getString("title");
+        }
+        String resume=null;
+        if(!film.isNull("overview"))
+        { resume=film.getString("overview");}
+
         Integer duree=null;
         if(!film.isNull("runtime")) {
             duree= film.getInt("runtime");

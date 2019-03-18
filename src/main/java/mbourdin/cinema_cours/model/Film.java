@@ -22,7 +22,7 @@ import java.util.Set;
 @Entity
 @Table(name="films")
 public class Film {
-
+    public static final DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE;
 
     private Long id;
     private Long tmdbId;
@@ -239,16 +239,13 @@ public class Film {
     }
 
     public String formattedDate()
-    {
-        return annee.format(FilmController.formatter);
+    {   if(annee!=null)
+        return annee.format(formatter);
+        else return "";
     }
 
     @Override
     public String toString()
-    {
-
-        return "tmdbid="+tmdbId+" titre original="+titreOriginal;
+    {   return "tmdbid="+tmdbId+" titre original="+titreOriginal;
     }
-
-
 }

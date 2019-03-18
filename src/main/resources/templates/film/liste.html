@@ -4,13 +4,15 @@
     <meta charset="UTF-8">
     <th:block th:replace="basictemplate :: header_css">
     </th:block>
+    <th:block th:replace="basictemplate :: pagination_css">
+    </th:block>
 
 </head>
 <body>
 
 <header class="block" th:replace="basictemplate :: header"></header>
 
-<table class="table ui">
+<table class="ui table" id="maintable">
 
     <tbody>
     <tr>
@@ -25,140 +27,49 @@
             <h2 th:if="${choix}" th:text="${choix}"></h2>
             <table class="ui table" id="filmsTable">
                 <tbody id="body">
-                <tr th:each="film : ${listefilms}">
+                <tr hidden="true" th:if="${film}">
 
-                    <td class="ten wide"><a th:href="@{/film/detail/{Id} (Id=${film.id})}"
+                    <td class="ten wide marge" ><a th:href="@{/film/detail/{Id} (Id=${film.id})}"
                                             th:text="${film.titre}+' '+${film.note}"></a></td>
 
-                    <td class="two wide">
+                    <td class="two wide marge">
                         <a class="ui red button" th:if="${session.admin}" th:text="#{delete}"
                            th:href="@{/film/delete/{Id} (Id=${film.id})}">Effacer</a>
                     </td>
-                    <td class="two wide">
+                    <td class="two wide marge">
                         <a class="ui yellow button" th:if="${session.admin}" th:text="#{edit}"
                            th:href="@{/film/mod/{Id} (Id=${film.id})}">Editer</a></td>
                 </tr>
 
                 </tbody>
             </table>
+            <ul id="pagination" class="pagination-lg"></ul>
+            <form>
+                <label>Type requete</label><select type="text" value="all" id="requestTypeId" >
+
+
+                <option value="all">all</option>
+                <option value="byGenre">by Genre</option>
+                <option value="byTitle">by Title</option>
+
+
+            </select>
+                <label>Critere de Recherche</label><input type="text" id="parameter" value="" list="genreslist" onfocus="this.value=''" autocomplete="false">
+                <datalist id="genreslist">
+                    <option th:each="genre : ${genres}" th:value="${genre.name}" th:text="${genre.name}"></option>
+                </datalist>
+
+                <label>Rechercher</label><input type="button" onclick="dosearch()" value="rechercher">
+            </form>
+
         </td>
     </tr>
     </tbody>
 </table>
-<ul id="pagination" class="pagination-lg"></ul>
+
 <footer th:replace="basictemplate :: footer"></footer>
 <script type="application/javascript" src="/js/jquery.twbsPagination.js"></script>
-<script type="application/javascript">
-    function search(page) {
-        var film = $('#search').val();
-
-        $.ajax({
-            //url: '/api/film/bypage/' + film+'/'+page,
-            url: '/api/film/bypage/'+page,
-            type: 'get',
-            dataType: 'json',
-            contentType: 'application/json',
-            success: onSuccess,
-            error: onError
-        });
-    }
-
-    function onSuccess(result) {
-        console.log(result);
-
-        clearlines();
-        buildlines(result);
-        $('#pagination').twbsPagination({
-            totalPages: result.totalPages,
-            visiblePages: 7,
-            startPage: 1,
-            onPageClick: function (event, page) {
-
-                search(page-1);
-
-                // var film = $('#search').val();
-                // console.log(page);
-                // var page = page;
-                // $('#film-body').text();
-                //
-                // $.ajax({
-                //     url: '/api/filmtmbd/' + film + '/' + page,
-                //     type: 'get',
-                //     dataType: 'json',
-                //     contentType: 'application/json',
-                //     success: onSuccessDialog
-                // });
-                console.log(page)
-            }
-        });
-    }
-
-    function onError(jqXHR, textStatus, errorThrown) {
-        console.log('jqXHR:');
-        console.log(jqXHR);
-        console.log("message d'erreur: " + jqXHR.responseJSON.message);
-        console.log('textStatus:');
-        console.log(textStatus);
-        console.log('errorThrown:');
-        console.log(errorThrown);
-        alert("Echec de l'opération\n" + jqXHR.responseJSON.message);
-    }
-
-    function buildline(film) {
-
-        tablebody = document.getElementById("body");
-
-        tr0 = body.firstChild.nextSibling;
-        tr = tr0.cloneNode(3);
-
-        tablebody.appendChild(tr);
-        td=tr.firstChild.nextSibling;
-
-        a=td.firstChild;
-
-        if(a!=null) {
-            a.setAttribute("href", "/film/detail/" + film.id);
-            a.text = film.titre;
-        }
-        td=td.nextSibling.nextSibling;
-        console.log("td=");
-        console.log(td);
-        if(td!=null) {
-            b = td.firstChild.nextSibling;
-            if (b != null) {
-                b.setAttribute("href", "/film/delete/" + film.id);
-
-            }
-        }
-        td=td.nextSibling.nextSibling
-        if(td!=null) {
-            c = td.firstChild.nextSibling;
-            if (c != null) {
-
-                c.setAttribute("href", "/film/mod/" + film.id);
-
-            }
-        }
-    }
-
-    function buildlines(result) {
-        for (i = 0; i < result.content.length; i++) {
-            film = result.content[i];
-            // console.log("film:");
-            // console.log(film);
-            buildline(film);
-        }
-    }
-    function clearlines()
-    { tablebody = document.getElementById("body");
-        while(tablebody.rows.length>1)
-        {   tablebody.deleteRow(1);
-        }
-    }
-
-    search(0);
-
+<script type="application/javascript" src="/js/listefilms.js">
 </script>
-
 </body>
 </html>

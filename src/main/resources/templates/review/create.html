@@ -9,7 +9,7 @@
 
 <header class="block" th:replace="basictemplate :: header"></header>
 
-<table class="table ui">
+<table class="table ui" id="maintable">
 
     <tbody>
     <tr>
@@ -27,12 +27,13 @@
             <input type="hidden" th:field="${review.film}"/>
             <input type="hidden" th:field="${review.utilisateur}"/>
             <input type="hidden" th:field="${review.date}"/>
-            <label>Votre commentaire</label><br><textarea name="article" th:field="${review.article}"></textarea>
-            <input type="submit" value="envoyer"/>
+            <label>Votre commentaire</label><br><textarea name="article" th:field="${review.article}" cols="40" rows="10"></textarea>
+            <br><input type="submit" value="envoyer" class="ui blue big button" disabled="disabled" id="button"/>
         </form>
 
         </td></tr></tbody></table>
 
 <footer th:replace="basictemplate :: footer"></footer>
+<script src="/js/commentaire.js"></script>
 </body>
 </html>

@@ -2,6 +2,7 @@ package mbourdin.cinema_cours.service;
 
 
 import mbourdin.cinema_cours.dao.FilmDao;
+import mbourdin.cinema_cours.dao.GenreDao;
 import mbourdin.cinema_cours.dao.PersonneDao;
 import mbourdin.cinema_cours.dao.PlayDao;
 import mbourdin.cinema_cours.model.Film;
@@ -26,6 +27,8 @@ public class FilmManager {
     @Autowired
     private PersonneDao personneDao;
 
+    @Autowired
+    private GenreDao genreDao;
     FilmManager()
     {   this.filmDao = filmDao;
         assert(filmDao != null);
@@ -33,10 +36,7 @@ public class FilmManager {
         assert(roleDao!=null);
 
     }
-    public List<Film> getAllByGenre(Genre genre)
-    {   return filmDao.findAllByGenresContains(genre);
 
-    }
 
     public Film getById(long id){
         return filmDao.findById(id).get();
@@ -132,7 +132,14 @@ public class FilmManager {
         roleDao.save(play);
         return play.getId();
     }
-    public Page<Film> listByPage(Pageable pageable) {
+    public Page<Film> listAllByPage(Pageable pageable) {
         return filmDao.findAll(pageable);
+    }
+    public Page<Film> listGenresByPage(Pageable pageable,String searchArgument)  {
+       Genre genre=genreDao.findByName(searchArgument);
+       return filmDao.findAllByGenresContains(genre,pageable);
+    }
+    public Page<Film> listTitlesByPage(Pageable pageable,String searchArgument)
+    {   return filmDao.findAllByTitreContainingOrTitreOriginalContaining(searchArgument,searchArgument,pageable);
     }
 }

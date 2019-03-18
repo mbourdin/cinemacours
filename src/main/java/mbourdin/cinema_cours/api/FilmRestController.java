@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -39,11 +40,26 @@ public class FilmRestController {
         film.setRealisateur(realisateur);
         return filmManager.merge(film);
     }
-    @RequestMapping(value = "/bypage/{pageNumber}", method = RequestMethod.GET)
-    public Page<Film> queryByPage(@PathVariable Integer pageNumber) {
+    @RequestMapping(value = "/{requestString}/{pageNumber}", method = RequestMethod.GET)
+    public Page<Film> queryByPage(@PathVariable Integer pageNumber, @PathVariable String requestString, HttpServletRequest request) {
         Pageable pageable = PageRequest.of(pageNumber , 2);
-        Page<Film> pageFilms = filmManager.listByPage(pageable);
+        Page<Film> pageFilms;
+        String searchArgument=request.getParameter("str");
+        switch (requestString) {
+            case "all":
+                pageFilms= filmManager.listAllByPage(pageable);
+                break;
+            case "byGenre":
+                pageFilms= filmManager.listGenresByPage(pageable,searchArgument);
+                break;
+            case "byTitle":
+                pageFilms= filmManager.listTitlesByPage(pageable,searchArgument);
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid request");
+        }
         return pageFilms;
+
     }
 
 }

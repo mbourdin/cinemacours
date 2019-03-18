@@ -32,6 +32,7 @@
                                 <a class="item" href="/film/liste" th:text="#{list}">liste</a>
                                 <a th:if="${session.admin}" class="item" href="/film/add" th:text="#{create}">creer</a>
                                 <a th:if="${session.admin}" class="item" href="/film/import?str=" th:text="#{import}">importer</a>
+                                <a th:if="${session.admin}" class="item" href="/admin/importFilms">Importer Id des films TMDB</a>
                             </div>
                         </div>
                         <div class="ui dropdown item" th:if="${session.normalUser}"><th:block th:text="#{persons}">Personnes</th:block>

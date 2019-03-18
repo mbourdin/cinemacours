@@ -12,17 +12,21 @@
                   th:href="@{/webjars/Semantic-UI/2.4.1/semantic.min.css}"/>
             <link href="/CSS/baseStyle.css" rel="stylesheet">
         </th:block>
+
+        <th:block th:fragment="pagination_css">
+            <link href="/CSS/pagination.css" rel="stylesheet">
+        </th:block>
     </head>
+
     <body>
         <header th:fragment="header">
 
-            <table class="ui inverted green table">
+            <table class="ui table" id="headerTable">
                 <tbody>
-                <tr>
-                    <td class="eleven wide blacktext"><h1>Les Nanars Sauvages</h1><h3 th:text="#{bestOfWorst}">Le meilleur du pire!</h3></td>
-                    <td>
-                    <div class="one wide" onclick="setLang('Fr')"><img src="/drapeau/1" class="flag"></div>
-                    <div class="one wide" onclick="setLang('En')"><img src="/drapeau/2" class="flag"></div>
+                <tr id="titleArea">
+                    <td class="eleven wide"><div class="titleArea"><h1>Les Nanars Sauvages</h1><h3 th:text="#{bestOfWorst}">Le meilleur du pire!</h3></div>
+                    <div class="titleArea" onclick="setLang('Fr')"><img src="/drapeau/1" class="flag" ></div>
+                    <div class="titleArea" onclick="setLang('En')"><img src="/drapeau/2" class="flag" ></div>
                     </td>
                 <td class="three wide" id="loginarea">
                     <div class="ui vertical three buttons">
@@ -43,7 +47,7 @@
                 </tr>
                 </tbody>
             </table>
-            <p th:text="${flashMessage}"></p>
+            <p class="flashmessage" th:text="${flashMessage}"></p>
 
         </header>
         <section>Contenu de la section</section>
@@ -57,26 +61,8 @@
                     th:src="@{/webjars/Semantic-UI/2.4.1/semantic.min.js}"></script>
             <script src="webjars/tinymce/4.7.9/tinymce.min.js"
                     th:src="@{/webjars/tinymce/4.7.9/tinymce.min.js}"></script>
-            <script type="application/javascript">
-                $('.ui.dropdown.item')
-                    .dropdown();
-            </script>
-            <script type="application/javascript">
-                function setLang(lang) {
-                    var currentUrl=window.location.toString();
-                    if(currentUrl.includes("lang="))
-                    {   currentUrl=currentUrl.substring(0,currentUrl.length-2);
-                    }
-                    else if(!currentUrl.includes("?"))
-                    {   currentUrl=currentUrl+"?lang=";
-                    }
-                    else
-                    {   currentUrl=currentUrl+"&lang=";
-                    }
-                    currentUrl=currentUrl+lang;
-                    window.location=currentUrl;
-                }
-            </script>
+            <script src="/js/genericfunctions.js" type="application/javascript" ></script>
+
         </footer>
     </body>
 </html>

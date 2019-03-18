@@ -117,4 +117,10 @@ public class MainController {
         ImageIO.write(image, "jpg", out);
 
     }
+
+    //Ceci est un mapping de test pour le TP de M AZRIA
+    @GetMapping("/testimages")
+    public String testimages() {
+        return "testimages";
+    }
 }

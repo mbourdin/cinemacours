@@ -7,7 +7,7 @@
 </head>
 <body>
 <header th:replace="basictemplate :: header"></header>
-<table class="table ui">
+<table class="table ui" id="maintable">
 
     <tbody>
     <tr>
@@ -19,11 +19,11 @@
     <h1>liste des newsletters</h1>
             <table class="ui table">
     <tr th:each="news : ${newslist}">
-            <td class="one wide"><span th:text="${news.id}"></span></td>
-            <td class="eleven wide"><span th:text="${news.date.toString()}"></span></td>
-            <td class="one wide"><a class="ui green button"  th:if="${session.admin}" th:href="@{/news/send/{Id} (Id=${news.id})}">Envoyer aux abonnés</a></td>
-            <td class="one wide"><a class="ui red button"  th:if="${session.admin}" th:href="@{/news/delete/{Id} (Id=${news.id})}">Effacer</a></td>
-            <td class="one wide"><a class="ui yellow button" th:if="${session.admin}" th:href="@{/news/update/{Id} (Id=${news.id})}">Editer</a></td>
+            <td class="one wide marge"><span th:text="${news.id}"></span></td>
+            <td class="eleven wide marge"><span th:text="${news.date.toString()}"></span></td>
+            <td class="one wide marge"><a class="ui green button"  th:if="${session.admin}" th:href="@{/news/send/{Id} (Id=${news.id})}">Envoyer aux abonnés</a></td>
+            <td class="one wide marge"><a class="ui red button"  th:if="${session.admin}" th:href="@{/news/delete/{Id} (Id=${news.id})}">Effacer</a></td>
+            <td class="one wide marge"><a class="ui yellow button" th:if="${session.admin}" th:href="@{/news/update/{Id} (Id=${news.id})}">Editer</a></td>
     </tr>
             </table>
         </td></tr></tbody></table>

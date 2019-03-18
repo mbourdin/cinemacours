@@ -7,7 +7,7 @@
 </head>
 <body>
 <header th:replace="basictemplate :: header"></header>
-<table class="table ui">
+<table class="table ui" id="maintable">
 
     <tbody>
     <tr>
@@ -19,9 +19,9 @@
             <table class="ui table">
     <tr th:each="personne : ${personnes}">
 
-            <td class="ten wide"><a   th:href="@{/personne/{Id} (Id=${personne.id})}" th:text="${personne.name}"></a></td>
-            <td class="two wide"><a class="ui red button"  th:if="${session.admin}" th:href="@{/personne/delete/{Id} (Id=${personne.id})}">Effacer</a></td>
-            <td class="two wide"><a class="ui yellow button" th:if="${session.admin}" th:href="@{/personne/update/{Id} (Id=${personne.id})}">Editer</a></td>
+            <td class="ten wide marge"><a   th:href="@{/personne/{Id} (Id=${personne.id})}" th:text="${personne.name}"></a></td>
+            <td class="two wide marge"><a class="ui red button"  th:if="${session.admin}" th:href="@{/personne/delete/{Id} (Id=${personne.id})}">Effacer</a></td>
+            <td class="two wide marge"><a class="ui yellow button" th:if="${session.admin}" th:href="@{/personne/update/{Id} (Id=${personne.id})}">Editer</a></td>
     </tr>
                 </table>
         </td></tr></tbody></table>

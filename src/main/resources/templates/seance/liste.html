@@ -7,7 +7,7 @@
 </head>
 <body>
 <header th:replace="basictemplate :: header"></header>
-<table class="table ui">
+<table class="table ui" id="maintable">
 
     <tbody>
     <tr>
@@ -16,25 +16,25 @@
             <h1>liste des seances</h1>
             <table class="ui table">
                 <tr th:each="seance : ${seances}">
-                    <td class="four wide" th:text="${seance.id}+' '+${seance.debut.format(formatter)}"></td>
-                    <td class="six wide"><a th:href="@{/film/detail/{Id} (Id=${seance.film.id})}" th:text="${seance.film.titre}"></a></td>
+                    <td class="four wide marge" th:text="${seance.id}+' '+${seance.debut.format(formatter)}"></td>
+                    <td class="six wide marge"><a th:href="@{/film/detail/{Id} (Id=${seance.film.id})}" th:text="${seance.film.titre}"></a></td>
                     <th:block th:unless="${session.vendeur}">
-                    <td class="two wide"><a class="ui green button"
+                    <td class="two wide marge"><a class="ui green button"
                                             th:if="${session.panier}" th:href="@{/user/commande/{Id} (Id=${seance.id})}">commander</a></td>
                     </th:block>
                     <th:block th:if="${session.vendeur}">
-                        <td class="two wide"><a class="ui green button"
+                        <td class="two wide marge"><a class="ui green button"
                                                 th:if="${session.panier}" th:href="@{/vendeur/commande/{Id} (Id=${seance.id})}">commander</a></td>
                     </th:block>
                     <th:block th:if="${session.admin}">
-                    <td class="two wide"><a class="ui red button"
+                    <td class="two wide marge"><a class="ui red button"
                                             th:href="@{/seance/delete/{Id} (Id=${seance.id})}">Effacer</a></td>
-                    <td class="two wide"><a class="ui yellow button"
+                    <td class="two wide marge"><a class="ui yellow button"
                                             th:href="@{/seance/update/{Id} (Id=${seance.id})}">Editer</a></td>
                     </th:block>
                 </tr>
             </table>
-            <a th:if="${session.admin}" href="/seance/create" method="get">creer séances</a>
+            <a class="ui blue button" th:if="${session.admin}" href="/seance/create" method="get">creer séances</a>
         </td>
     </tr>
     </tbody>

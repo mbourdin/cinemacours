@@ -3,6 +3,7 @@ package mbourdin.cinema_cours.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.net.URL;
@@ -14,7 +15,6 @@ import java.util.zip.GZIPInputStream;
 
 public  class FilmStream {
 
-    public static final String tempfiles="C:\\cinemaTMP\\";
 
 
     private  static final DateTimeFormatter formatter=DateTimeFormatter.ofPattern("MM_dd_yyyy");
@@ -22,7 +22,7 @@ public  class FilmStream {
      public  BufferedReader getBr()
      { return br;
      }
-     public FilmStream()
+     public FilmStream(String tempfiles)
      {
          String adresse="http://files.tmdb.org/p/exports/movie_ids_"+ LocalDateTime.now().minusDays(2).format(formatter)+".json.gz";
          try {

@@ -1,19 +1,15 @@
 body
-{	background-color: rgb(150,150,250);
-    font-size:100%;
+{   background-color: #008080;
+    font-size:20px ;
     font-family:  Arial, Helvetica, sans-serif;
 }
-
 header
 {	text-align:center;
-    background-color:rgb(40,80,80);
 }
-
 h1{
     text-align: center;
     font-size:250%;
 }
-
 h2
 {   text-align: center;
     font-size:200%;
@@ -22,11 +18,13 @@ h2
 h3
 {	text-align: center;
     font-size:150%;
-
 }
-p
+.flashmessage
 {
     background-color: yellow;
+}
+.titleArea{
+    display: inline-block;
 }
 
 img {
@@ -34,23 +32,17 @@ img {
     max-height: 100vh;
     margin-left: auto;
     margin-right: auto;
-
 }
 textarea
-{   width: 100%;
-
-
+{   resize: none;
 }
-
 a{
-    color: darkgreen;
+    /*color: darkgreen;*/
 }
 .saisie{
     text-align: center
 }
-.login{	float: right;
-    background-color: cyan;
-}
+
 .sanspuce{
     list-style-type:none;
 }
@@ -65,18 +57,37 @@ a{
 .flag{
     height: 20px;
 
+
 }
 .redbackground{
-    background-color: crimson;
+    background-color: chocolate;
 
 }
 .greenbackground{
-    background-color: green;
+    background-color: #A5D6A7;
 }
 .blacktext
 {
     color: black;
 }
+.marge{
+border-bottom: solid 3px #cccccc  ;
+}
+.titleArea{
+    display :inline-block;
+}
+
+.table {
+    background-color: #E0E0E0;
+    margin: 0;
+}
+#headerTable{
+    margin: 0;
+}
+#maintable{
+    margin: 0;
+}
+
 #mainContent{
     text-align: center;
     background: aqua;
@@ -84,17 +95,22 @@ a{
 }
 #loginarea
 {    text-align: center;
-    background: goldenrod;
+    background: #008080;
+}
+#titleArea
+{    text-align: center;
+    background: #008080;
 }
 #navbararea
 {   text-align: center;
     background: teal;
     position: relative;
     height: 400px;
+    vertical-align: top
 }
 
+
 #navbarre
-{  position: absolute;
-    top: 0;
-    left: 0;
+{  vertical-align: top;
 }
+

@@ -7,7 +7,7 @@
 </head>
 <body>
 <header th:replace="basictemplate :: header"></header>
-<table class="table ui">
+<table class="table ui" id="maintable">
 
     <tbody>
     <tr>
@@ -21,7 +21,9 @@
                 <th>actif</th>
                 <tr th:each="tarif : ${tarifs}" >
 
-                    <td><a class="ui blue button" th:text="${tarif.nom}" th:href="@{/admin/tarif/mod/{id} (id=${tarif.id})}"></a></td></td><td th:text="${tarif.normal}"></td><td th:text="${tarif.reduit}"></td><td th:text="${tarif.actif}"></td>
+                    <td class="marge"><a class="ui blue button" th:text="${tarif.nom}" th:href="@{/admin/tarif/mod/{id} (id=${tarif.id})}"></a></td>
+                    <td class="marge" th:text="${tarif.normal}"></td>
+                    <td class="marge" th:text="${tarif.reduit}"></td><td th:text="${tarif.actif}"></td>
                 </tr>
             </table>
 

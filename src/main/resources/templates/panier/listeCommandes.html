@@ -8,7 +8,7 @@
 <body>
 <header th:replace="basictemplate :: header"></header>
 
-<table class="table ui">
+<table class="table ui" id="maintable">
 
     <tbody>
     <tr>
@@ -17,7 +17,7 @@
 
         <td id="mainContent" class="twelve wide">
             <ul>
-                <li th:each="commande : ${commandes}">
+                <li class="marge" th:each="commande : ${commandes}">
                     <div th:text="'commande numero ' + ${commande.id} +' du '+${commande.formattedDate()}"></div>
                     <div th:text="'prix='+${commande.prix()} +' payee='+${commande.paye}"></div>
                     <ul th:each="billet : ${commande.billets}">

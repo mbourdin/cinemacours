@@ -24,12 +24,12 @@
                 </thead>
                 <tbody>
                 <tr th:each="utilisateur : ${listeUsers}">
-                    <td><span th:text="${utilisateur.id}"></span></td>
-                    <td><a th:text="${utilisateur.toString()}"
+                    <td class="marge"><span th:text="${utilisateur.id}"></span></td>
+                    <td class="marge"><a th:text="${utilisateur.toString()}"
                            th:href="@{/user/detail/{Id} (Id=${utilisateur.id})}"></a></td>
-                    <td><a class="ui  red button" th:if="${session.admin}"
+                    <td class="marge"><a class="ui  red button" th:if="${session.admin}"
                            th:href="@{/user/delete/{Id} (Id=${utilisateur.id})}">Effacer</a></td>
-                    <td><a class="ui  yellow button" th:if="${session.admin}"
+                    <td class="marge"><a class="ui  yellow button" th:if="${session.admin}"
                            th:href="@{/user/update/{Id} (Id=${utilisateur.id})}">Editer</a></td>
                 </tr>
                 </tbody>

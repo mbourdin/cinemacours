@@ -5,7 +5,7 @@
 
 	<groupId>mbourdin</groupId>
 	<artifactId>cinema_cours</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2.1.WITHMAIL</version>
 	<packaging>jar</packaging>
 
 	<name>cinema_cours</name>

@@ -7,7 +7,7 @@
 </head>
 <body>
 <header th:replace="basictemplate :: header"></header>
-<table class="table ui">
+<table class="table ui" id="maintable">
 
     <tbody>
     <tr>
@@ -16,7 +16,7 @@
         <td th:replace="navtemplate :: barrenav"></td>
         <td id="mainContent" class="twelve wide">
         <ul class="sanspuce">
-            <li th:each="msg : ${msgs}">
+            <li  marge th:each="msg : ${msgs}">
                 <a th:href="@{/admin/msg/detail/{Id} (Id=${msg.id})}"
                        th:text="${'message de : '+msg.email+' du '+msg.date}"></a>
                 <br><a class="ui red button" th:href="@{/admin/msg/delete/{Id} (Id=${msg.id})}"

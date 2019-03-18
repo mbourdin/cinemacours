@@ -26,6 +26,7 @@ import java.io.OutputStream;
 import java.net.URISyntaxException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -61,16 +62,6 @@ public class FilmController {
 
 
 
-    @GetMapping("/listParGenre/{id}")
-    public String listeParGenre(Model m, @PathVariable Long id) {
-        Genre genre = genreDao.findById(id).get();
-        m.addAttribute("choix", "par genre : " + genre.getName());
-        m.addAttribute("title", "liste des film par genre : " + genre.getName());
-        m.addAttribute("listefilms", filmManager.getAllByGenre(genre));
-        return "film/liste";
-    }
-
-
 
     @GetMapping("/detail/{id}")
     public String detail(Model m, @PathVariable("id") Long id, HttpSession session) {
@@ -91,8 +82,16 @@ public class FilmController {
 
     @GetMapping("/liste")
     public String listefilms(Model m) {
+        ArrayList<Film> listefilms=filmManager.getAll();
+        System.out.println(listefilms);
+        Film film=null;
+        if (listefilms.size()!=0)
+        {   film=listefilms.get(0);
+
+        }
         m.addAttribute("title", "liste des films");
-        m.addAttribute("listefilms", filmManager.getAll().subList(0,1));
+        m.addAttribute("film",film);
+        m.addAttribute("genres",genreDao.findAll());
         return "film/liste";
     }
     @PreAuthorize("hasAuthority('ADMIN')")

@@ -7,7 +7,7 @@
 </head>
 <body>
 <header th:replace="basictemplate :: header"></header>
-<table class="table ui">
+<table class="table ui" id="maintable">
 
     <tbody>
     <tr>
@@ -16,10 +16,10 @@
     <h1>liste des roles</h1>
             <table class="ui table">
     <tr   th:each="role : ${plays}">
-            <td class="twelve wide"><a th:href="@{/personne/{Id} (Id=${role.personne.id})}" th:text="${role.personne.nom}+' '+${role.personne.prenom}"></a> dans
+            <td class="twelve wide marge"><a th:href="@{/personne/{Id} (Id=${role.personne.id})}" th:text="${role.personne.nom}+' '+${role.personne.prenom}"></a> dans
                 <a th:href="@{/film/detail/{Id} (Id=${role.film.id})}" th:text="${role.film.titre} "> </a> joue <th:block th:text="${role.nom}"></th:block></td>
-            <td class="two wide"><a class="ui red button"  th:if="${session.admin}" th:href="@{/play/delete/{id} (id=${role.id})}">Effacer</a></td>
-            <td class="two wide"><a class="ui yellow button" th:if="${session.admin}" th:href="@{/play/update/{id} (id=${role.id})}">Editer</a></td>
+            <td class="two wide marge"><a class="ui red button"  th:if="${session.admin}" th:href="@{/play/delete/{id} (id=${role.id})}">Effacer</a></td>
+            <td class="two wide marge"><a class="ui yellow button" th:if="${session.admin}" th:href="@{/play/update/{id} (id=${role.id})}">Editer</a></td>
     </tr>
             </table>
         </td></tr></tbody></table>
