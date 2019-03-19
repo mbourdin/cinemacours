@@ -18,11 +18,11 @@
                 Bonjour admin!<br>
                 Votre application fonctionne.<br>
                 Dans un premier temps veuillez changer de mot de passe  ou créer votre propre compte.<br>
-
-                Pour faire fonctionner l'importation de film, veuillez cliquier sur ce lien.<br>
-                <a href="/admin/importFilms">Importer Id des films TMDB</a>
-
             </div>
+            <table id="planningTable" class="ui table">
+                <th th:each="salle :  ${salles}" th:text="${salle.nom}"></th>
+            </table>
+
 
         </td>
     </tr>
