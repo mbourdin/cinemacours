@@ -18,6 +18,7 @@ import java.util.Set;
 @Entity
 @Table(name="seance")
 public class Seance {
+    public static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
     public static final double prixdefaut=9.00;
     private Long id;
     private Film film;
@@ -97,7 +98,7 @@ public class Seance {
     }
 
     public String formattedDate()
-    {   return debut.format(DateTimeFormatter.ofPattern("EEEE dd MMMM yyyy HH:mm", Locale.FRANCE));
+    {   return debut.format(formatter);
     }
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -108,5 +109,33 @@ public class Seance {
 
     public void setTarif(Tarif tarif) {
         this.tarif = tarif;
+    }
+
+    public boolean collides(Seance seance)
+    {   System.out.println(this);
+        System.out.println(seance);
+
+        if(this.getFilm().getDuree()==null) this.getFilm().setDuree(240);
+        if(seance.getFilm().getDuree()==null) seance.getFilm().setDuree(240);
+        if(seance.getDebut().plusMinutes(seance.getFilm().getDuree()).isBefore(this.getDebut())) return false;
+        if(this.getDebut().plusMinutes(this.getFilm().getDuree()).isBefore(seance.getDebut())) return false;
+        return (this.salle.equals(seance.salle));
+    }
+    @Override
+    public String toString()
+    {   StringBuilder sb=new StringBuilder();
+        sb.append("id=")
+                .append(id)
+                .append("film=")
+                .append(film.getId())
+                .append(":")
+                .append(film.getTitre())
+                .append(":salle=")
+                .append(salle.getNom())
+                .append("date:")
+                .append(formattedDate())
+                .append("tarif=")
+                .append(tarif.getNom());
+        return sb.toString();
     }
 }
