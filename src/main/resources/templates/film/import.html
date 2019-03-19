@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <th:block th:replace="basictemplate :: header_css">
     </th:block>
+    <th:block th:replace="basictemplate :: pagination_css">
+    </th:block>
 </head>
 <body>
 
@@ -18,26 +20,32 @@
 
         <td class="twelve wide" id="mainContent">
             <table class="ui table">
-                <tr><td>
-            <form action="/film/detailImport"  method="get">
+                <tr><td><form action="/film/detailImport"  method="get">
                 <input
                         type="hidden"
                         th:name="${_csrf.parameterName}"
                         th:value="${_csrf.token}" />
                 <label>importer par Id tmdb</label><input type="text" name="id"><input type="submit" value="importer">
-            </form>
-                </td></tr>
-                <tr><td>
-            <form action="/film/import" method="get">
-                <label>titre original</label><input type="text" name="str"><input type="submit" value="rechercher">
-            </form>
-                </td></tr>
-            <tr th:each="film : ${films}">
-                <td><a th:text="${film.id}+' '+${film.title}" th:href="@{/film/smallDetail/{id} (id=${film.id})}" ></a></td>
-            </tr>
+                </form></td></tr>
             </table>
+            <table class="ui table">
+                <tbody id="body">
 
+                <tr><td>
+
+
+                <label>titre original</label><input type="text" name="str" id="str"><input type="button" value="rechercher" onclick="dosearch()">
+                </td></tr>
+            <tr hidden="true" id="tr">
+                <td><a href="/film/smallDetail/" ></a></td>
+            </tr>
+                </tbody>
+            </table>
+            <ul id="pagination" class="pagination-lg"></ul>
         </td></tr></tbody></table>
 <footer th:replace="basictemplate :: footer"></footer>
+<script type="application/javascript" src="/js/importlist.js">
+
+</script>
 </body>
 </html>

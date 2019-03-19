@@ -3,10 +3,7 @@ package mbourdin.cinema_cours.service;
 import mbourdin.cinema_cours.dao.FilmDao;
 import mbourdin.cinema_cours.dao.GenreDao;
 import mbourdin.cinema_cours.dao.PersonneDao;
-import mbourdin.cinema_cours.model.Film;
-import mbourdin.cinema_cours.model.Genre;
-import mbourdin.cinema_cours.model.Personne;
-import mbourdin.cinema_cours.model.Play;
+import mbourdin.cinema_cours.model.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +21,7 @@ import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -39,6 +37,9 @@ public class TmdbClient {
     PersonneDao personneDao;
     @Value("${apikey}")
     private String apiKey;
+    @Value("${apistring}")
+    private String apistring;
+
 
     private long secondsBeforeReset(String value){
         long timestamp = Long.valueOf(stripBraces(value));
@@ -76,7 +77,7 @@ public class TmdbClient {
         ResponseEntity<String> response;
         Long reset;
 
-        String resourceUrl = "https://api.themoviedb.org/3/person/"+id+"?api_key="+apiKey+"&language=fr-FR";
+        String resourceUrl = apistring+"person/"+id+"?api_key="+apiKey+"&language=fr-FR";
         response = template.getForEntity(resourceUrl, String.class);
         System.out.println(response.getBody());
         JSONObject person = new JSONObject(response.getBody());

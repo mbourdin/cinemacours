@@ -42,7 +42,7 @@ public class FilmRestController {
     }
     @RequestMapping(value = "/{requestString}/{pageNumber}", method = RequestMethod.GET)
     public Page<Film> queryByPage(@PathVariable Integer pageNumber, @PathVariable String requestString, HttpServletRequest request) {
-        Pageable pageable = PageRequest.of(pageNumber , 2);
+        Pageable pageable = PageRequest.of(pageNumber , 10);
         Page<Film> pageFilms;
         String searchArgument=request.getParameter("str");
         switch (requestString) {

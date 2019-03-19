@@ -248,12 +248,7 @@ public class FilmController {
     }
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/import")
-    public String importer(Model m,@RequestParam String str)
-    {   if(str.length()>=3)
-        {
-            List<TmdbFilm> films=tmdbFilmDao.findAllByTitleContainingIgnoreCase(str);
-            m.addAttribute("films",films);
-        }
-        return "film/import";
+    public String importer(Model m)
+    {      return "film/import";
     }
 }

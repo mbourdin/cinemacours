@@ -69,3 +69,31 @@ function buildline(film) {
         }
     }
 }
+    function onSuccessPage(result) {
+        console.log(result);
+        clearlines();
+        buildlines(result);
+        $('#pagination').twbsPagination({
+            totalPages: result.totalPages,
+            visiblePages: 7,
+            startPage: 1,
+            onPageClick: function (event,page) {
+                search(page-1,requestString);
+                console.log(page)
+            }
+        });
+    }
+function clearlines()
+{ tablebody = document.getElementById("body");
+    while(tablebody.rows.length>1)
+    {   console.log(tablebody.rows.length);
+        tablebody.deleteRow(1);
+    }
+}
+
+function buildlines(result) {
+    for (i = 0; i < result.content.length; i++) {
+        film = result.content[i];
+        buildline(film);
+    }
+}
