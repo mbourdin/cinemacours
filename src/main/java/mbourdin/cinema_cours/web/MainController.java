@@ -1,9 +1,6 @@
 package mbourdin.cinema_cours.web;
 // import mbourdin.cinema_cours.dao.DaoFilm;
-import mbourdin.cinema_cours.dao.FilmDao;
-import mbourdin.cinema_cours.dao.MsgDao;
-import mbourdin.cinema_cours.dao.PersonneDao;
-import mbourdin.cinema_cours.dao.TmdbFilmDao;
+import mbourdin.cinema_cours.dao.*;
 import mbourdin.cinema_cours.model.Film;
 import mbourdin.cinema_cours.model.MsgToAdmin;
 import mbourdin.cinema_cours.model.TmdbFilm;
@@ -48,7 +45,10 @@ public class MainController {
 
     @Autowired
     TmdbFilmDao tmdbFilmDao;
-
+    @Autowired
+    SalleDao salleDao;
+    @Autowired
+    SeanceDao seanceDao;
 /*
     @PostMapping("/search")
     public String search(Model m, HttpServletRequest request)
@@ -70,6 +70,8 @@ public class MainController {
         Utilisateur user=(Utilisateur) session.getAttribute("user");
         boolean empty=tmdbFilmDao.countAllBy()==0;
         m.addAttribute("empty",empty);
+        m.addAttribute("salles",salleDao.findAll());
+        //m.addAttribute("planning",new Plann)
         return "index";
     }
 
