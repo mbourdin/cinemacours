@@ -70,7 +70,6 @@ public class Salle {
             this.taille = taille;
         }
     }
-
     @OneToMany(mappedBy ="salle")
     public Set<Seance> getSeances() {
         return seances;

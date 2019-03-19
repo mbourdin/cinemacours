@@ -15,9 +15,17 @@
         <td id="mainContent" class="twelve wide">
             <h1>liste des seances</h1>
             <table class="ui table">
+                <th>seance id + date</th>
+                <th>film</th>
+                <th>salle</th>
+
+                <th th:unless="${session.vendeur}"></th>
+                <th th:unless="${session.vendeur}"></th>
+
                 <tr th:each="seance : ${seances}">
                     <td class="four wide marge" th:text="${seance.id}+' '+${seance.debut.format(formatter)}"></td>
-                    <td class="six wide marge"><a th:href="@{/film/detail/{Id} (Id=${seance.film.id})}" th:text="${seance.film.titre}"></a></td>
+                    <td class="five wide marge"><a th:href="@{/film/detail/{Id} (Id=${seance.film.id})}" th:text="${seance.film.titre}"></a></td>
+                    <td class="one wide marge" th:text="${seance.salle.id}"></td>
                     <th:block th:unless="${session.vendeur}">
                     <td class="two wide marge"><a class="ui green button"
                                             th:if="${session.panier}" th:href="@{/user/commande/{Id} (Id=${seance.id})}">commander</a></td>
