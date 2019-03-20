@@ -6,6 +6,7 @@ import mbourdin.cinema_cours.model.Seance;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,8 +17,8 @@ public class Planning {
     private Map<Seance,int[]> map;
 
     SeanceDao seanceDao;
-    public Planning(Salle salle, LocalDate date,SeanceDao seanceDao)
-    {   seances=seanceDao.getAllByDebutIsBeforeAndDebutIsAfterAndSalle(date.plusDays(1),date.minusDays(1),salle);
+    public Planning(Salle salle, LocalDateTime date, SeanceDao seanceDao)
+    {   seances=seanceDao.getAllByDebutIsBeforeAndDebutIsAfterAndSalle(date.plusDays(1),date.minusMinutes(15),salle);
         map=new HashMap<>();
         for(Seance seance : seances)
         {   int[] bornes=new int[2];
@@ -32,5 +33,9 @@ public class Planning {
     }
     public Map<Seance,int[]> getMap()
     {   return map;
+    }
+    public List<Seance> getSeances()
+    {   return seances;
+
     }
 }
