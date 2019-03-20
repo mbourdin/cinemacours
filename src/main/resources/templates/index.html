@@ -20,8 +20,26 @@
                 Dans un premier temps veuillez changer de mot de passe  ou créer votre propre compte.<br>
             </div>
             <table id="planningTable" class="ui table">
-                <th th:each="salle :  ${salles}" th:text="${salle.nom}"></th>
+                <tr><th th:each="salle :  ${salles}" th:text="${salle.nom}"></th></tr>
+                <tbody id="planningBody"></tbody>
+                <tr>
+                    <td th:each="salle: ${salles}" class="bordered">
+                        <div class="container">
+                        <canvas class="canvas" th:id="'salle'+${salle.id}">
+                        </canvas>
+                        </div>
+                    </td>
+                </tr>
             </table>
+            <div id="data">
+                <div th:each="salle : ${salles}" th:id="'dataSalleId'+${salle.id}">
+                    <div th:id="'planningsSalles'+${salle.id}">
+                        <div th:each="seance : ${plannings.get(salle.id).getSeances()}" class="planning">
+                            <div th:text="${seance.getFilm().getTitre()}+' '+${seance.formattedDate()}">texte info seance</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
 
         </td>
