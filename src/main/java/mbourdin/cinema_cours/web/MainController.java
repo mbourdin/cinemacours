@@ -1,10 +1,8 @@
 package mbourdin.cinema_cours.web;
 // import mbourdin.cinema_cours.dao.DaoFilm;
+import mbourdin.cinema_cours.auxiliaire.Planning;
 import mbourdin.cinema_cours.dao.*;
-import mbourdin.cinema_cours.model.Film;
-import mbourdin.cinema_cours.model.MsgToAdmin;
-import mbourdin.cinema_cours.model.TmdbFilm;
-import mbourdin.cinema_cours.model.Utilisateur;
+import mbourdin.cinema_cours.model.*;
 import mbourdin.cinema_cours.service.FilmIdImport;
 import mbourdin.cinema_cours.service.FilmStream;
 import mbourdin.cinema_cours.service.ImageManager;
@@ -24,6 +22,11 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URISyntaxException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 public class MainController {
@@ -67,11 +70,15 @@ public class MainController {
     @GetMapping("/")
     public String main(Model m, HttpSession session){
         m.addAttribute("title","Accueil");
-        Utilisateur user=(Utilisateur) session.getAttribute("user");
+        Map<Integer,Planning> plannings =new HashMap<>();
+        List<Salle> salles=salleDao.findAll();
+        for(Salle salle:salles)
+        {   plannings.put(salle.getId(),new Planning(salle, LocalDateTime.now(),seanceDao));
+        }
         boolean empty=tmdbFilmDao.countAllBy()==0;
         m.addAttribute("empty",empty);
-        m.addAttribute("salles",salleDao.findAll());
-        //m.addAttribute("planning",new Plann)
+        m.addAttribute("salles",salles);
+        m.addAttribute("plannings",plannings);
         return "index";
     }
 
