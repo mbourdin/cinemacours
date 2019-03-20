@@ -1,6 +1,6 @@
 body
 {   background-color: #008080;
-    font-size:20px ;
+    font-size:100% ;
     font-family:  Arial, Helvetica, sans-serif;
 }
 header
@@ -73,6 +73,12 @@ a{
 .marge{
 border-bottom: solid 3px #cccccc  ;
 }
+.bordered{
+    border-left: solid 2px #cccccc;
+    border-right: solid 2px #cccccc;
+    border-top: solid 2px #cccccc;
+    border-bottom: solid 2px #cccccc  ;
+}
 .titleArea{
     display :inline-block;
 }
@@ -81,6 +87,11 @@ border-bottom: solid 3px #cccccc  ;
     background-color: #E0E0E0;
     margin: 0;
 }
+.canvas{
+    width: 150px;
+    height: 780px;
+}
+
 #headerTable{
     margin: 0;
 }
