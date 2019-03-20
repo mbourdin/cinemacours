@@ -10,5 +10,5 @@ import java.util.List;
 
 public interface SeanceDao extends CrudRepository<Seance,Long> {
     List<Seance> getAllByDebutIsGreaterThanEqualAndDebutIsLessThanEqual(LocalDateTime datemin, LocalDateTime datemax);
-    List<Seance> getAllByDebutIsBeforeAndDebutIsAfterAndSalle(LocalDate date1,LocalDate date2, Salle salle);
+    List<Seance> getAllByDebutIsBeforeAndDebutIsAfterAndSalle(LocalDateTime date1,LocalDateTime date2, Salle salle);
 }
